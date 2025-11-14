@@ -1,0 +1,84 @@
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  color: var(--color-text);
+  z-index: 10;
+}
+
+.navbar__left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.navbar__logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+.navbar__links {
+  display: flex;
+  gap: 1.25rem;
+}
+.navbar__links a {
+  color: var(--color-text);
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.navbar__search {
+  position: relative;
+}
+.navbar__search input {
+  height: 36px;
+  width: 220px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 217, 0, 0.9);
+  border-radius: 8px;
+  color: var(--color-text);
+  padding: 0 0.75rem;
+}
+
+.navbar__btn {
+  height: 36px;
+  padding: 0 1rem;
+  border-radius: 10px;
+  border: none;
+  background: url("../../../assets/Btn_Fundo.png") center/100% 100% no-repeat;
+  color: var(--brand-yellow);
+  box-shadow: 0 0 0 2px rgba(123, 0, 0, 0.6) inset,
+    0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.navbar__btn--cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.navbar__glow {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  height: 120px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0) 60%
+  );
+  filter: blur(8px);
+  pointer-events: none;
+}
