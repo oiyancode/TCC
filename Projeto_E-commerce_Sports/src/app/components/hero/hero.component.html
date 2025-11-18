@@ -1,0 +1,15 @@
+<section id="hero" class="hero">
+  <div class="hero__stadium"></div>
+  <div class="hero__lights"></div>
+  <div class="hero__content">
+    <div class="hero__headline-wrap">
+      <h1 class="hero__headline">USE A<br />PRÓXIMA<br />GERAÇÃO!</h1>
+    </div>
+  </div>
+  <app-three-viewer
+    class="hero__product"
+    [modelUrl]="'/assets/models/Nike_Kaiser_Opt.glb'"
+    [fallbackSrc]="'/assets/tenis.png'"
+    [enableZoom]="false"
+  ></app-three-viewer>
+</section>

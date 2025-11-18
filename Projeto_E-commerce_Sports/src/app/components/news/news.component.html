@@ -1,0 +1,138 @@
+<section id="lancamentos" class="news" aria-labelledby="news-title">
+  <div class="news__bg"></div>
+  <div class="news__content">
+    <h2 id="news-title" class="news__title">LANÇAMENTOS</h2>
+    <p class="news__cta">
+      Pegue nossos designs mais recentes antes que eles se esgotem!
+    </p>
+
+    <div class="news__grid">
+      <article class="news__item news__item--basket">
+        <div class="news__box">
+          <div class="news__head">
+            <h3 class="news__name">WILSON NBA TEAM</h3>
+          </div>
+          <div class="news__canvas">
+            <div class="news__item-grunge"></div>
+            <img
+              class="news__product news__product--basket"
+              src="/assets/section_news/Basketball_new.png"
+              alt="Lançamento: bola de basquete"
+              loading="lazy"
+            />
+          </div>
+          <div class="news__foot">
+            <span class="news__price">R$49,99</span>
+            <div class="news__bag" aria-label="Adicionar à sacola">
+              <img
+                class="icon icon--bag"
+                src="/assets/icons/Shopping bag.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="news__item news__item--tenis">
+        <div class="news__box">
+          <div class="news__head">
+            <h3 class="news__name">GOLD STARS</h3>
+          </div>
+          <div class="news__canvas">
+            <div class="news__item-grunge"></div>
+            <img
+              class="news__product news__product--tenis"
+              src="/assets/section_news/tenis_new.png"
+              alt="Lançamento: tênis"
+              loading="lazy"
+            />
+          </div>
+          <div class="news__foot">
+            <span class="news__price">R$799,90</span>
+            <div class="news__bag" aria-label="Adicionar à sacola">
+              <img
+                class="icon icon--bag"
+                src="/assets/icons/Shopping bag.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="news__item news__item--skate">
+        <div class="news__box">
+          <div class="news__head">
+            <h3 class="news__name">GREEN DROP</h3>
+          </div>
+          <div class="news__canvas">
+            <div class="news__item-grunge"></div>
+            <img
+              class="news__product news__product--skate"
+              src="/assets/section_news/Skate_01.png"
+              alt="Lançamento: skate"
+              loading="lazy"
+            />
+          </div>
+          <div class="news__foot">
+            <span class="news__price">R$229,90</span>
+            <div class="news__bag" aria-label="Adicionar à sacola">
+              <img
+                class="icon icon--bag"
+                src="/assets/icons/Shopping bag.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="produtos-populares" class="news" aria-labelledby="popular-title">
+  <div class="news__bg"></div>
+  <div class="news__content">
+    <h2 id="popular-title" class="news__title">PRODUTOS POPULARES</h2>
+    <p class="news__cta">Os mais amados pela galera</p>
+
+    <div class="carousel">
+      <button
+        id="popular-prev"
+        class="carousel__btn carousel__btn--prev"
+        aria-label="Anterior"
+      >
+        <img src="/assets/Btn_Carrosel_Esq.svg" alt="Anterior" />
+      </button>
+      <div
+        class="swiper popular-swiper"
+        #popularSwiperRef
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Produtos populares"
+        tabindex="0"
+      >
+        <div class="swiper-wrapper">
+          <ng-container *ngFor="let s of slides">
+            <div class="swiper-slide">
+              <app-product-card
+                [name]="s.name"
+                [price]="s.price"
+                [imageSrc]="s.imageSrc"
+                [variant]="s.variant"
+              ></app-product-card>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <button
+        id="popular-next"
+        class="carousel__btn carousel__btn--next"
+        aria-label="Próximo"
+      >
+        <img src="/assets/Btn_Carrosel_Dir.svg" alt="Próximo" />
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,6 @@
+<div #container class="viewer">
+  <div class="viewer__loading" *ngIf="loading && !showFallback">
+    <div class="spinner"></div>
+  </div>
+  <img *ngIf="showFallback" [src]="fallbackSrc" alt="" />
+</div>
