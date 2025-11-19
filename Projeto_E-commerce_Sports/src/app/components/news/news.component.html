@@ -97,14 +97,19 @@
     <h2 id="popular-title" class="news__title">PRODUTOS POPULARES</h2>
     <p class="news__cta">Os mais amados pela galera</p>
 
-    <div class="carousel">
-      <button
-        id="popular-prev"
-        class="carousel__btn carousel__btn--prev"
-        aria-label="Anterior"
-      >
-        <img src="/assets/Btn_Carrosel_Esq.svg" alt="Anterior" />
-      </button>
+    <div class="carousel carousel__layout">
+      <div class="carousel__nav carousel__nav--prev" aria-hidden="false">
+        <button
+          id="popular-prev"
+          #prevBtnRef
+          class="carousel__btn carousel__btn--prev"
+          aria-label="Anterior"
+          aria-controls="produtos-populares"
+        >
+          <img src="/assets/Btn_Carrosel_Esq.svg" alt="Anterior" />
+        </button>
+      </div>
+
       <div
         class="swiper popular-swiper"
         #popularSwiperRef
@@ -126,13 +131,18 @@
           </ng-container>
         </div>
       </div>
-      <button
-        id="popular-next"
-        class="carousel__btn carousel__btn--next"
-        aria-label="Próximo"
-      >
-        <img src="/assets/Btn_Carrosel_Dir.svg" alt="Próximo" />
-      </button>
+
+      <div class="carousel__nav carousel__nav--next" aria-hidden="false">
+        <button
+          id="popular-next"
+          #nextBtnRef
+          class="carousel__btn carousel__btn--next"
+          aria-label="Próximo"
+          aria-controls="produtos-populares"
+        >
+          <img src="/assets/Btn_Carrosel_Dir.svg" alt="Próximo" />
+        </button>
+      </div>
     </div>
   </div>
 </section>

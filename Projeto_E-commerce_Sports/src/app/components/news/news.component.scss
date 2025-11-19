@@ -23,7 +23,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -125,10 +125,10 @@
 }
 
 .news__product--basket {
-  width: min(62%, 400px);
+  width: min(60%, 220px);
 }
 .news__product--tenis {
-  width: min(80%, 400px);
+  width: min(70%, 400px);
   transform: translateY(2px);
 }
 .news__product--skate {
@@ -137,36 +137,67 @@
 
 .news__foot {
   position: absolute;
-  left: 50%;
-  bottom: 20px;
+  left: 51%;
+  bottom: 32px;
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 9.5rem;
 }
 
 /* Carousel styles for Produtos Populares */
+/*
+  Carousel layout
+  - Use grid para posicionar os botões fora do container do Swiper
+  - Colunas: [botão anterior] [conteúdo] [botão próximo]
+  - As colunas de navegação estendem a altura do conteúdo para permitir centralização precisa
+*/
 #produtos-populares .carousel {
   position: relative;
   width: 100%;
   margin-top: 1rem;
 }
+#produtos-populares .carousel__layout {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: stretch; /* nav columns match swiper height */
+  column-gap: 8px;
+}
+
+/* Swiper container permanece com overflow oculto */
 #produtos-populares .popular-swiper {
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 #produtos-populares .popular-swiper .swiper-wrapper {
-  align-items: stretch;
+  align-items: center;
 }
 #produtos-populares .popular-swiper .swiper-slide {
   display: flex;
   justify-content: center;
 }
+
+/*
+  Navegação externa
+  - Cada coluna de navegação é relativa, para posicionar o botão com top dinâmico
+  - O cálculo de top é atualizado via JS para alinhar ao centro da .news__canvas
+*/
+#produtos-populares .carousel__nav {
+  position: relative;
+}
+#produtos-populares .carousel__nav--prev {
+  justify-self: start;
+}
+#produtos-populares .carousel__nav--next {
+  justify-self: end;
+}
+
+/* Botões de navegação */
 #produtos-populares .carousel__btn {
   position: absolute;
-  top: 8px;
-  transform: none;
+  top: 50%; /* fallback quando JS ainda não atualizou */
+  transform: translateY(-50%);
   background: none;
   border: none;
   width: 56px;
@@ -174,17 +205,27 @@
   padding: 0;
   cursor: pointer;
   z-index: 3;
+  transition: top 200ms ease, transform 200ms ease, opacity 200ms ease;
+  will-change: top, transform;
 }
 #produtos-populares .carousel__btn--prev {
-  left: 8px;
+  left: 0;
 }
 #produtos-populares .carousel__btn--next {
-  right: 8px;
+  right: 0;
 }
 #produtos-populares .carousel__btn img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  #produtos-populares .carousel__btn {
+    width: 48px;
+    height: 48px;
+  }
 }
 .news__price {
   font-family: var(--font-mono);
@@ -201,7 +242,7 @@
 }
 .icon--bag {
   vertical-align: middle;
-  width: 24px;
+  width: 32px;
   // height: 16px;
 }
 .news__box {
@@ -246,5 +287,5 @@
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 320px;
+  min-height: 340px;
 }

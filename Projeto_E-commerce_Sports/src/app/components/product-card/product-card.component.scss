@@ -14,7 +14,7 @@
   max-width: 420px;
   margin: 0 auto;
   padding: 0.75rem 0.75rem 0.5rem;
-  background: url('/assets/Box_Prod.svg') center/100% 100% no-repeat;
+  background: url("/assets/Box_Prod.svg") center/100% 100% no-repeat;
 }
 
 .news__head {
@@ -57,14 +57,14 @@
 }
 
 .news__item--basket .news__item-grunge {
-  background-image: url('/assets/Grunge_dos_lancamentos/grunge_basket_red.svg');
+  background-image: url("/assets/Grunge_dos_lancamentos/grunge_basket_red.svg");
 }
 .news__item--tenis .news__item-grunge {
-  background-image: url('/assets/Grunge_dos_lancamentos/grunge_tenis_blue.svg');
+  background-image: url("/assets/Grunge_dos_lancamentos/grunge_tenis_blue.svg");
   left: 50%;
 }
 .news__item--skate .news__item-grunge {
-  background-image: url('/assets/Grunge_dos_lancamentos/grunge_skate_green.svg');
+  background-image: url("/assets/Grunge_dos_lancamentos/grunge_skate_green.svg");
 }
 
 .news__product {
@@ -74,18 +74,25 @@
   z-index: 1;
   top: -10%;
 }
-.news__product--basket { width: min(80%, 420px); }
-.news__product--tenis { width: min(78%, 400px); transform: translateY(2px); }
-.news__product--skate { width: min(62%, 360px); }
+.news__product--basket {
+  width: min(80%, 420px);
+}
+.news__product--tenis {
+  width: min(78%, 400px);
+  transform: translateY(2px);
+}
+.news__product--skate {
+  width: min(62%, 360px);
+}
 
 .news__foot {
   position: absolute;
-  left: 50%;
-  bottom: 20px;
+  left: 52%;
+  bottom: 30px;
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 9rem;
 }
 
 .news__price {
@@ -93,13 +100,24 @@
   font-size: 16px;
   color: #000;
 }
-.icon { display: inline-block; }
-.icon--bag { vertical-align: middle; width: 24px; }
+.icon {
+  display: inline-block;
+}
+.icon--bag {
+  vertical-align: middle;
+  width: 32px;
+}
 
 @media (max-width: 1024px) {
-  .news__item { min-height: 380px; }
-  .news__product { width: min(85%, 360px); }
+  .news__item {
+    min-height: 380px;
+  }
+  .news__product {
+    width: min(85%, 360px);
+  }
 }
 @media (max-width: 768px) {
-  .news__item { min-height: 320px; }
+  .news__item {
+    min-height: 320px;
+  }
 }
