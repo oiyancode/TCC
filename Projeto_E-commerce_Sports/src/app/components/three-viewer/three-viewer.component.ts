@@ -18,10 +18,13 @@ import {
   ACESFilmicToneMapping,
   Vector3,
   Box3,
+  PMREMGenerator,
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
 import gsap from 'gsap';
 
 @Component({
@@ -45,6 +48,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private scene!: Scene;
   private camera!: PerspectiveCamera;
   private modelGroup!: Group;
+  private pmrem?: PMREMGenerator;
   showFallback = false;
   private frameId: number | null = null;
   private isDragging = false;
@@ -96,21 +100,33 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     const el = this.containerRef.nativeElement;
     el.appendChild(this.renderer.domElement);
 
-    const amb = new AmbientLight(0xffffff, 0.9);
-    const dir1 = new DirectionalLight(0xffffff, 1.35);
+    const amb = new AmbientLight(0xffffff, 1.1);
+    const dir1 = new DirectionalLight(0xffffff, 1.6);
     dir1.position.set(3, 4, 5);
-    const dir2 = new DirectionalLight(0xffffff, 0.8);
+    const dir2 = new DirectionalLight(0xffffff, 1.0);
     dir2.position.set(-3, 2, -4);
-    const dir3 = new DirectionalLight(0xffffff, 0.5);
+    const dir3 = new DirectionalLight(0xffffff, 0.8);
     dir3.position.set(0, 3, 0);
     this.scene.add(amb, dir1, dir2, dir3);
 
     this.modelGroup = new Group();
     this.scene.add(this.modelGroup);
+
+    this.pmrem = new PMREMGenerator(this.renderer);
+    const exr = new EXRLoader();
+    exr.load(
+      '/assets/Modelos_3D/Tenis_3d_Hero/assets/hdrs/sunset_ad754599-3992-4ad9-ae7d-859207a02812/sunset_2K_45b507a6-e7cb-49eb-9d11-73e6be05837f.exr',
+      (texture: any) => {
+        const envMap = this.pmrem!.fromEquirectangular(texture).texture;
+        this.scene.environment = envMap;
+        texture.dispose();
+      }
+    );
   }
 
   private loadModel() {
     const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
     this.draco = new DRACOLoader();
     this.draco.setDecoderPath('/assets/draco/');
     loader.setDRACOLoader(this.draco);

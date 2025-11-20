@@ -48,7 +48,7 @@
 .navbar__search input {
   height: 36px;
   width: 220px;
-  background: rgba(255, 255, 255, 0.06) url("/assets/Lupa_Busca.png") 10px
+  background: rgba(255, 255, 255, 0.06) url("/assets/lupa_busca.png") 10px
     center / 16px no-repeat;
   border: 1.5px solid rgba(255, 217, 0, 0.9);
   border-radius: 8px;
@@ -66,14 +66,14 @@
   padding: 0 1rem;
   border-radius: 10px;
   border: none;
-  background: url("../../../assets/Btn_Fundo.png") center/100% 100% no-repeat;
+  background: url("../../../assets/btn_fundo.png") center/100% 100% no-repeat;
   color: #ffffff;
   // box-shadow: 0 0 0 2px rgba(123, 0, 0, 0.6) inset,
   // 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .navbar__btn--outline {
-  background: url("/assets/Fundo_Btn_entrar.png") center/100% 83% no-repeat;
+  background: url("/assets/fundo_btn_entrar.png") center/100% 83% no-repeat;
 }
 
 .navbar__btn--cart {
