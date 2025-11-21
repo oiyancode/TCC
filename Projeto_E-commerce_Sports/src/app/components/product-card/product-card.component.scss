@@ -69,30 +69,69 @@
 
 .news__product {
   position: relative;
-  width: min(80%, 420px);
   filter: none;
   z-index: 1;
   top: -10%;
 }
 .news__product--basket {
-  width: min(80%, 420px);
+  width: min(65%, 280px);
 }
 .news__product--tenis {
-  width: min(78%, 400px);
+  width: min(68%, 300px);
   transform: translateY(2px);
 }
 .news__product--skate {
-  width: min(62%, 360px);
+  width: min(60%, 260px);
+}
+
+/* Desktop styles for individual product classes */
+.product-street-king-pro {
+  width: min(85%, 300px);
+}
+.product-slam-dunk-pro {
+  width: min(85%, 300px);
+}
+.product-air-max-court {
+  width: min(85%, 300px);
+}
+.product-court-master {
+  width: min(85%, 300px);
+}
+.product-night-cruiser {
+  width: min(70%, 300px);
+}
+.product-speed-runner {
+  width: min(85%, 300px);
+}
+.product-urban-runner-pro {
+  width: min(78%, 320px);
+}
+.product-urban-shredder {
+  width: min(80%, 270px);
+}
+.product-elite-bounce {
+  width: min(80%, 355px);
+}
+.product-wilson-nba-team {
+  width: min(80%, 300px);
+}
+.product-gold-stars {
+  width: min(95%, 320px);
+}
+.product-green-drop {
+  width: min(85%, 300px);
+  left: 25px;
 }
 
 .news__foot {
   position: absolute;
   left: 52%;
-  bottom: 30px;
+  bottom: 50px;
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 9rem;
+  justify-content: space-between;
+  gap: 90px;
 }
 
 .news__price {
@@ -112,8 +151,52 @@
   .news__item {
     min-height: 380px;
   }
-  .news__product {
-    width: min(85%, 360px);
+  .news__product--basket {
+    width: min(65%, 280px);
+  }
+  .news__product--tenis {
+    width: min(68%, 300px);
+  }
+  .news__product--skate {
+    width: min(60%, 260px);
+  }
+
+  /* Tamanhos ajustados responsivos para classes individuais */
+  .product-street-king-pro {
+    width: min(68%, 300px);
+  }
+  .product-slam-dunk-pro {
+    width: min(65%, 280px);
+  }
+  .product-air-max-court {
+    width: min(62%, 320px);
+  }
+  .product-court-master {
+    width: min(63%, 270px);
+  }
+  .product-night-cruiser {
+    width: min(60%, 260px);
+  }
+  .product-speed-runner {
+    width: min(60%, 310px);
+  }
+  .product-urban-runner-pro {
+    width: min(67%, 290px);
+  }
+  .product-urban-shredder {
+    width: min(60%, 270px);
+  }
+  .product-elite-bounce {
+    width: min(64%, 275px);
+  }
+  .product-wilson-nba-team {
+    width: min(65%, 280px);
+  }
+  .product-gold-stars {
+    width: min(65%, 320px);
+  }
+  .product-green-drop {
+    width: min(66%, 260px);
   }
 }
 @media (max-width: 768px) {

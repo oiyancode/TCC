@@ -1,15 +1,11 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeroComponent } from './components/hero/hero.component';
-import { NewsComponent } from './components/news/news.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, HeroComponent, NewsComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent implements OnInit {
   title = 'ideia-tcc';

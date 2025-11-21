@@ -1,32 +1,41 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Swiper from 'swiper';
 import { Navigation, Keyboard, A11y } from 'swiper/modules';
 import { ProductCardComponent } from '../product-card/product-card.component';
+import { ProductsService, Product } from '../../services/products.service';
 
 @Component({
   selector: 'app-news',
   standalone: true,
   imports: [CommonModule, ProductCardComponent],
   templateUrl: './news.component.html',
-  styleUrl: './news.component.scss'
+  styleUrl: './news.component.scss',
 })
-export class NewsComponent implements AfterViewInit, OnDestroy {
-  slides: { name: string; price: string; imageSrc: string; variant: 'skate' | 'basket' | 'tenis' }[] = [
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-    { name: 'GREEN DROP', price: 'R$229,90', imageSrc: '/assets/section_news/Skate_01.png', variant: 'skate' },
-  ];
+export class NewsComponent implements OnInit, AfterViewInit, OnDestroy {
+  products: Product[] = [];
 
-  @ViewChild('popularSwiperRef', { static: true }) popularSwiperRef!: ElementRef<HTMLDivElement>;
-  @ViewChild('prevBtnRef', { static: false }) prevBtnRef?: ElementRef<HTMLButtonElement>;
-  @ViewChild('nextBtnRef', { static: false }) nextBtnRef?: ElementRef<HTMLButtonElement>;
+  constructor(private productsService: ProductsService) {}
+
+  ngOnInit() {
+    this.productsService.getProducts().subscribe((products: Product[]) => {
+      this.products = products;
+    });
+  }
+
+  @ViewChild('popularSwiperRef', { static: true })
+  popularSwiperRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('prevBtnRef', { static: false })
+  prevBtnRef?: ElementRef<HTMLButtonElement>;
+  @ViewChild('nextBtnRef', { static: false })
+  nextBtnRef?: ElementRef<HTMLButtonElement>;
 
   private swiper?: Swiper;
   private resizeHandler?: () => void;
@@ -63,14 +72,19 @@ export class NewsComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.resizeHandler) window.removeEventListener('resize', this.resizeHandler);
+    if (this.resizeHandler)
+      window.removeEventListener('resize', this.resizeHandler);
   }
 
   private updateNavButtonsPosition() {
     const container = this.popularSwiperRef?.nativeElement;
     if (!container) return;
-    const canvases = container.querySelectorAll('.swiper-slide.swiper-slide-visible .news__canvas');
-    const targetEls = canvases.length ? canvases : container.querySelectorAll('.swiper-slide.swiper-slide-visible');
+    const canvases = container.querySelectorAll(
+      '.swiper-slide.swiper-slide-visible .news__canvas'
+    );
+    const targetEls = canvases.length
+      ? canvases
+      : container.querySelectorAll('.swiper-slide.swiper-slide-visible');
     if (!targetEls.length) return;
     const cr = container.getBoundingClientRect();
     let minTop = Number.POSITIVE_INFINITY;
@@ -82,9 +96,14 @@ export class NewsComponent implements AfterViewInit, OnDestroy {
       if (top < minTop) minTop = top;
       if (bottom > maxBottom) maxBottom = bottom;
     });
-    const center = Math.round((minTop + maxBottom) / 2) + this.navVerticalOffset;
-    const prev = document.getElementById('popular-prev') as HTMLButtonElement | null;
-    const next = document.getElementById('popular-next') as HTMLButtonElement | null;
+    const center =
+      Math.round((minTop + maxBottom) / 2) + this.navVerticalOffset;
+    const prev = document.getElementById(
+      'popular-prev'
+    ) as HTMLButtonElement | null;
+    const next = document.getElementById(
+      'popular-next'
+    ) as HTMLButtonElement | null;
     const prevCol = prev?.parentElement as HTMLElement | null;
     const nextCol = next?.parentElement as HTMLElement | null;
     const prevColRect = prevCol?.getBoundingClientRect();

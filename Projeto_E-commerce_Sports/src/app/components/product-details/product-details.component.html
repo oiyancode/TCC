@@ -1,0 +1,80 @@
+<div class="product-details">
+  <!-- Background Yellow (mesmo da home) -->
+  <div class="bg-yellow">
+    <img src="/assets/BGs/BG_Yellow.svg" alt="Background" />
+  </div>
+
+  <!-- Logo posicionado como na home -->
+  <header class="header">
+    <img
+      src="/assets/logo_marca.png"
+      alt="Logo"
+      class="logo"
+      (click)="goHome()"
+      style="cursor: pointer"
+    />
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="main-content">
+    <div class="product-container" *ngIf="product">
+      <!-- Produto central com BG_Produto -->
+      <div class="product-display {{ product.cssClass }}">
+        <div class="product-bg">
+          <img
+            src="/assets/Section_Detalhes_Prod/BG_Produto.svg"
+            alt="Product Background"
+          />
+        </div>
+
+        <!-- Imagem do produto -->
+        <div class="product-image">
+          <img [src]="product.imageSrc" [alt]="product.name" />
+        </div>
+
+        <!-- Nome e preço na parte de baixo do BG -->
+        <div class="product-info">
+          <div class="product-name-price">
+            <h1 class="name">{{ product.name }}</h1>
+            <p class="price">{{ product.price }}</p>
+          </div>
+
+          <!-- Botão adicionar ao carrinho -->
+          <div class="add-to-cart-btn">
+            <img
+              src="/assets/Section_Detalhes_Prod/Btn_AddCar.svg"
+              alt="Adicionar ao Carrinho"
+              (click)="addToCart()"
+              style="cursor: pointer"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção lateral de tamanhos -->
+      <aside class="size-selector">
+        <h3>Tamanhos Disponíveis:</h3>
+        <div class="sizes-list">
+          <div
+            *ngFor="let size of availableSizes"
+            class="size-option"
+            [class.selected]="size === selectedSize || size === 'ÚNICO'"
+            (click)="size !== 'ÚNICO' ? selectSize(size) : null"
+            [style.cursor]="size !== 'ÚNICO' ? 'pointer' : 'default'"
+          >
+            <span *ngIf="product.variant === 'tenis' && size !== 'ÚNICO'">
+              <img
+                [src]="'/assets/produtos_geral/Tenis_' + size + '.svg'"
+                [alt]="'Tamanho ' + size"
+              />
+            </span>
+            <span *ngIf="size === 'ÚNICO'">{{ size }}</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="!product" class="loading">Carregando produto...</div>
+  </main>
+</div>

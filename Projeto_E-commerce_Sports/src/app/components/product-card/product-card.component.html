@@ -1,17 +1,31 @@
-<div class="news__item news__item--{{variant}}">
+<div class="news__item news__item--{{ variant }} {{ cssClass }}">
   <div class="news__box">
     <div class="news__head">
       <h3 class="news__name">{{ name }}</h3>
     </div>
     <div class="news__canvas">
       <div class="news__item-grunge"></div>
-      <img class="news__product news__product--{{variant}}" [src]="imageSrc" [alt]="name" loading="lazy" />
+      <img
+        class="news__product {{ cssClass }}"
+        [src]="imageSrc"
+        [alt]="name"
+        loading="lazy"
+      />
     </div>
-  <div class="news__foot">
-    <span class="news__price">{{ price }}</span>
-    <div class="news__bag" aria-label="Adicionar à sacola">
-      <img class="icon icon--bag" src="/assets/icons/shopping_bag.svg" alt="" />
+    <div class="news__foot">
+      <span class="news__price">{{ price }}</span>
+      <div
+        class="news__bag"
+        aria-label="Ver detalhes do produto"
+        (click)="goToDetails()"
+        style="cursor: pointer"
+      >
+        <img
+          class="icon icon--bag"
+          src="/assets/icons/shopping_bag.svg"
+          alt="Ver detalhes"
+        />
+      </div>
     </div>
-  </div>
   </div>
 </div>

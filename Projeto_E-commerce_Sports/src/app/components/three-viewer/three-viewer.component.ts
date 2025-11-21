@@ -18,13 +18,11 @@ import {
   ACESFilmicToneMapping,
   Vector3,
   Box3,
-  PMREMGenerator,
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
-import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
 import gsap from 'gsap';
 
 @Component({
@@ -48,13 +46,13 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private scene!: Scene;
   private camera!: PerspectiveCamera;
   private modelGroup!: Group;
-  private pmrem?: PMREMGenerator;
   showFallback = false;
   private frameId: number | null = null;
   private isDragging = false;
   private lastX = 0;
   private lastY = 0;
   loading = true;
+  private isAutoRotating = true;
   private draco?: any;
   private ktx2?: any;
 
@@ -90,38 +88,32 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.camera = new PerspectiveCamera(this.fov, 1, 0.01, 100);
     this.camera.position.set(0, 0, 4.5);
     this.renderer = new WebGLRenderer({
-      antialias: true,
+      antialias: false, // Disabled antialias for better performance
       alpha: true,
       powerPreference: 'high-performance',
     });
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Reduced pixel ratio
+    this.renderer.shadowMap.enabled = false; // Disable shadows for better performance
     const el = this.containerRef.nativeElement;
     el.appendChild(this.renderer.domElement);
 
-    const amb = new AmbientLight(0xffffff, 1.1);
-    const dir1 = new DirectionalLight(0xffffff, 1.6);
-    dir1.position.set(3, 4, 5);
-    const dir2 = new DirectionalLight(0xffffff, 1.0);
-    dir2.position.set(-3, 2, -4);
-    const dir3 = new DirectionalLight(0xffffff, 0.8);
-    dir3.position.set(0, 3, 0);
-    this.scene.add(amb, dir1, dir2, dir3);
+    // Enhanced lighting setup: ambient boost + top light
+    const amb = new AmbientLight(0xffffff, 6.2); // Increased ambient light
+    const dir1 = new DirectionalLight(0xffffff, 2.5);
+    dir1.position.set(5, 5, 5);
+    const fill = new DirectionalLight(0xffffff, 2.0);
+    fill.position.set(-4, 2, 3);
+    const top = new DirectionalLight(0xffffff, 10.8); // New top light
+    top.position.set(0, 8, 0);
+    this.scene.add(amb, dir1, fill, top);
 
     this.modelGroup = new Group();
     this.scene.add(this.modelGroup);
 
-    this.pmrem = new PMREMGenerator(this.renderer);
-    const exr = new EXRLoader();
-    exr.load(
-      '/assets/Modelos_3D/Tenis_3d_Hero/assets/hdrs/sunset_ad754599-3992-4ad9-ae7d-859207a02812/sunset_2K_45b507a6-e7cb-49eb-9d11-73e6be05837f.exr',
-      (texture: any) => {
-        const envMap = this.pmrem!.fromEquirectangular(texture).texture;
-        this.scene.environment = envMap;
-        texture.dispose();
-      }
-    );
+    // Simplified environment - using a basic color gradient instead of heavy HDRI
+    this.scene.environment = null; // Remove heavy HDRI for better performance
   }
 
   private loadModel() {
@@ -211,6 +203,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private onPointerDown = (e: PointerEvent) => {
     this.isDragging = true;
+    this.isAutoRotating = false;
     this.lastX = e.clientX;
     this.lastY = e.clientY;
     const el = this.containerRef.nativeElement;
@@ -220,6 +213,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private onPointerUp = (e: PointerEvent) => {
     this.isDragging = false;
+    // Resume auto rotation after brief delay for smooth interaction
+    setTimeout(() => {
+      this.isAutoRotating = true;
+    }, 100);
     const el = this.containerRef.nativeElement;
     el.releasePointerCapture(e.pointerId);
     el.style.cursor = 'grab';
@@ -248,6 +245,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private animate = () => {
     this.frameId = requestAnimationFrame(this.animate);
+
+    // Auto rotation when not interacting with model
+    if (this.isAutoRotating && this.modelGroup) {
+      this.modelGroup.rotation.y += 0.001; // Gentle auto rotation on Y axis
+    }
+
     this.renderer.render(this.scene, this.camera);
   };
 

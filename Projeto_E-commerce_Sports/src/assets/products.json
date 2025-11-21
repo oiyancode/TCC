@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Street King Pro",
+    "price": "R$249,90",
+    "imageSrc": "/assets/produtos_geral/Tenis_V1.svg",
+    "variant": "tenis",
+    "cssClass": "product-street-king-pro"
+  },
+  {
+    "id": 2,
+    "name": "Slam Dunk Pro",
+    "price": "R$189,90",
+    "imageSrc": "/assets/produtos_geral/Basketball_V1.svg",
+    "variant": "basket",
+    "cssClass": "product-slam-dunk-pro"
+  },
+  {
+    "id": 3,
+    "name": "Air Max Court",
+    "price": "R$449,90",
+    "imageSrc": "/assets/produtos_geral/Tenis_V2.svg",
+    "variant": "tenis",
+    "cssClass": "product-air-max-court"
+  },
+  {
+    "id": 4,
+    "name": "Court Master",
+    "price": "R$159,90",
+    "imageSrc": "/assets/produtos_geral/Basketball_V2.svg",
+    "variant": "basket",
+    "cssClass": "product-court-master"
+  },
+  {
+    "id": 5,
+    "name": "Night Cruiser",
+    "price": "R$199,90",
+    "imageSrc": "/assets/produtos_geral/Skate_V1.svg",
+    "variant": "skate",
+    "cssClass": "product-night-cruiser"
+  },
+  {
+    "id": 6,
+    "name": "Speed Runner",
+    "price": "R$349,90",
+    "imageSrc": "/assets/produtos_geral/Tenis_V3.svg",
+    "variant": "tenis",
+    "cssClass": "product-speed-runner"
+  },
+  {
+    "id": 7,
+    "name": "Urban Runner Pro",
+    "price": "R$499,90",
+    "imageSrc": "/assets/produtos_geral/Skate_V2.svg",
+    "variant": "skate",
+    "cssClass": "product-urban-runner-pro"
+  },
+  {
+    "id": 8,
+    "name": "Urban Shredder",
+    "price": "R$299,90",
+    "imageSrc": "/assets/produtos_geral/Skate_V3.svg",
+    "variant": "skate",
+    "cssClass": "product-urban-shredder"
+  },
+  {
+    "id": 9,
+    "name": "Elite Bounce",
+    "price": "R$219,90",
+    "imageSrc": "/assets/produtos_geral/Basketball_V3.svg",
+    "variant": "basket",
+    "cssClass": "product-elite-bounce"
+  },
+  {
+    "id": 10,
+    "name": "WILSON NBA TEAM",
+    "price": "R$49,99",
+    "imageSrc": "/assets/section_news/Basketball_new.png",
+    "variant": "basket",
+    "cssClass": "product-wilson-nba-team"
+  },
+  {
+    "id": 11,
+    "name": "GOLD STARS",
+    "price": "R$799,90",
+    "imageSrc": "/assets/section_news/tenis_new.png",
+    "variant": "tenis",
+    "cssClass": "product-gold-stars"
+  },
+  {
+    "id": 12,
+    "name": "GREEN DROP",
+    "price": "R$229,90",
+    "imageSrc": "/assets/section_news/Skate_01.png",
+    "variant": "skate",
+    "cssClass": "product-green-drop"
+  }
+]

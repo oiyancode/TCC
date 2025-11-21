@@ -4,7 +4,7 @@
 
 .news {
   position: relative;
-  min-height: 90vh;
+  min-height: 70vh;
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -91,7 +91,6 @@
 
 .news__product {
   position: relative;
-  width: min(80%, 420px);
   filter: none;
   z-index: 1;
   top: -10%;
@@ -103,9 +102,6 @@
   }
   .news__item {
     min-height: 380px;
-  }
-  .news__product {
-    width: min(85%, 360px);
   }
 }
 
@@ -124,7 +120,8 @@
   top: -10%;
 }
 
-.news__product--basket {
+/* REMOVIDOS - Conflitavam com tamanhos individuais no product-card.component.scss */
+/*.news__product--basket {
   width: min(60%, 220px);
 }
 .news__product--tenis {
@@ -133,16 +130,16 @@
 }
 .news__product--skate {
   width: min(62%, 400px);
-}
+}*/
 
 .news__foot {
   position: absolute;
   left: 51%;
-  bottom: 32px;
+  bottom: 22px;
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 9.5rem;
+  gap: 50px;
 }
 
 /* Carousel styles for Produtos Populares */
