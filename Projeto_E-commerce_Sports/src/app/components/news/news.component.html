@@ -1,0 +1,96 @@
+<section id="lancamentos" class="news" aria-labelledby="news-title">
+  <div class="news__bg"></div>
+  <div class="news__content">
+    <h2 id="news-title" class="news__title">LANÇAMENTOS</h2>
+    <p class="news__cta">
+      Pegue nossos designs mais recentes antes que eles se esgotem!
+    </p>
+
+    <div class="news__grid">
+      <app-product-card
+        [name]="'WILSON NBA TEAM'"
+        [price]="'R$49,99'"
+        [imageSrc]="'/assets/section_news/Basketball_new.png'"
+        [variant]="'basket'"
+        [productId]="10"
+        [cssClass]="'product-wilson-nba-team'"
+      ></app-product-card>
+
+      <app-product-card
+        [name]="'GOLD STARS'"
+        [price]="'R$799,90'"
+        [imageSrc]="'/assets/section_news/tenis_new.png'"
+        [variant]="'tenis'"
+        [productId]="11"
+        [cssClass]="'product-gold-stars'"
+      ></app-product-card>
+
+      <app-product-card
+        [name]="'GREEN DROP'"
+        [price]="'R$229,90'"
+        [imageSrc]="'/assets/section_news/Skate_01.png'"
+        [variant]="'skate'"
+        [productId]="12"
+        [cssClass]="'product-green-drop'"
+      ></app-product-card>
+    </div>
+  </div>
+</section>
+
+<section id="produtos-populares" class="news" aria-labelledby="popular-title">
+  <div class="news__bg"></div>
+  <div class="news__content">
+    <h2 id="popular-title" class="news__title">PRODUTOS POPULARES</h2>
+    <p class="news__cta">Os mais amados pela galera</p>
+
+    <div class="carousel carousel__layout">
+      <div class="carousel__nav carousel__nav--prev" aria-hidden="false">
+        <button
+          id="popular-prev"
+          #prevBtnRef
+          class="carousel__btn carousel__btn--prev"
+          aria-label="Anterior"
+          aria-controls="produtos-populares"
+        >
+          <img src="/assets/Btn_Carrosel_Esq.svg" alt="Anterior" />
+        </button>
+      </div>
+
+      <div
+        class="swiper popular-swiper"
+        #popularSwiperRef
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Produtos populares"
+        tabindex="0"
+      >
+        <div class="swiper-wrapper">
+          <ng-container *ngFor="let product of products">
+            <div class="swiper-slide">
+              <app-product-card
+                [name]="product.name"
+                [price]="product.price"
+                [imageSrc]="product.imageSrc"
+                [variant]="product.variant"
+                [productId]="product.id"
+                [cssClass]="product.cssClass"
+              ></app-product-card>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="carousel__nav carousel__nav--next" aria-hidden="false">
+        <button
+          id="popular-next"
+          #nextBtnRef
+          class="carousel__btn carousel__btn--next"
+          aria-label="Próximo"
+          aria-controls="produtos-populares"
+        >
+          <img src="/assets/Btn_Carrosel_Dir.svg" alt="Próximo" />
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

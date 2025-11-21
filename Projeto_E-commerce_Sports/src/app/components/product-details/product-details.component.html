@@ -1,0 +1,101 @@
+<div class="product-details">
+  <!-- Background Yellow -->
+  <div class="bg-yellow">
+    <img src="/assets/BGs/BG_Yellow.svg" alt="Background" />
+  </div>
+
+  <!-- Logo (posição absoluta no topo esquerdo) -->
+  <img
+    src="/assets/LOGO_Marca.png"
+    alt="Logo"
+    class="logo-absolute"
+    (click)="goHome()"
+    style="cursor: pointer"
+  />
+
+  <!-- Conteúdo principal -->
+  <main class="main-content" *ngIf="product">
+    <!-- Seção Esquerda: Recomendados + Seletor de Tamanho -->
+    <div class="left-section">
+      <!-- Painel de Recomendados -->
+      <div class="recommendations-panel">
+        <h3>Produtos Recomendados</h3>
+        
+        <!-- Produtos Recomendados (2 colunas) -->
+        <div class="recommended-products">
+          <div class="product-thumb" (click)="switchProduct(1)" style="cursor: pointer">
+            <img src="/assets/produtos_geral/Tenis_V1.svg" alt="Street King Pro" />
+          </div>
+          <div class="product-thumb" (click)="switchProduct(3)" style="cursor: pointer">
+            <img src="/assets/produtos_geral/Tenis_V2.svg" alt="Air Max Court" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção Central: Produto com BG -->
+    <div class="center-section">
+      <!-- Produto com Background -->
+      <div class="product-display">
+        <div class="product-bg">
+          <img
+            src="/assets/Section_Detalhes_Prod/bg_produto.png"
+            alt="Product Background"
+          />
+        </div>
+
+        <!-- Nome do Produto (dentro do BG) -->
+        <h1 class="product-name">{{ product.name }}</h1>
+
+        <!-- Imagem do Produto -->
+        <div class="product-image">
+          <!-- Descrição do Produto (dentro do BG, abaixo do título) -->
+          <p class="product-description">
+            Produto de alta qualidade, perfeito para seu estilo.
+          </p>
+          <img [src]="product.imageSrc" [alt]="product.name" />
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Seção Direita: Painel de Preço -->
+    <div class="right-section">
+      <div class="price-panel">
+        <!-- Título -->
+        <h3 class="size-title">Selecione o tamanho</h3>
+
+        <!-- Seletor de Tamanho (SVG em 2 colunas) -->
+        <div class="size-selector-grid">
+          <div
+            *ngFor="let size of shoeSizes"
+            class="size-option"
+            [class.selected]="size === selectedShoeSize"
+            (click)="selectShoeSize(size)"
+            style="cursor: pointer"
+          >
+            <img
+              [src]="'/assets/Section_Detalhes_Prod/numeros_tenis/' + size + '.svg'"
+              [alt]="'Tamanho ' + size"
+            />
+          </div>
+        </div>
+
+        <!-- Preço -->
+        <p class="price">{{ product.price }}</p>
+
+        <!-- Botão Adicionar ao Carrinho -->
+        <img
+          src="/assets/Section_Detalhes_Prod/btn_add_sacola.svg"
+          alt="Adicionar ao Carrinho"
+          class="btn-add-cart"
+          (click)="addToCart()"
+          style="cursor: pointer"
+        />
+      </div>
+    </div>
+  </main>
+
+  <!-- Loading state -->
+  <div *ngIf="!product" class="loading">Carregando produto...</div>
+</div>
