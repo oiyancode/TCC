@@ -1,7 +1,9 @@
 .product-details {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 .bg-yellow {
@@ -42,13 +44,10 @@
   position: relative;
   z-index: 5;
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 2rem;
-  max-width: 1440px;
   margin: 0 auto;
   padding: 2rem;
-  min-height: 100vh;
-  align-items: center;
 
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
@@ -60,21 +59,23 @@
 .left-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 2rem;
+  height: 100%;
+  align-items: center;
 
   .recommendations-panel {
-    width: 120%;
-    padding: 2rem 1.5rem;
-    background: url("/assets/Section_Detalhes_Prod/Fundo_recomendados.svg") center/110% no-repeat;
-    min-height: 500px;
+    width: 100%;
+    padding: 3rem 1.5rem;
+    background: url("/assets/Section_Detalhes_Prod/Fundo_Recomendados.png")
+      center/contain no-repeat;
+
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: flex-start;
+    align-items: center;
     text-align: center;
     gap: 1.5rem;
-    padding-top: 3rem;
+    justify-content: center;
 
     h3 {
       font-family: var(--font-headline);
@@ -118,7 +119,7 @@
 .center-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
 
   .product-display {
@@ -131,18 +132,17 @@
       width: 100%;
 
       img {
-        width: 120%;
+        width: 100%;
         height: auto;
         display: block;
-        margin-left: -8%;
       }
     }
 
     .product-name {
       position: absolute;
-      top: 8%;
+      top: 10%; /* Ajustado para posicionar acima da imagem */
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       font-family: var(--font-headline);
       font-size: clamp(1.5rem, 3.5vw, 2rem);
       color: #000;
@@ -159,8 +159,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 60%;
-      max-width: 350px;
+      max-width: 350px; /* Ajuste o valor conforme necessário */
       z-index: 2;
 
       img {
@@ -171,16 +170,12 @@
     }
 
     .product-description {
-      position: absolute;
-      bottom: 12%;
-      left: 50%;
-      transform: translateX(-50%);
       font-family: var(--font-mono);
       font-size: 0.85rem;
       color: #000;
       max-width: 70%;
       line-height: 1.4;
-      margin: 0;
+      margin: 1rem auto 0 auto; /* Adicionado margin-top e centralizado */
       text-align: center;
       z-index: 3;
     }
@@ -190,26 +185,26 @@
 // Seção Direita: Painel de Preço
 .right-section {
   display: flex;
-  align-items: center;
   justify-content: center;
+  z-index: -1; // Adicionado para garantir que fique abaixo da imagem do produto
 }
 
 .price-panel {
   position: relative;
   width: 120%;
   max-width: 500px;
-  background: url("/assets/Section_Detalhes_Prod/Fundo_Tela_Preco.svg") center/145% no-repeat;
+  background: url("/assets/Section_Detalhes_Prod/Fundo_Tela_Preco.png")
+    center/100% 100% no-repeat;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 650px;
   justify-content: center;
+  align-items: center;
 
   .size-title {
     font-family: var(--font-headline);
     font-size: 1.5rem;
     color: #fff;
-    margin: 0;
+    margin-bottom: 35px;
     text-transform: uppercase;
     text-align: center;
   }
@@ -282,6 +277,16 @@
 @media (max-width: 1200px) {
   .main-content {
     padding: 1rem;
+    // Adicionando a ordem para as seções em telas menores
+    .center-section {
+      order: 1;
+    }
+    .right-section {
+      order: 2;
+    }
+    .left-section {
+      order: 3;
+    }
   }
 
   .left-section .logo {

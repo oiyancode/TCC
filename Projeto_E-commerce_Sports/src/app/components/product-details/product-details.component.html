@@ -47,12 +47,12 @@
         <!-- Nome do Produto (dentro do BG) -->
         <h1 class="product-name">{{ product.name }}</h1>
 
+        <!-- Descrição do Produto (agora abaixo do título) -->
+        <p class="product-description">
+          Produto de alta qualidade, perfeito para seu estilo.
+        </p>
         <!-- Imagem do Produto -->
         <div class="product-image">
-          <!-- Descrição do Produto (dentro do BG, abaixo do título) -->
-          <p class="product-description">
-            Produto de alta qualidade, perfeito para seu estilo.
-          </p>
           <img [src]="product.imageSrc" [alt]="product.name" />
         </div>
 

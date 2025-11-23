@@ -53,6 +53,8 @@ export class NewsComponent implements OnInit, AfterViewInit, OnDestroy {
       grabCursor: true,
       watchOverflow: true,
       loop: true,
+      freeMode: true,
+
       breakpoints: {
         1280: { slidesPerView: 4 },
         1024: { slidesPerView: 3 },
