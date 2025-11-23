@@ -14,7 +14,13 @@
       <input type="text" placeholder="Buscar" />
     </div>
     <button class="navbar__btn navbar__btn--outline">Entrar</button>
-    <button class="navbar__btn navbar__btn--cart">Carrinho [01]</button>
+    <button
+      class="navbar__btn navbar__btn--cart"
+      (click)="goToCart()"
+      style="cursor: pointer"
+    >
+      Carrinho {{ cartItemCount }}
+    </button>
   </div>
-  <div class="navbar__glow"></div>
+
 </header>

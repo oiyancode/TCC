@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService, Product } from '../../services/products.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -20,7 +21,8 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -67,12 +69,19 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart() {
-    // TODO: Implementar lógica do carrinho
+    // Incrementa contador e navega para carrinho
+    this.cartService.addItem();
+
     console.log(
       'Adicionando produto ao carrinho:',
-      this.product,
+      this.product?.name,
       'Tamanho:',
-      this.selectedSize
+      this.selectedSize,
+      'Tamanho tênis:',
+      this.selectedShoeSize
     );
+
+    // Navega para página do carrinho
+    this.router.navigate(['/cart']);
   }
 }

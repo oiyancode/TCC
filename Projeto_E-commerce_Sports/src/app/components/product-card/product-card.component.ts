@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-card',
@@ -17,7 +18,12 @@ export class ProductCardComponent {
   @Input() productId = 0;
   @Input() cssClass = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cartService: CartService) {}
+
+  goToCart() {
+    // Apenas incrementa contador - não navega
+    this.cartService.addItem();
+  }
 
   goToDetails() {
     if (this.productId) {

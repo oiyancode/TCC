@@ -16,8 +16,7 @@
 .hero__stadium {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
-    url("../../../assets/bg.png") center/cover no-repeat;
+  background: url("../../../assets/bg.png") center/cover no-repeat;
   filter: saturate(105%) contrast(105%);
 }
 

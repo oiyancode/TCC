@@ -1,27 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Noto+Serif:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Noto+Serif:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap");
 
 :root {
   --color-bg: #0b0b0c;
   --color-surface: #1a1a1c;
   --color-text: #ffffff;
   --color-text-muted: #d0d0d4;
-  --gradient-accent: linear-gradient(90deg, #ff6a00 0%, #ff2d7a 50%, #7d3cff 100%);
-  --gradient-hero: radial-gradient(ellipse at top left, #0f0f10 20%, #1a1a1c 60%, #0b0b0c 100%);
+  --gradient-accent: linear-gradient(
+    90deg,
+    #ff6a00 0%,
+    #ff2d7a 50%,
+    #7d3cff 100%
+  );
+  --gradient-hero: radial-gradient(
+    ellipse at top left,
+    #0f0f10 20%,
+    #1a1a1c 60%,
+    #0b0b0c 100%
+  );
   --radius-xl: 999px;
   --shadow-accent: 0 8px 24px rgba(125, 60, 255, 0.25);
   --brand-yellow: #ffd900;
   --brand-red: #7b0000;
-  --font-headline: 'Bowlby One SC', sans-serif;
-  --font-secondary: 'Noto Serif', serif;
-  --font-mono: 'DM Mono', monospace;
+  --font-headline: "Bowlby One SC", sans-serif;
+  --font-secondary: "Noto Serif", serif;
+  --font-mono: "DM Mono", monospace;
 }
 
-html, body {
-  background-color: var(--color-bg);
+html,
+body {
   color: var(--color-text);
   font-family: var(--font-secondary);
   scroll-behavior: smooth;
+  min-height: 100%;
+  background-color: var(--color-bg);
 }
 
-@import 'swiper/css';
-@import 'swiper/css/navigation';
+.cart__background {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@import "swiper/css";
+@import "swiper/css/navigation";

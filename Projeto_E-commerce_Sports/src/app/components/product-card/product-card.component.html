@@ -10,20 +10,22 @@
         [src]="imageSrc"
         [alt]="name"
         loading="lazy"
+        (click)="goToDetails()"
+        style="cursor: pointer"
       />
     </div>
     <div class="news__foot">
       <span class="news__price">{{ price }}</span>
       <div
         class="news__bag"
-        aria-label="Ver detalhes do produto"
-        (click)="goToDetails()"
+        aria-label="Adicionar ao carrinho"
+        (click)="goToCart()"
         style="cursor: pointer"
       >
         <img
           class="icon icon--bag"
           src="/assets/icons/shopping_bag.svg"
-          alt="Ver detalhes"
+          alt="Adicionar ao carrinho"
         />
       </div>
     </div>
