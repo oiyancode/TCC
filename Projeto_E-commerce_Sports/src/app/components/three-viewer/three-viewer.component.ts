@@ -63,8 +63,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       this.addEvents();
       this.onResize();
       this.animate();
-    } catch {
+    } catch (error) {
+      console.error('Three.js initialization failed:', error);
       this.showFallback = true;
+      this.loading = false;
     }
   }
 
@@ -75,12 +77,65 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     el?.removeEventListener('pointerdown', this.onPointerDown);
     el?.removeEventListener('pointerup', this.onPointerUp);
     el?.removeEventListener('wheel', this.onWheel);
-    if (this.frameId !== null) cancelAnimationFrame(this.frameId);
+    
+    if (this.frameId !== null) {
+      cancelAnimationFrame(this.frameId);
+      this.frameId = null;
+    }
+
+    // Proper Three.js cleanup
+    if (this.scene) {
+      // Dispose all meshes in the scene
+      this.scene.traverse((child) => {
+        // Check if it's a Mesh (has geometry and material)
+        if ((child as any).geometry && (child as any).material) {
+          const mesh = child as any;
+          // Dispose geometry
+          if (mesh.geometry) {
+            mesh.geometry.dispose();
+          }
+          // Dispose materials
+          if (Array.isArray(mesh.material)) {
+            mesh.material.forEach((material: any) => {
+              // Dispose texture maps
+              if (material.map) material.map.dispose();
+              if (material.normalMap) material.normalMap.dispose();
+              if (material.roughnessMap) material.roughnessMap.dispose();
+              if (material.metalnessMap) material.metalnessMap.dispose();
+              if (material.emissiveMap) material.emissiveMap.dispose();
+              if (material.alphaMap) material.alphaMap.dispose();
+              material.dispose();
+            });
+          } else {
+            const material = mesh.material;
+            // Dispose texture maps
+            if (material.map) material.map.dispose();
+            if (material.normalMap) material.normalMap.dispose();
+            if (material.roughnessMap) material.roughnessMap.dispose();
+            if (material.metalnessMap) material.metalnessMap.dispose();
+            if (material.emissiveMap) material.emissiveMap.dispose();
+            if (material.alphaMap) material.alphaMap.dispose();
+            material.dispose();
+          }
+        }
+      });
+    }
+
     if (this.renderer) {
       this.renderer.dispose();
+      if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+        this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+      }
     }
+
     this.draco?.dispose();
     this.ktx2?.dispose();
+
+    // Clear references
+    this.scene = null as any;
+    this.camera = null as any;
+    this.renderer = null as any;
+    this.modelGroup = null as any;
   }
 
   private initThree() {
@@ -130,62 +185,74 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     loader.load(
       this.modelUrl,
       (gltf: any) => {
-        const obj = gltf.scene;
-        this.modelGroup.add(obj);
-        obj.traverse((child: any) => {
-          if (child.isMesh && child.material) {
-            const m = child.material;
-            if (m.map) m.map.colorSpace = SRGBColorSpace;
-            if (m.emissiveMap) m.emissiveMap.colorSpace = SRGBColorSpace;
-            if (m.roughnessMap) m.roughnessMap.colorSpace = SRGBColorSpace;
-            if (m.metalnessMap) m.metalnessMap.colorSpace = SRGBColorSpace;
-            m.needsUpdate = true;
-          }
-        });
-        const box = new Box3().setFromObject(obj);
-        const size = new Vector3();
-        box.getSize(size);
-        const center = new Vector3();
-        box.getCenter(center);
-        obj.position.sub(center);
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 1.5 / maxDim;
-        obj.scale.setScalar(scale);
-        const desiredScale = 1.2;
-        const fovRad = (this.fov * Math.PI) / 180;
-        const fitHeightDistance =
-          (size.y * scale * desiredScale) / (2 * Math.tan(fovRad / 2));
-        const targetZ = Math.min(
-          this.maxZoom,
-          Math.max(this.minZoom, fitHeightDistance)
-        );
-        this.camera.position.z = targetZ;
-        this.modelGroup.scale.set(0.01, 0.01, 0.01);
-        this.containerRef.nativeElement.style.opacity = '0';
-        gsap.to(this.modelGroup.scale, {
-          x: desiredScale,
-          y: desiredScale,
-          z: desiredScale,
-          duration: 1,
-          ease: 'power2.out',
-        });
-        gsap.to(this.modelGroup.rotation, {
-          y: (70 * Math.PI) / 180,
-          z: (-5 * Math.PI) / 180,
-          duration: 1,
-          ease: 'power2.out',
-        });
-        gsap.to(this.containerRef.nativeElement, {
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power2.out',
-        });
-        this.loading = false;
+        try {
+          const obj = gltf.scene;
+          this.modelGroup.add(obj);
+          obj.traverse((child: any) => {
+            if (child.isMesh && child.material) {
+              const m = child.material;
+              if (m.map) m.map.colorSpace = SRGBColorSpace;
+              if (m.emissiveMap) m.emissiveMap.colorSpace = SRGBColorSpace;
+              if (m.roughnessMap) m.roughnessMap.colorSpace = SRGBColorSpace;
+              if (m.metalnessMap) m.metalnessMap.colorSpace = SRGBColorSpace;
+              m.needsUpdate = true;
+            }
+          });
+          const box = new Box3().setFromObject(obj);
+          const size = new Vector3();
+          box.getSize(size);
+          const center = new Vector3();
+          box.getCenter(center);
+          obj.position.sub(center);
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const scale = 1.5 / maxDim;
+          obj.scale.setScalar(scale);
+          const desiredScale = 1.2;
+          const fovRad = (this.fov * Math.PI) / 180;
+          const fitHeightDistance =
+            (size.y * scale * desiredScale) / (2 * Math.tan(fovRad / 2));
+          const targetZ = Math.min(
+            this.maxZoom,
+            Math.max(this.minZoom, fitHeightDistance)
+          );
+          this.camera.position.z = targetZ;
+          this.modelGroup.scale.set(0.01, 0.01, 0.01);
+          this.containerRef.nativeElement.style.opacity = '0';
+          gsap.to(this.modelGroup.scale, {
+            x: desiredScale,
+            y: desiredScale,
+            z: desiredScale,
+            duration: 1,
+            ease: 'power2.out',
+          });
+          gsap.to(this.modelGroup.rotation, {
+            y: (70 * Math.PI) / 180,
+            z: (-5 * Math.PI) / 180,
+            duration: 1,
+            ease: 'power2.out',
+          });
+          gsap.to(this.containerRef.nativeElement, {
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+          });
+          this.loading = false;
+          console.log('Model loaded successfully:', this.modelUrl);
+        } catch (error) {
+          console.error('Error processing loaded model:', error);
+          this.showFallback = true;
+          this.loading = false;
+        }
       },
       (e: ProgressEvent) => {
         this.loading = true;
+        if (e.total > 0) {
+          const progress = (e.loaded / e.total) * 100;
+          console.log(`Model loading progress: ${progress.toFixed(1)}%`);
+        }
       },
-      () => {
+      (error: any) => {
+        console.error('Failed to load 3D model:', error);
         this.showFallback = true;
         this.loading = false;
       }

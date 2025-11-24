@@ -69,19 +69,46 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart() {
-    // Incrementa contador e navega para carrinho
-    this.cartService.addItem();
+    if (!this.product) {
+      console.warn('Cannot add to cart: no product selected');
+      return;
+    }
+
+    // Validate required data
+    if (!this.product.id || !this.product.name || !this.product.price) {
+      console.error('Cannot add to cart: missing product data');
+      return;
+    }
+
+    // Create cart item with all necessary data
+    const cartItem = {
+      id: this.product.id,
+      name: this.product.name,
+      price: this.product.price,
+      imageSrc: this.product.imageSrc,
+      variant: this.product.variant,
+      cssClass: this.product.cssClass,
+      size: this.selectedSize !== 'ÚNICO' ? this.selectedSize : undefined,
+      shoeSize: this.selectedShoeSize !== 39 ? this.selectedShoeSize : undefined
+    };
+
+    this.cartService.addItem(cartItem, 1);
 
     console.log(
       'Adicionando produto ao carrinho:',
-      this.product?.name,
+      cartItem.name,
       'Tamanho:',
-      this.selectedSize,
+      cartItem.size || 'N/A',
       'Tamanho tênis:',
-      this.selectedShoeSize
+      cartItem.shoeSize || 'N/A',
+      'Preço:',
+      cartItem.price
     );
 
-    // Navega para página do carrinho
+    // Show success feedback (could be improved with a toast notification)
+    alert(`Produto "${cartItem.name}" adicionado ao carrinho!`);
+
+    // Navigate to cart page
     this.router.navigate(['/cart']);
   }
 }
