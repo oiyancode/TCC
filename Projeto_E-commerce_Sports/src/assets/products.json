@@ -70,29 +70,5 @@
     "imageSrc": "/assets/produtos_geral/Basketball_V3.svg",
     "variant": "basket",
     "cssClass": "product-elite-bounce"
-  },
-  {
-    "id": 10,
-    "name": "WILSON NBA TEAM",
-    "price": "R$49,99",
-    "imageSrc": "/assets/section_news/Basketball_new.webp",
-    "variant": "basket",
-    "cssClass": "product-wilson-nba-team"
-  },
-  {
-    "id": 11,
-    "name": "GOLD STARS",
-    "price": "R$799,90",
-    "imageSrc": "/assets/section_news/tenis_new.webp",
-    "variant": "tenis",
-    "cssClass": "product-gold-stars"
-  },
-  {
-    "id": 12,
-    "name": "GREEN DROP",
-    "price": "R$229,90",
-    "imageSrc": "/assets/section_news/Skate_1.webp",
-    "variant": "skate",
-    "cssClass": "product-green-drop"
   }
 ]

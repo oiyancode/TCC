@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Scene, PerspectiveCamera, WebGLRenderer, AmbientLight, DirectionalLight, Group, SRGBColorSpace, ACESFilmicToneMapping, Vector3, Box3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -27,16 +27,23 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private frameId: number | null = null;
   private targetRot = new Vector3(0, 0, 0);
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngAfterViewInit() {
-    try {
-      this.initThree();
-      this.loadModel();
-      this.addEvents();
-      this.onResize();
-      this.animate();
-    } catch {
-      this.showFallback = true;
-    }
+    // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(() => {
+      try {
+        this.initThree();
+        this.loadModel();
+        this.addEvents();
+        this.onResize();
+        this.animate();
+      } catch (error) {
+        console.error('Three.js initialization failed:', error);
+        this.showFallback = true;
+        this.cdr.detectChanges();
+      }
+    }, 0);
   }
 
   ngOnDestroy() {
@@ -51,10 +58,27 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   private initThree() {
+    // Check WebGL support before initializing
+    if (!this.isWebGLAvailable()) {
+      throw new Error('WebGL is not supported or disabled in your browser');
+    }
+
     this.scene = new Scene();
     this.camera = new PerspectiveCamera(this.fov, 1, 0.01, 100);
     this.camera.position.set(0, 0, 4.5);
-    this.renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    
+    try {
+      this.renderer = new WebGLRenderer({ 
+        antialias: true, 
+        alpha: true, 
+        powerPreference: 'high-performance',
+        failIfMajorPerformanceCaveat: false // Allow software rendering as fallback
+      });
+    } catch (error) {
+      console.error('Failed to create WebGL renderer:', error);
+      throw new Error('WebGL renderer creation failed');
+    }
+
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -70,6 +94,16 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
     this.modelGroup = new Group();
     this.scene.add(this.modelGroup);
+  }
+
+  private isWebGLAvailable(): boolean {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      return !!gl;
+    } catch (e) {
+      return false;
+    }
   }
 
   private loadModel() {
@@ -94,8 +128,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         gsap.to(this.containerRef.nativeElement, { opacity: 1, duration: 1, ease: 'power2.out' });
       },
       undefined,
-      () => {
+      (error) => {
+        console.error('Failed to load 3D model:', error);
         this.showFallback = true;
+        this.cdr.detectChanges();
       }
     );
   }

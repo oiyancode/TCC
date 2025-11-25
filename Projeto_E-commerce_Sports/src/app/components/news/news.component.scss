@@ -122,10 +122,12 @@
   }
 
   .news__grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem; /* Gap maior entre cards */
+display: flex;
+    flex-direction: column;
+    margin-left: 25%;
+    gap: 1.5rem;
     width: 100%;
-    justify-items: center; /* Centralização dos cards */
+    justify-items: center;
   }
 
   .news__item {
@@ -155,17 +157,6 @@
   top: -10%;
 }
 
-/* REMOVIDOS - Conflitavam com tamanhos individuais no product-card.component.scss */
-/*.news__product--basket {
-  width: min(60%, 220px);
-}
-.news__product--tenis {
-  width: min(70%, 400px);
-  transform: translateY(2px);
-}
-.news__product--skate {
-  width: min(62%, 400px);
-}*/
 
 .news__foot {
   position: absolute;
