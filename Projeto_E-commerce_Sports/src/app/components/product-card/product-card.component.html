@@ -10,7 +10,7 @@
         [src]="imageSrc"
         [alt]="name"
         loading="lazy"
-        (click)="goToDetails()"
+        (click)="goToDetails($event)"
         style="cursor: pointer"
       />
     </div>
@@ -19,15 +19,15 @@
       <div
         class="news__bag"
         aria-label="Adicionar ao carrinho"
-        (click)="goToCart()"
+        (click)="goToCart($event)"
         style="cursor: pointer"
       >
         <img
-            class="icon icon--bag"
-            src="/assets/icons/shopping_bag.svg"
-            alt="Adicionar ao carrinho"
-            loading="lazy"
-          />
+          class="icon icon--bag"
+          src="/assets/icons/shopping_bag.svg"
+          alt="Adicionar ao carrinho"
+          loading="lazy"
+        />
       </div>
     </div>
   </div>

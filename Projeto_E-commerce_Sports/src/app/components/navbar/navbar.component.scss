@@ -17,11 +17,31 @@
   align-items: center;
   gap: 1rem;
 }
+
+.navbar__hamburger {
+  display: none; // Hidden on desktop
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) saturate(100%); // Make it dark
+  }
+}
+
 .navbar__logo {
   width: 90px;
   height: 90px;
   object-fit: contain;
 }
+
 .navbar__links {
   display: flex;
   gap: 1.25rem;
@@ -29,7 +49,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  transition: gap 0.2s ease; // Smooth transition for gap changes
 }
+
 .navbar__links a {
   font-size: 20px;
   font-weight: 600;
@@ -42,9 +64,11 @@
   align-items: center;
   gap: 0.75rem;
 }
+
 .navbar__search {
   position: relative;
 }
+
 .navbar__search input {
   height: 36px;
   width: 220px;
@@ -54,11 +78,27 @@
   border-radius: 8px;
   color: var(--color-text);
   padding: 0 0.75rem 0 2rem;
+  transition: width 0.2s ease; // Smooth width transition
 }
 
 .navbar__search input::placeholder {
   color: #ffffff;
   opacity: 1;
+}
+
+.navbar__search-btn {
+  display: none; // Hidden on desktop
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  width: 36px;
+  height: 36px;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .navbar__btn {
@@ -69,8 +109,7 @@
   background: url("../../../assets/btn_assets/Btn_Fundo.png") center/100% 100%
     no-repeat;
   color: #ffffff;
-  // box-shadow: 0 0 0 2px rgba(123, 0, 0, 0.6) inset,
-  // 0 4px 12px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
 }
 
 .navbar__btn--outline {
@@ -98,4 +137,243 @@
   );
   filter: blur(8px);
   pointer-events: none;
+}
+
+// Mobile Menu Drawer
+.navbar__mobile-menu {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+  transition: left 0.3s ease;
+  z-index: 999;
+  padding-top: 100px;
+}
+
+.navbar__mobile-menu--open {
+  left: 0;
+}
+
+.navbar__mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.navbar__mobile-nav a {
+  padding: 1.25rem 1.5rem;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 217, 0, 0.1);
+  }
+}
+
+// Overlay
+.navbar__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 998;
+}
+
+.navbar__overlay--visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+// Search Popup
+.navbar__search-popup {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  max-width: calc(100vw - 1.5rem); // Prevent exceeding viewport
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+.navbar__search-popup--open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.navbar__search-popup-content {
+  position: relative;
+  padding: 1rem;
+}
+
+.navbar__search-popup-content input {
+  width: 100%;
+  height: 40px;
+  background: #ffffff url("/assets/lupa_busca.png") 12px center / 16px
+    no-repeat;
+  border: 2px solid rgba(255, 217, 0, 0.9);
+  border-radius: 8px;
+  color: #27272a;
+  padding: 0 2.5rem 0 2.5rem;
+  font-size: 14px;
+
+  &::placeholder {
+    color: #999999;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgba(255, 217, 0, 1);
+  }
+}
+
+.navbar__search-popup-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #666666;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  &:hover {
+    color: #27272a;
+  }
+}
+
+// Progressive responsive breakpoints for better spacing
+@media (max-width: 1350px) {
+  .navbar__search input {
+    width: 200px; // Slightly narrower
+  }
+
+  .navbar__links {
+    gap: 1.1rem; // Reduce gap slightly
+  }
+}
+
+@media (max-width: 1200px) {
+  .navbar__search input {
+    width: 180px; // Narrower search
+  }
+
+  .navbar__links {
+    gap: 1rem; // Further reduce gap
+  }
+
+  .navbar__links a {
+    font-size: 19px; // Slightly smaller
+  }
+}
+
+@media (max-width: 1100px) {
+  .navbar__search input {
+    width: 160px; // Even narrower
+  }
+
+  .navbar__links {
+    gap: 0.9rem;
+  }
+
+  .navbar__links a {
+    font-size: 18px;
+  }
+}
+
+// Tablet / Small Laptop Responsive (between desktop and mobile)
+@media (max-width: 1024px) and (min-width: 769px) {
+  .navbar__links {
+    gap: 1rem; // Reduce gap to fit better
+  }
+
+  .navbar__links a {
+    font-size: 18px; // Slightly smaller font
+  }
+
+  .navbar__search input {
+    width: 180px; // Narrower search bar
+  }
+}
+
+// Hide navbar links on smaller tablets to prevent overlap
+@media (max-width: 900px) {
+  .navbar__links {
+    display: none; // Hide to prevent overlap with search icon
+  }
+
+  .navbar__hamburger {
+    display: flex; // Show hamburger menu
+  }
+}
+
+// Mobile Responsive Styles
+@media (max-width: 768px) {
+  .navbar {
+    height: 70px;
+    padding: 0 0.75rem;
+  }
+
+  .navbar__hamburger {
+    display: flex; // Show on mobile
+  }
+
+  .navbar__logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .navbar__links {
+    display: none; // Hide desktop links on mobile
+  }
+
+  .navbar__search--desktop {
+    display: none; // Hide desktop search bar
+  }
+
+  .navbar__search-btn {
+    display: flex; // Show search icon button on mobile
+  }
+
+  .navbar__btn {
+    height: 32px;
+    padding: 0 0.75rem;
+    font-size: 13px;
+  }
+
+  .navbar__btn--outline {
+    display: none; // Hide "Entrar" button on mobile to save space
+  }
+
+  .navbar__search-popup {
+    width: calc(100vw - 1.5rem); // Full width minus padding
+    max-width: calc(100vw - 1.5rem);
+    right: 0.75rem;
+    left: 0.75rem; // Center it
+  }
 }

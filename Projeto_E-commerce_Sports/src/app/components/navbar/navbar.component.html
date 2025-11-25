@@ -3,16 +3,31 @@
     <a href="#hero" aria-label="Hero" class="navbar__logo-link">
       <img class="navbar__logo" src="/assets/LOGO_Marca.png" alt="Logo" />
     </a>
+
+    <!-- Hamburger Menu Button (Mobile Only) - AFTER logo -->
+    <button class="navbar__hamburger" (click)="toggleMobileMenu()" aria-label="Menu">
+      <img src="/assets/icons/menu_navbar.png" alt="Menu" />
+    </button>
+
+    <!-- Desktop Navigation Links -->
     <nav class="navbar__links">
       <a href="#lancamentos">Lançamentos</a>
       <a href="#produtos-populares">Produtos</a>
       <a href="#">Contato</a>
     </nav>
   </div>
+
   <div class="navbar__right">
-    <div class="navbar__search">
+    <!-- Desktop Search Bar -->
+    <div class="navbar__search navbar__search--desktop">
       <input type="text" placeholder="Buscar" />
     </div>
+
+    <!-- Mobile Search Icon Button -->
+    <button class="navbar__search-btn" (click)="toggleSearchPopup()" aria-label="Buscar">
+      <img src="/assets/lupa_busca.png" alt="Buscar" />
+    </button>
+
     <button class="navbar__btn navbar__btn--outline">Entrar</button>
     <button
       class="navbar__btn navbar__btn--cart"
@@ -23,4 +38,23 @@
     </button>
   </div>
 
+  <!-- Mobile Menu Drawer -->
+  <div class="navbar__mobile-menu" [class.navbar__mobile-menu--open]="isMobileMenuOpen">
+    <nav class="navbar__mobile-nav">
+      <a href="#lancamentos" (click)="closeMobileMenu()">Lançamentos</a>
+      <a href="#produtos-populares" (click)="closeMobileMenu()">Produtos</a>
+      <a href="#" (click)="closeMobileMenu()">Contato</a>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="navbar__overlay" [class.navbar__overlay--visible]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+  <!-- Search Popup -->
+  <div class="navbar__search-popup" [class.navbar__search-popup--open]="isSearchPopupOpen">
+    <div class="navbar__search-popup-content">
+      <input type="text" placeholder="Buscar produtos..." />
+      <button class="navbar__search-popup-close" (click)="closeSearchPopup()">✕</button>
+    </div>
+  </div>
 </header>

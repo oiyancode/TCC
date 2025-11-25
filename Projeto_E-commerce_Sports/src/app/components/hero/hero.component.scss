@@ -2,6 +2,10 @@
   display: block;
 }
 
+* {
+  box-sizing: border-box; // Prevent padding from causing overflow
+}
+
 .hero {
   position: relative;
   min-height: 100vh;
@@ -18,6 +22,8 @@
   inset: 0;
   background: url("../../../assets/BG.png") center/cover no-repeat;
   filter: saturate(105%) contrast(105%);
+  width: 100%; // Ensure it doesn't exceed container
+  max-width: 100%; // Prevent overflow
 }
 
 .hero__content {
@@ -51,10 +57,11 @@
   left: 70%;
   top: 60%;
   transform: translate(-50%, -50%) rotate(-3deg);
-  width: min(62vw, 816px);
+  width: min(62vw, 700px); // Reduced from 816px to prevent overflow
   height: clamp(240px, 48vh, 520px);
   filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.6));
   z-index: 3;
+  max-width: 90vw; // Ensure it doesn't exceed viewport
 }
 
 spline-viewer.hero__product {
@@ -88,7 +95,8 @@ iframe.hero__product {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 900px;
+  width: min(900px, 100vw); // Responsive width to prevent overflow
+  max-width: 100%;
   height: 240px;
   background: radial-gradient(
     ellipse at center,
@@ -98,18 +106,100 @@ iframe.hero__product {
   filter: blur(10px);
   opacity: 0.8;
   z-index: 1;
+  overflow: hidden; // Prevent any overflow
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  // iPad Mini and tablets
+  .hero {
+    min-height: 100vh;
+    padding: 0 1.5rem;
+    overflow-x: hidden; // Prevent horizontal scroll
+  }
+
+  .hero__stadium {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero__product {
+    left: 55%;
+    top: 55%;
+    width: min(60vw, 500px);
+    height: clamp(300px, 40vh, 400px);
+  }
 }
 
 @media (max-width: 768px) {
   .hero {
-    min-height: 90vh;
+    min-height: 100vh;
+    min-height: 100dvh; // Dynamic viewport height for mobile browsers
     padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 100px; // Space for navbar
+    overflow-x: hidden; // Prevent horizontal scroll
+    max-width: 100vw; // Ensure it doesn't exceed viewport
+  }
+
+  .hero__stadium {
+    position: absolute; // Changed from fixed to prevent scroll issues
+    inset: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    max-width: 100vw; // Strict constraint
+    overflow-x: hidden; // Force no horizontal overflow
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 4; // Higher than product to appear above
+    margin-bottom: 2rem;
+    align-items: center; // Center title on mobile
+    width: 100%;
+    max-width: 100%; // Prevent overflow
+  }
+
+  .hero__headline-wrap {
+    padding: 0.75rem 1.5rem;
+    text-align: center; // Center text on mobile
+  }
+
+  .hero__headline {
+    font-size: clamp(2rem, 10vw, 3rem); // Smaller on mobile
   }
 
   .hero__product {
-    position: static;
-    width: 80vw;
-    height: 50vh;
-    margin-top: 1rem;
+    position: absolute;
+    left: 50%; // Centered horizontally
+    top: 58%; // Moved down to prevent overlap with title
+    transform: translate(-50%, -50%) rotate(-3deg);
+    width: min(65vw, 240px); // Smaller to fit better
+    height: clamp(150px, 30vh, 240px);
+    z-index: 3; // Below content
+    max-width: 240px; // Prevent canvas overflow
+  }
+
+  // Make canvas responsive inside three-viewer
+  .hero__product ::ng-deep canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+  }
+
+  .hero__lights {
+    width: 100%;
+    max-width: 100vw; // Strict mobile constraint
+    height: 180px;
+    overflow: hidden; // Prevent overflow
   }
 }
+
+

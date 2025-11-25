@@ -13,6 +13,8 @@ import { CartService } from '../../services/cart.service';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount: string = '[00]';
+  isMobileMenuOpen: boolean = false;
+  isSearchPopupOpen: boolean = false;
 
   private subscription: Subscription = new Subscription();
 
@@ -28,6 +30,28 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    if (this.isMobileMenuOpen) {
+      this.isSearchPopupOpen = false; // Close search when opening menu
+    }
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
+
+  toggleSearchPopup() {
+    this.isSearchPopupOpen = !this.isSearchPopupOpen;
+    if (this.isSearchPopupOpen) {
+      this.isMobileMenuOpen = false; // Close menu when opening search
+    }
+  }
+
+  closeSearchPopup() {
+    this.isSearchPopupOpen = false;
   }
 
   goToCart() {
