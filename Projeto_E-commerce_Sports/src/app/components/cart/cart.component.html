@@ -1,100 +1,125 @@
-<div class="cart">
+<div class="cart-page">
   <app-navbar></app-navbar>
-
-  <div class="cart__wrapper">
-    <div class="cart__bg" aria-hidden="true"></div>
-
-    <div class="cart__content">
-      <div class="cart__container">
-        <h1 class="cart__title">CARRINHO</h1>
-        <p class="cart__subtitle">Seus produtos selecionados</p>
-
-        <!-- Loading State -->
-        <div *ngIf="isLoading" class="cart__loading">
-          <p>Carregando carrinho...</p>
+  
+  <div class="cart-container">
+    <!-- SEÇÃO 1: ENDEREÇO DE ENTREGA (VERDE) -->
+    <div class="cart-section address-section">
+      <h2>ENDEREÇO DE ENTREGA</h2>
+      <form class="address-form">
+        <div class="form-group">
+          <label>NOME</label>
+          <input type="text" placeholder="João Santos">
         </div>
-
-        <!-- Empty Cart -->
-        <div *ngIf="!isLoading && isCartEmpty()" class="cart__empty">
-          <h3>Seu carrinho está vazio</h3>
-          <p>Adicione produtos clicando nos ícones de sacola!</p>
-          <button class="cart__continue-btn" (click)="continueShopping()">
-            Continuar Comprando
-          </button>
+        <div class="form-group">
+          <label>CEP</label>
+          <input type="text" placeholder="12345-00">
         </div>
+        <div class="form-group">
+          <label>ENDEREÇO DA ENTREGA</label>
+          <input type="text" placeholder="Rua do exemplo">
+        </div>
+        <div class="form-group">
+          <label>PAÍS</label>
+          <input type="text" placeholder="Brasil">
+        </div>
+        <div class="form-group">
+          <label>CIDADE</label>
+          <input type="text" placeholder="Salvador">
+        </div>
+      </form>
+    </div>
 
-        <!-- Cart Items -->
-        <div *ngIf="!isLoading && !isCartEmpty()" class="cart__items">
-          <div *ngFor="let item of cartItems" class="cart__item">
-            <div class="cart__item-image">
-              <img [src]="item.imageSrc" [alt]="item.name" loading="lazy">
-            </div>
-            <div class="cart__item-details">
-              <h3 class="cart__item-name">{{ item.name }}</h3>
-              <p class="cart__item-price">{{ item.price }}</p>
-              
-              <div class="cart__item-options" *ngIf="item.size || item.shoeSize">
-                <span *ngIf="item.size" class="cart__item-size">Tamanho: {{ item.size }}</span>
-                <span *ngIf="item.shoeSize" class="cart__item-shoe-size">Numeração: {{ item.shoeSize }}</span>
-              </div>
+    <!-- SEÇÃO 2: CARRINHO DE COMPRAS (AZUL) -->
+    <div class="cart-section products-section">
+      <h2>CARRINHO DE COMPRAS</h2>
+      
+      <div *ngIf="isLoading" class="loading-cart">
+        <p>Carregando carrinho...</p>
+      </div>
 
-              <div class="cart__item-quantity">
-                <button 
-                  class="cart__quantity-btn cart__quantity-btn--minus" 
-                  (click)="decrementQuantity(item)"
-                  [disabled]="item.quantity <= 1"
-                  aria-label="Diminuir quantidade">
-                  -
-                </button>
-                <span class="cart__quantity">{{ item.quantity }}</span>
-                <button 
-                  class="cart__quantity-btn cart__quantity-btn--plus" 
-                  (click)="incrementQuantity(item)"
-                  aria-label="Aumentar quantidade">
-                  +
-                </button>
-              </div>
-            </div>
-            
-            <div class="cart__item-actions">
-              <button 
-                class="cart__remove-btn" 
-                (click)="removeItem(item)"
-                aria-label="Remover item do carrinho">
-                🗑️
-              </button>
-            </div>
+      <div *ngIf="!isLoading && isCartEmpty()" class="empty-cart">
+        <p>Seu carrinho está vazio</p>
+        <button class="continue-shopping-btn" (click)="continueShopping()">
+          Continuar Comprando
+        </button>
+      </div>
+
+      <div *ngIf="!isLoading && !isCartEmpty()" class="products-list">
+        <div *ngFor="let item of cartItems" class="product-item">
+          <img [src]="item.imageSrc" [alt]="item.name" class="product-image">
+          <div class="product-info">
+            <h3>{{ item.name }}</h3>
+            <p class="product-variant" *ngIf="item.size || item.shoeSize">
+              Variante: {{ item.size || item.shoeSize }}
+            </p>
           </div>
-
-          <!-- Cart Summary -->
-          <div class="cart__summary">
-            <div class="cart__summary-line">
-              <span>Subtotal ({{ getCartItemCount() }} itens):</span>
-              <span>{{ cartTotalFormatted }}</span>
-            </div>
-            <div class="cart__summary-line">
-              <span>Frete:</span>
-              <span>Grátis</span>
-            </div>
-            <div class="cart__summary-line cart__summary-line--total">
-              <span>Total:</span>
-              <span>{{ cartTotalFormatted }}</span>
-            </div>
-            
-            <div class="cart__actions">
-              <button class="cart__clear-btn" (click)="clearCart()">
-                Limpar Carrinho
-              </button>
-              <button class="cart__checkout-btn" (click)="proceedToCheckout()">
-                Finalizar Compra
-              </button>
-              <button class="cart__continue-btn" (click)="continueShopping()">
-                Continuar Comprando
-              </button>
-            </div>
+          <div class="product-quantity">
+            <button (click)="decrementQuantity(item)" class="qty-btn" [disabled]="item.quantity <= 1">
+              <img src="assets/Section_Cart/Less.svg" alt="Diminuir">
+            </button>
+            <span class="qty-value">{{ item.quantity }}</span>
+            <button (click)="incrementQuantity(item)" class="qty-btn">
+              <img src="assets/Section_Cart/Plus.svg" alt="Aumentar">
+            </button>
+          </div>
+          <div class="product-price">
+            <span class="price-label">PREÇO</span>
+            <span class="price-value">{{ item.price }}</span>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- SEÇÃO 3: PAGAMENTO (AMARELA) -->
+    <div class="cart-section payment-section">
+      <h2>PAGAMENTO</h2>
+      
+      <div class="payment-methods">
+        <button class="payment-option" 
+                [class.selected]="selectedPayment === 'pix'"
+                (click)="selectPaymentMethod('pix')">
+          <img src="assets/Section_Cart/pix_logo.svg" alt="PIX">
+        </button>
+        <button class="payment-option" 
+                [class.selected]="selectedPayment === 'visa'"
+                (click)="selectPaymentMethod('visa')">
+          <img src="assets/Section_Cart/visa_logo.svg" alt="VISA">
+        </button>
+        <button class="payment-option" 
+                [class.selected]="selectedPayment === 'mastercard'"
+                (click)="selectPaymentMethod('mastercard')">
+          <img src="assets/Section_Cart/mastercard_logo.svg" alt="Mastercard">
+        </button>
+      </div>
+
+      <div class="card-details" *ngIf="selectedPayment !== 'pix'">
+        <div class="form-group">
+          <label>Master Card</label>
+          <select class="card-select">
+            <option>Cartão terminado em 4XX</option>
+          </select>
+        </div>
+        <button class="add-card-btn">+ ADICIONAR NOVO</button>
+      </div>
+
+      <div class="discount-section">
+        <label>DADOS DE DESCONTO</label>
+        <input type="text" placeholder="Código de desconto">
+      </div>
+
+      <div class="total-section">
+        <div class="total-label">TOTAL</div>
+        <div class="total-value">{{ cartTotalFormatted }}</div>
+      </div>
+
+      <button class="checkout-btn" (click)="proceedToCheckout()" [disabled]="isCartEmpty()">
+        CONFIRMAR E PAGAR
+      </button>
+
+      <button class="secure-purchase">
+        <img src="assets/Section_Cart/Padlock.svg" alt="Seguro">
+        COMPRA SEGURA
+      </button>
     </div>
   </div>
 </div>

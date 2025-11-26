@@ -18,6 +18,7 @@ export class CartComponent implements OnInit, OnDestroy {
   cartTotalFormatted = '';
   cartItemCount = 0;
   isLoading = false;
+  selectedPayment: 'pix' | 'visa' | 'mastercard' | null = null;
   
   private destroy$ = new Subject<void>();
 
@@ -111,6 +112,10 @@ export class CartComponent implements OnInit, OnDestroy {
 
   getCartItemCount(): number {
     return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  selectPaymentMethod(method: 'pix' | 'visa' | 'mastercard') {
+    this.selectedPayment = method;
   }
 
   isCartEmpty(): boolean {

@@ -50,6 +50,10 @@
   font-family: var(--font-headline);
   line-height: 1.1;
   text-transform: uppercase;
+  text-shadow: 
+    0 0 10px rgba(255, 217, 0, 0.4),
+    0 0 20px rgba(255, 217, 0, 0.3),
+    0 4px 8px rgba(255, 217, 0, 0.3);
 }
 
 .hero__product {

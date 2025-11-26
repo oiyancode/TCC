@@ -1,0 +1,260 @@
+.scroll-wrapper {
+  width: 100%;
+  // Enable smooth scrolling
+  scroll-behavior: smooth;
+  // Optimize scroll performance
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  
+  // GPU acceleration for smoother scrolling
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  // CSS containment for better rendering performance
+  contain: layout style paint;
+}
+
+.content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  width: 100%;
+  padding: 80px;
+  gap: 100px;
+  position: relative;
+  z-index: 2;
+}
+
+.text-content {
+  flex: 1;
+  z-index: 3;
+}
+
+.section-title {
+  font-family: var(--font-headline);
+  font-size: clamp(60px, 8vw, 100px);
+  font-weight: 700;
+  line-height: 0.9;
+  color: white;
+  margin: 0 0 30px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.section-description {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(14px, 1.2vw, 18px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 40px 0;
+  font-weight: 400;
+}
+
+.btn-comprar {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  
+  img {
+    height: 50px;
+    width: auto;
+    display: block;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.image-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: url('/assets/scroll_trigger_assets/fundo_personas.svg') center/contain no-repeat;
+  opacity: 0.4;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.person-image {
+  max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+  
+  // Optimize image rendering
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.object-image {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(0);
+  max-width: 90%;
+  height: auto;
+  object-fit: contain;
+  z-index: 1;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.4));
+  
+  // Optimize rendering
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+// Section 1: Tennis (Blue) - WebP Background
+.section-tenis {
+  background: url('/assets/scroll_trigger_assets/sessao_tenis/Bg_Section_Tenis.webp') center/cover no-repeat;
+  background-color: #0066CC;
+  position: relative;
+  
+  // Optimize background rendering
+  background-attachment: scroll;
+}
+
+// Section 2: Skateboarding (Red) - WebP Background
+.section-skate {
+  background: url('/assets/scroll_trigger_assets/sessao_skate/Bg_Section_skate.webp') center/cover no-repeat;
+  background-color: #CC0000;
+  position: relative;
+  
+  // Optimize background rendering
+  background-attachment: scroll;
+  
+  .image-content {
+    order: -1; // Move image before text
+  }
+}
+
+// Section 3: Basketball (Blue) - WebP Background
+.section-basket {
+  background: url('/assets/scroll_trigger_assets/sessao_basket/Bg_Section_basket.webp') center/cover no-repeat;
+  background-color: #0066CC;
+  position: relative;
+  
+  // Optimize background rendering
+  background-attachment: scroll;
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .content-wrapper {
+    padding: 60px;
+    gap: 60px;
+  }
+
+  .section-title {
+    font-size: clamp(50px, 7vw, 100px);
+  }
+
+  .section-description {
+    font-size: clamp(13px, 1.1vw, 16px);
+  }
+
+  .object-image {
+    max-width: 50%;
+    bottom: -30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column !important;
+    padding: 40px 30px;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .image-content {
+    order: 0 !important;
+  }
+
+  .section-title {
+    font-size: clamp(40px, 10vw, 70px);
+    margin-bottom: 20px;
+  }
+
+  .section-description {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  .person-image {
+    max-height: 50vh;
+  }
+
+  .object-image {
+    max-width: 40%;
+    bottom: -20px;
+  }
+
+  .btn-comprar img {
+    height: 40px;
+  }
+
+  .background-overlay {
+    width: 140%;
+    height: 140%;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 30px 20px;
+    gap: 30px;
+  }
+
+  .section-title {
+    font-size: clamp(35px, 12vw, 60px);
+  }
+
+  .section-description {
+    font-size: 12px;
+    br {
+      display: none;
+    }
+  }
+
+  .person-image {
+    max-height: 40vh;
+  }
+
+  .object-image {
+    max-width: 100%;
+  }
+}
