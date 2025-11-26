@@ -37,13 +37,14 @@ export class CartService {
       const storedCart = localStorage.getItem(this.STORAGE_KEY);
       if (storedCart) {
         const items = JSON.parse(storedCart) as CartItem[];
-        if (Array.isArray(items) && items.length >= 0) {
+        if (Array.isArray(items)) {
           this.cartItemsSource.next(items);
         }
       }
     } catch (error) {
       console.warn('Failed to load cart from storage:', error);
-      this.cartItemsSource.next([]);
+    } finally {
+      this.updateCartCount();
     }
   }
 
@@ -62,46 +63,33 @@ export class CartService {
     this.cartItemCountSource.next(totalCount);
   }
 
+  private updateCartState() {
+    this.updateCartCount();
+    this.saveCartToStorage();
+  }
+
   // Input validation
   private validateQuantity(quantity: number): boolean {
     return Number.isInteger(quantity) && quantity > 0 && quantity <= 999;
   }
 
   addItem(product: Partial<CartItem>, quantity: number = 1) {
-    // Input validation
-    if (!product.id || !product.name || !this.validateQuantity(quantity)) {
+    if (!this.isValidProduct(product) || !this.validateQuantity(quantity)) {
       console.warn('Invalid product or quantity:', { product, quantity });
       return;
     }
 
     const currentItems = this.cartItemsSource.value;
-    const existingItemIndex = currentItems.findIndex(
-      item => 
-        item.id === product.id && 
-        item.size === product.size && 
-        item.shoeSize === product.shoeSize
-    );
+    const existingItemIndex = this.findExistingItem(currentItems, product);
 
     if (existingItemIndex >= 0) {
-      // Update existing item
       currentItems[existingItemIndex].quantity += quantity;
     } else {
-      // Add new item
-      const newItem: CartItem = {
-        id: product.id,
-        name: product.name,
-        price: product.price || 'R$0,00',
-        quantity,
-        size: product.size,
-        shoeSize: product.shoeSize,
-        imageSrc: product.imageSrc || '',
-      };
-      currentItems.push(newItem);
+      currentItems.push(this.createCartItem(product, quantity));
     }
 
     this.cartItemsSource.next([...currentItems]);
-    this.updateCartCount();
-    this.saveCartToStorage();
+    this.updateCartState();
   }
 
   removeItem(itemId: number, size?: string, shoeSize?: number) {
@@ -116,12 +104,16 @@ export class CartService {
     if (itemIndex >= 0) {
       currentItems.splice(itemIndex, 1);
       this.cartItemsSource.next([...currentItems]);
-      this.updateCartCount();
-      this.saveCartToStorage();
+      this.updateCartState();
     }
   }
 
   updateQuantity(itemId: number, quantity: number, size?: string, shoeSize?: number) {
+    if (quantity === 0) {
+      this.removeItem(itemId, size, shoeSize);
+      return;
+    }
+
     if (!this.validateQuantity(quantity)) {
       console.warn('Invalid quantity:', quantity);
       return;
@@ -136,21 +128,40 @@ export class CartService {
     );
 
     if (itemIndex >= 0) {
-      if (quantity === 0) {
-        this.removeItem(itemId, size, shoeSize);
-      } else {
-        currentItems[itemIndex].quantity = quantity;
-        this.cartItemsSource.next([...currentItems]);
-        this.updateCartCount();
-        this.saveCartToStorage();
-      }
+      currentItems[itemIndex].quantity = quantity;
+      this.cartItemsSource.next([...currentItems]);
+      this.updateCartState();
     }
   }
 
   clearCart() {
     this.cartItemsSource.next([]);
-    this.updateCartCount();
-    this.saveCartToStorage();
+    this.updateCartState();
+  }
+
+  private isValidProduct(product: Partial<CartItem>): boolean {
+    return !!(product.id && product.name);
+  }
+
+  private findExistingItem(items: CartItem[], product: Partial<CartItem>): number {
+    return items.findIndex(
+      item => 
+        item.id === product.id && 
+        item.size === product.size && 
+        item.shoeSize === product.shoeSize
+    );
+  }
+
+  private createCartItem(product: Partial<CartItem>, quantity: number): CartItem {
+    return {
+      id: product.id!,
+      name: product.name!,
+      price: product.price || 'R$0,00',
+      quantity,
+      size: product.size,
+      shoeSize: product.shoeSize,
+      imageSrc: product.imageSrc || '',
+    };
   }
 
   getItemCount(): number {
@@ -168,14 +179,25 @@ export class CartService {
   }
 
   getCartTotal(): number {
-    return this.cartItemsSource.value.reduce((total, item) => {
-      const price = parseFloat(item.price.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-      return total + (price * item.quantity);
+    const items = this.cartItemsSource.value;
+    return items.reduce((total, item) => {
+      const price = this.parsePrice(item.price);
+      const quantity = this.validateQuantity(item.quantity) ? item.quantity : 0;
+      return total + (price * quantity);
     }, 0);
   }
 
+  private parsePrice(priceString: string): number {
+    const cleanPrice = (priceString || '0')
+      .replace(/[^\d,]/g, '')
+      .replace(',', '.');
+    const price = parseFloat(cleanPrice);
+    return isNaN(price) || price < 0 ? 0 : price;
+  }
+
   getCartTotalFormatted(): string {
-    const total = this.getCartTotal();
-    return `R${total.toFixed(2).replace('.', ',')}`;
+    const total = Math.max(0, this.getCartTotal());
+    const formattedTotal = total.toFixed(2).replace('.', ',');
+    return `R$ ${formattedTotal}`;
   }
 }

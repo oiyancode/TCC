@@ -12,20 +12,16 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  cartItemCount: string = '[00]';
-  isMobileMenuOpen: boolean = false;
-  isSearchPopupOpen: boolean = false;
+  cartItemCount = '[00]';
+  isMobileMenuOpen = false;
+  isSearchPopupOpen = false;
 
   private subscription: Subscription = new Subscription();
 
   constructor(private router: Router, private cartService: CartService) {}
 
   ngOnInit() {
-    this.subscription.add(
-      this.cartService.cartItemCount$.subscribe((count) => {
-        this.cartItemCount = count < 10 ? `[0${count}]` : `[${count}]`;
-      })
-    );
+    this.setupCartSubscription();
   }
 
   ngOnDestroy() {
@@ -34,20 +30,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    if (this.isMobileMenuOpen) {
-      this.isSearchPopupOpen = false; // Close search when opening menu
-    }
-  }
-
-  closeMobileMenu() {
-    this.isMobileMenuOpen = false;
+    this.closeSearchPopup();
   }
 
   toggleSearchPopup() {
     this.isSearchPopupOpen = !this.isSearchPopupOpen;
-    if (this.isSearchPopupOpen) {
-      this.isMobileMenuOpen = false; // Close menu when opening search
-    }
+    this.closeMobileMenu();
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
   }
 
   closeSearchPopup() {
@@ -56,5 +48,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   goToCart() {
     this.router.navigate(['/cart']);
+  }
+
+  private setupCartSubscription() {
+    this.subscription.add(
+      this.cartService.cartItemCount$.subscribe(
+        count => this.cartItemCount = this.formatCartCount(count)
+      )
+    );
+  }
+
+  private formatCartCount(count: number): string {
+    return `[${count.toString().padStart(2, '0')}]`;
   }
 }

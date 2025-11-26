@@ -17,7 +17,6 @@ export class CartComponent implements OnInit, OnDestroy {
   cartTotal = 0;
   cartTotalFormatted = '';
   cartItemCount = 0;
-  isLoading = false;
   selectedPayment: 'pix' | 'visa' | 'mastercard' | null = null;
   
   private destroy$ = new Subject<void>();
@@ -28,40 +27,12 @@ export class CartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.loadCartData();
-    this.subscribeToCartUpdates();
+    this.setupCartSubscriptions();
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private loadCartData() {
-    this.isLoading = true;
-    this.cartItems = this.cartService.getCartItems();
-    this.updateTotals();
-    this.isLoading = false;
-  }
-
-  private subscribeToCartUpdates() {
-    this.cartService.cartItemCount$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(count => {
-        this.cartItemCount = count;
-      });
-
-    this.cartService.cartItems$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(items => {
-        this.cartItems = items;
-        this.updateTotals();
-      });
-  }
-
-  private updateTotals() {
-    this.cartTotal = this.cartService.getCartTotal();
-    this.cartTotalFormatted = this.cartService.getCartTotalFormatted();
   }
 
   removeItem(item: CartItem) {
@@ -77,21 +48,19 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   incrementQuantity(item: CartItem) {
-    const newQuantity = item.quantity + 1;
-    this.updateQuantity(item, newQuantity);
+    this.updateQuantity(item, item.quantity + 1);
   }
 
   decrementQuantity(item: CartItem) {
     if (item.quantity > 1) {
-      const newQuantity = item.quantity - 1;
-      this.updateQuantity(item, newQuantity);
+      this.updateQuantity(item, item.quantity - 1);
     } else {
       this.removeItem(item);
     }
   }
 
   clearCart() {
-    if (confirm('Tem certeza que deseja limpar todo o carrinho?')) {
+    if (this.confirmClearCart()) {
       this.cartService.clearCart();
     }
   }
@@ -101,17 +70,12 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   proceedToCheckout() {
-    if (this.cartItems.length === 0) {
-      alert('Seu carrinho está vazio. Adicione produtos antes de prosseguir para o checkout.');
+    if (this.isCartEmpty()) {
+      this.showEmptyCartMessage();
       return;
     }
-    // TODO: Implement checkout process
-    console.log('Proceeding to checkout with items:', this.cartItems);
-    alert('Funcionalidade de checkout será implementada em breve!');
-  }
-
-  getCartItemCount(): number {
-    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+    
+    this.showCheckoutComingSoon();
   }
 
   selectPaymentMethod(method: 'pix' | 'visa' | 'mastercard') {
@@ -120,5 +84,40 @@ export class CartComponent implements OnInit, OnDestroy {
 
   isCartEmpty(): boolean {
     return this.cartItems.length === 0;
+  }
+
+  getCartItemCount(): number {
+    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  private setupCartSubscriptions() {
+    this.cartService.cartItemCount$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(count => this.cartItemCount = count);
+
+    this.cartService.cartItems$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(items => {
+        this.cartItems = items;
+        this.updateTotals();
+      });
+  }
+
+  private updateTotals() {
+    this.cartTotal = this.cartService.getCartTotal();
+    this.cartTotalFormatted = this.cartService.getCartTotalFormatted();
+  }
+
+  private confirmClearCart(): boolean {
+    return confirm('Tem certeza que deseja limpar todo o carrinho?');
+  }
+
+  private showEmptyCartMessage(): void {
+    alert('Seu carrinho está vazio. Adicione produtos antes de prosseguir para o checkout.');
+  }
+
+  private showCheckoutComingSoon(): void {
+    console.log('Proceeding to checkout with items:', this.cartItems);
+    alert('Funcionalidade de checkout será implementada em breve!');
   }
 }

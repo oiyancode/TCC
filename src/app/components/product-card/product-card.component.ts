@@ -29,24 +29,14 @@ export class ProductCardComponent {
   goToCart(event: Event) {
     event.stopPropagation();
     
-    if (!this.productId || !this.name || !this.price) {
+    const productData = this.getProductData();
+    if (!this.isValidProduct(productData)) {
       console.warn('Cannot add item to cart: missing required data');
       return;
     }
 
-    const product: Partial<Product> = {
-      id: this.productId,
-      name: this.name,
-      price: this.price,
-      imageSrc: this.imageSrc,
-      variant: this.variant,
-      cssClass: this.cssClass
-    };
-
-    this.cartService.addItem(product);
-    
-    // Emit event for parent component
-    this.addToCart.emit(product as Product);
+    this.cartService.addItem(productData);
+    this.addToCart.emit(productData as Product);
   }
 
   goToDetails(event: Event) {
@@ -54,24 +44,29 @@ export class ProductCardComponent {
     
     if (this.productId) {
       this.router.navigate(['/product', this.productId]);
-      
-      // Emit event for tracking/analytics
-      this.productClicked.emit({
-        id: this.productId,
-        name: this.name,
-        price: this.price,
-        imageSrc: this.imageSrc,
-        variant: this.variant,
-        cssClass: this.cssClass
-      });
+      this.productClicked.emit(this.getProductData() as Product);
     }
   }
 
   quickView(event: Event) {
     event.stopPropagation();
     if (this.enableQuickView) {
-      // TODO: Implement quick view modal
       console.log('Quick view for product:', this.productId);
     }
+  }
+
+  private getProductData(): Partial<Product> {
+    return {
+      id: this.productId,
+      name: this.name,
+      price: this.price,
+      imageSrc: this.imageSrc,
+      variant: this.variant,
+      cssClass: this.cssClass
+    };
+  }
+
+  private isValidProduct(product: Partial<Product>): boolean {
+    return !!(product.id && product.name && product.price);
   }
 }
