@@ -1,5 +1,7 @@
 {
   "framework": "angular",
+  "buildCommand": "npm install && ng build --configuration production",
+  "outputDirectory": "dist/ideia-tcc/browser",
   "rewrites": [
     {
       "source": "/(.*)",
