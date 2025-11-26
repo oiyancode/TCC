@@ -1,6 +1,6 @@
 {
   "installCommand": "npm ci",
-  "buildCommand": "ng build --configuration production",
+  "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
   "rewrites": [
     {
