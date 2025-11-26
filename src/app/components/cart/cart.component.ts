@@ -17,6 +17,7 @@ export class CartComponent implements OnInit, OnDestroy {
   cartTotal = 0;
   cartTotalFormatted = '';
   cartItemCount = 0;
+  isLoading = false;
   selectedPayment: 'pix' | 'visa' | 'mastercard' | null = null;
   
   private destroy$ = new Subject<void>();

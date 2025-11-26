@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount = '[00]';
   isMobileMenuOpen = false;
   isSearchPopupOpen = false;
+  isCartPage = false; // Detect if on cart page
 
   private subscription: Subscription = new Subscription();
 
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.setupCartSubscription();
+    this.checkIfCartPage();
   }
 
   ngOnDestroy() {
@@ -60,5 +62,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private formatCartCount(count: number): string {
     return `[${count.toString().padStart(2, '0')}]`;
+  }
+
+  private checkIfCartPage() {
+    this.isCartPage = this.router.url.includes('/cart');
   }
 }

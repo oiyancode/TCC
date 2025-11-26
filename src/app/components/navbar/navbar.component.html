@@ -1,4 +1,4 @@
-<header class="navbar">
+<header class="navbar" [class.navbar--cart-page]="isCartPage">
   <div class="navbar__left">
     <a href="#hero" aria-label="Hero" class="navbar__logo-link">
       <img class="navbar__logo" src="/assets/LOGO_Marca.png" alt="Logo" />
@@ -9,8 +9,8 @@
       <img src="/assets/icons/menu_navbar.png" alt="Menu" />
     </button>
 
-    <!-- Desktop Navigation Links -->
-    <nav class="navbar__links">
+    <!-- Desktop Navigation Links (hidden on cart page) -->
+    <nav class="navbar__links" *ngIf="!isCartPage">
       <a href="#lancamentos">Lançamentos</a>
       <a href="#produtos-populares">Produtos</a>
       <a href="#">Contato</a>
@@ -18,8 +18,8 @@
   </div>
 
   <div class="navbar__right">
-    <!-- Desktop Search Bar -->
-    <div class="navbar__search navbar__search--desktop">
+    <!-- Desktop Search Bar (hidden on cart page) -->
+    <div class="navbar__search navbar__search--desktop" *ngIf="!isCartPage">
       <input type="text" placeholder="Buscar" />
     </div>
 
@@ -28,11 +28,12 @@
       <img src="/assets/lupa_busca.png" alt="Buscar" />
     </button>
 
-    <button class="navbar__btn navbar__btn--outline">Entrar</button>
+    <button class="navbar__btn navbar__btn--outline" *ngIf="!isCartPage">Entrar</button>
     <button
       class="navbar__btn navbar__btn--cart"
       (click)="goToCart()"
       style="cursor: pointer"
+      *ngIf="!isCartPage"
     >
       Carrinho {{ cartItemCount }}
     </button>

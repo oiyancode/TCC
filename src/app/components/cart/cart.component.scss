@@ -1,34 +1,40 @@
 .cart-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #8B0000 0%, #4A0000 100%);
-  padding-top: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-container {
-  max-width: 1600px;
+  max-width: 1400px;
+  width: 100%;
+  height: 600px; // Fixed height
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 0;
   display: flex;
-  gap: 20px;
-  align-items: stretch;
+  gap: 0; // No gap, sections will overlap
+  align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 // SEÇÃO COMUM
 .cart-section {
-  padding: 30px;
-  position: relative;
-  min-height: 600px;
-  background-size: 100% 100% !important;
+  padding: 40px 30px;
+  position: absolute;
+  height: 600px; // Fixed height
+  background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   
   h2 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 25px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-align: center;
   }
 }
 
@@ -36,8 +42,8 @@
 .address-section {
   background: url('/assets/Section_Cart/Bg_Endereco.svg') center/cover;
   color: white;
-  flex: 1;
-  min-width: 320px;
+  width: 320px; // Fixed width
+  left: 0;
   z-index: 1;
   
   .form-group {
@@ -77,11 +83,10 @@
 .products-section {
   background: url('/assets/Section_Cart/BG_Produto_cart.svg') center/cover;
   color: white;
-  flex: 2;
-  min-width: 450px;
-  z-index: 2;
-  transform: translateY(-20px);
-  margin: 0 -10px;
+  width: 680px; // Fixed width
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2; // Middle layer
   
   .loading-cart,
   .empty-cart {
@@ -111,11 +116,33 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    max-height: 550px; // Limit height to prevent layout shift
+    overflow-y: auto; // Enable vertical scroll
+    padding-right: 10px; // Space for scrollbar
+    
+    // Custom Scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+    }
   }
   
   .product-item {
     display: grid;
-    grid-template-columns: 80px 1fr auto auto;
+    grid-template-columns: 80px 1fr auto auto auto; // Added column for remove btn
     gap: 15px;
     align-items: center;
     padding: 15px;
@@ -201,6 +228,33 @@
         font-weight: 700;
       }
     }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+      
+      img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1); // Make white
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+      }
+      
+      &:hover {
+        transform: scale(1.1);
+        
+        img {
+          opacity: 1;
+        }
+      }
+    }
   }
 }
 
@@ -208,8 +262,8 @@
 .payment-section {
   background: url('/assets/Section_Cart/Bg_Pagamento.svg') center/cover;
   color: #333;
-  flex: 1;
-  min-width: 320px;
+  width: 320px; // Fixed width
+  right: 0;
   z-index: 1;
   
   .payment-methods {
@@ -297,22 +351,22 @@
   }
   
   .discount-section {
-    margin-bottom: 25px;
+    margin-bottom: 20px; // Reduced from 25px
     
     label {
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.8rem; // Smaller font
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 6px; // Reduced margin
     }
     
     input {
       width: 100%;
-      padding: 12px 15px;
+      padding: 10px 12px; // Reduced padding
       border: 2px solid rgba(0, 0, 0, 0.2);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.5);
-      font-size: 1rem;
+      font-size: 0.9rem; // Smaller font
       
       &:focus {
         outline: none;
@@ -376,26 +430,17 @@
     width: 100%;
     padding: 12px;
     background: transparent;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    border: none; // Removed border
     color: #333;
     font-weight: 600;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    transition: all 0.3s ease;
     
     img {
       width: 20px;
       height: 20px;
-    }
-    
-    &:hover {
-      background: rgba(0, 0, 0, 0.05);
-      border-color: #00AA00;
-      color: #00AA00;
     }
   }
 }
@@ -427,7 +472,9 @@
   }
 
   .cart-container {
-    padding: 15px 10px;
+    padding: 15px 60px; // Updated horizontal padding as requested
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .cart-section {
@@ -437,6 +484,7 @@
     h2 {
       font-size: 0.9rem;
       margin-bottom: 15px;
+      text-align: center; // Center title
     }
   }
   
@@ -460,16 +508,22 @@
   // Products Section Mobile
   .products-section {
     .product-item {
-      grid-template-columns: 50px 1fr !important;
+      grid-template-columns: 50px 1fr auto !important; // Adjusted for mobile
+      grid-template-areas: 
+        "img info remove"
+        "qty price price";
       gap: 8px;
       padding: 10px;
       
       .product-image {
         width: 50px;
         height: 50px;
+        grid-area: img;
       }
       
       .product-info {
+        grid-area: info;
+        
         h3 {
           font-size: 0.85rem;
           margin-bottom: 3px;
@@ -481,9 +535,9 @@
       }
       
       .product-quantity {
-        grid-column: 2;
+        grid-area: qty;
         padding: 5px 8px;
-        gap: 6px;
+        gap: 8px; // Increased gap
         
         .qty-btn img {
           width: 16px;
@@ -491,15 +545,16 @@
         }
         
         .qty-value {
-          font-size: 0.9rem;
-          min-width: 20px;
+          font-size: 1rem; // Increased font size
+          min-width: 25px; // Increased min-width
         }
       }
       
       .product-price {
-        grid-column: 2;
-        text-align: left;
+        grid-area: price;
+        text-align: right;
         margin-top: 5px;
+        align-self: center;
         
         .price-label {
           font-size: 0.65rem;
@@ -509,17 +564,27 @@
           font-size: 0.95rem;
         }
       }
+
+      .remove-btn {
+        grid-area: remove;
+        padding: 5px;
+        
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
     }
   }
   
   // Payment Section Mobile
   .payment-section {
     .payment-methods {
-      grid-template-columns: 1fr !important;
+      grid-template-columns: repeat(3, 1fr) !important; // Keep 3 columns on mobile
       gap: 10px;
       
       .payment-option {
-        padding: 10px;
+        padding: 8px; // Reduced padding
       }
     }
     

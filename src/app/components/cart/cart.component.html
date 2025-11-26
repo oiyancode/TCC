@@ -66,6 +66,9 @@
             <span class="price-label">PREÇO</span>
             <span class="price-value">{{ item.price }}</span>
           </div>
+          <button class="remove-btn" (click)="removeItem(item)" title="Remover item">
+            <img src="assets/icons/trash.png" alt="Remover">
+          </button>
         </div>
       </div>
     </div>
@@ -116,10 +119,10 @@
         CONFIRMAR E PAGAR
       </button>
 
-      <button class="secure-purchase">
+      <div class="secure-purchase">
         <img src="assets/Section_Cart/Padlock.svg" alt="Seguro">
         COMPRA SEGURA
-      </button>
+      </div>
     </div>
   </div>
 </div>
