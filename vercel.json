@@ -1,6 +1,4 @@
 {
-  "buildCommand": "ng build --configuration production",
-  "outputDirectory": "dist/ideia-tcc",
   "framework": "angular",
   "rewrites": [
     {
