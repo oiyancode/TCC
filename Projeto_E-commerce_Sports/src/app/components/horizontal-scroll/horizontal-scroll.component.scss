@@ -122,19 +122,17 @@
 }
 
 .object-image {
-  position: absolute;
-  bottom: -50px;
-  left: 50%;
-  transform: translateX(-50%) translateZ(0);
-  max-width: 90%;
-  height: auto;
-  object-fit: contain;
-  z-index: 1;
-  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.4));
-  
-  // Optimize rendering
-  will-change: transform;
-  backface-visibility: hidden;
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%) translateZ(0);
+    width: 550px;
+    height: auto;
+    object-fit: contain;
+    z-index: 1;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.4));
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 // Section 1: Tennis (Blue) - WebP Background
