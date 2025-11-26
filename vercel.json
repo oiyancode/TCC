@@ -2,7 +2,6 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
-  "staticDirectory": "dist",
   "rewrites": [
     {
       "source": "/assets/(.*)",
