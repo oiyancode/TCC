@@ -49,5 +49,5 @@ body {
   z-index: -1;
 }
 
-@import "swiper/css";
-@import "swiper/css/navigation";
+@use "swiper/css";
+@use "swiper/css/navigation";
