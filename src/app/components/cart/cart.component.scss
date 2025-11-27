@@ -1,6 +1,6 @@
 .cart-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #8B0000 0%, #4A0000 100%);
+  background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +27,7 @@
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
-  
+
   h2 {
     font-size: 1.1rem;
     font-weight: 700;
@@ -40,15 +40,15 @@
 
 // SEÇÃO VERDE - ENDEREÇO
 .address-section {
-  background: url('/assets/Section_Cart/Bg_Endereco.svg') center/cover;
+  background: url("/assets/Section_Cart/Bg_Endereco.svg") center/cover;
   color: white;
   width: 320px; // Fixed width
   left: 0;
   z-index: 1;
-  
+
   .form-group {
     margin-bottom: 20px;
-    
+
     label {
       display: block;
       font-size: 0.9rem;
@@ -56,7 +56,7 @@
       margin-bottom: 8px;
       text-transform: uppercase;
     }
-    
+
     input {
       width: 100%;
       padding: 12px 15px;
@@ -65,11 +65,11 @@
       background: rgba(255, 255, 255, 0.2);
       color: white;
       font-size: 1rem;
-      
+
       &::placeholder {
         color: rgba(255, 255, 255, 0.7);
       }
-      
+
       &:focus {
         outline: none;
         border-color: white;
@@ -81,37 +81,38 @@
 
 // SEÇÃO AZUL - PRODUTOS
 .products-section {
-  background: url('/assets/Section_Cart/BG_Produto_cart.svg') center/cover;
+  background: url("/assets/Section_Cart/BG_Produto_cart.svg") center/cover;
   color: white;
+  height: 880px;
   width: 680px; // Fixed width
   left: 50%;
   transform: translateX(-50%);
   z-index: 2; // Middle layer
-  
+
   .loading-cart,
   .empty-cart {
     text-align: center;
     padding: 60px 20px;
     font-size: 1.2rem;
-    
+
     .continue-shopping-btn {
       margin-top: 20px;
       padding: 12px 30px;
       background: white;
-      color: #00B5D7;
+      color: #00b5d7;
       border: none;
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      
+
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
     }
   }
-  
+
   .products-list {
     display: flex;
     flex-direction: column;
@@ -119,36 +120,37 @@
     max-height: 550px; // Limit height to prevent layout shift
     overflow-y: auto; // Enable vertical scroll
     padding-right: 10px; // Space for scrollbar
-    
+
     // Custom Scrollbar
     &::-webkit-scrollbar {
       width: 6px;
     }
-    
+
     &::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 3px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.3);
       border-radius: 3px;
-      
+
       &:hover {
         background: rgba(255, 255, 255, 0.5);
       }
     }
   }
-  
+
   .product-item {
-    display: grid;
+    display: flex;
+    justify-content: space-around;
     grid-template-columns: 80px 1fr auto auto auto; // Added column for remove btn
     gap: 15px;
     align-items: center;
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 12px;
-    
+
     .product-image {
       width: 80px;
       height: 80px;
@@ -157,21 +159,21 @@
       border-radius: 8px;
       padding: 5px;
     }
-    
+
     .product-info {
       h3 {
         font-size: 1rem;
         font-weight: 600;
         margin: 0 0 5px 0;
       }
-      
+
       .product-variant {
         font-size: 0.85rem;
         opacity: 0.9;
         margin: 0;
       }
     }
-    
+
     .product-quantity {
       display: flex;
       align-items: center;
@@ -179,7 +181,7 @@
       background: rgba(255, 255, 255, 0.2);
       padding: 8px 12px;
       border-radius: 8px;
-      
+
       .qty-btn {
         background: none;
         border: none;
@@ -187,23 +189,23 @@
         padding: 5px;
         display: flex;
         align-items: center;
-        
+
         img {
           width: 20px;
           height: 20px;
           filter: brightness(0) invert(1);
         }
-        
+
         &:hover:not(:disabled) {
           opacity: 0.8;
         }
-        
+
         &:disabled {
           opacity: 0.3;
           cursor: not-allowed;
         }
       }
-      
+
       .qty-value {
         min-width: 30px;
         text-align: center;
@@ -211,17 +213,17 @@
         font-size: 1.1rem;
       }
     }
-    
+
     .product-price {
       text-align: right;
-      
+
       .price-label {
         display: block;
         font-size: 0.75rem;
         opacity: 0.8;
         margin-bottom: 3px;
       }
-      
+
       .price-value {
         display: block;
         font-size: 1.2rem;
@@ -238,7 +240,7 @@
       align-items: center;
       justify-content: center;
       transition: transform 0.2s ease;
-      
+
       img {
         width: 24px;
         height: 24px;
@@ -246,10 +248,10 @@
         opacity: 0.7;
         transition: opacity 0.2s ease;
       }
-      
+
       &:hover {
         transform: scale(1.1);
-        
+
         img {
           opacity: 1;
         }
@@ -260,18 +262,18 @@
 
 // SEÇÃO AMARELA - PAGAMENTO
 .payment-section {
-  background: url('/assets/Section_Cart/Bg_Pagamento.svg') center/cover;
+  background: url("/assets/Section_Cart/Bg_Pagamento.svg") center/cover;
   color: #333;
   width: 320px; // Fixed width
   right: 0;
   z-index: 1;
-  
+
   .payment-methods {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     margin-bottom: 25px;
-    
+
     .payment-option {
       aspect-ratio: 1.5;
       background: white;
@@ -283,38 +285,38 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      
+
       img {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
       }
-      
+
       &:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
-      
+
       &.selected {
-        border-color: #0066FF;
-        box-shadow: 0 0 0 2px #0066FF;
+        border-color: #0066ff;
+        box-shadow: 0 0 0 2px #0066ff;
       }
     }
   }
-  
+
   .card-details {
     margin-bottom: 20px;
-    
+
     .form-group {
       margin-bottom: 15px;
-      
+
       label {
         display: block;
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 8px;
       }
-      
+
       .card-select {
         width: 100%;
         padding: 12px 15px;
@@ -323,14 +325,14 @@
         background: white;
         font-size: 1rem;
         cursor: pointer;
-        
+
         &:focus {
           outline: none;
-          border-color: #0066FF;
+          border-color: #0066ff;
         }
       }
     }
-    
+
     .add-card-btn {
       width: 100%;
       padding: 12px;
@@ -341,64 +343,64 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      
+
       &:hover {
         background: rgba(0, 0, 0, 0.05);
-        border-color: #0066FF;
-        color: #0066FF;
+        border-color: #0066ff;
+        color: #0066ff;
       }
     }
   }
-  
+
   .discount-section {
     margin-bottom: 20px; // Reduced from 25px
-    
+
     label {
       display: block;
       font-size: 0.8rem; // Smaller font
       font-weight: 600;
       margin-bottom: 6px; // Reduced margin
     }
-    
+
     input {
-      width: 100%;
-      padding: 10px 12px; // Reduced padding
+      width: 90%;
+      padding: 10px 14px; // Reduced padding
       border: 2px solid rgba(0, 0, 0, 0.2);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.5);
       font-size: 0.9rem; // Smaller font
-      
+
       &:focus {
         outline: none;
-        border-color: #0066FF;
+        border-color: #0066ff;
         background: white;
       }
     }
   }
-  
+
   .total-section {
     background: rgba(0, 0, 0, 0.1);
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 20px;
-    
+
     .total-label {
       font-size: 1rem;
       font-weight: 600;
       margin-bottom: 8px;
     }
-    
+
     .total-value {
       font-size: 2rem;
       font-weight: 700;
       color: #333;
     }
   }
-  
+
   .checkout-btn {
     width: 100%;
     padding: 18px;
-    background: #0066FF;
+    background: #0066ff;
     color: white;
     border: none;
     border-radius: 12px;
@@ -409,23 +411,23 @@
     margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    
+
     &:hover:not(:disabled) {
-      background: #0052CC;
+      background: #0052cc;
       transform: translateY(-2px);
       box-shadow: 0 5px 20px rgba(0, 102, 255, 0.4);
     }
-    
+
     &:active {
       transform: translateY(0);
     }
-    
+
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
   }
-  
+
   .secure-purchase {
     width: 100%;
     padding: 12px;
@@ -437,7 +439,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    
+
     img {
       width: 20px;
       height: 20px;
@@ -449,20 +451,28 @@
 @media (max-width: 1200px) {
   .cart-container {
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
+    height: auto;
+    padding: 20px;
+    width: 100%;
   }
-  
+
+  .cart-section {
+    position: relative;
+    width: 100%;
+    height: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    z-index: auto;
+  }
+
   .address-section,
   .products-section,
   .payment-section {
-    flex: 1;
-    min-width: 100%;
-  }
-  
-  .products-section {
-    order: -1;
     transform: none;
     margin: 0;
+    width: 100%;
   }
 }
 
@@ -476,90 +486,91 @@
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .cart-section {
     padding: 15px;
     min-height: auto;
-    
+
     h2 {
       font-size: 0.9rem;
       margin-bottom: 15px;
       text-align: center; // Center title
     }
   }
-  
+
   // Address Section Mobile
   .address-section {
     .form-group {
       margin-bottom: 12px;
-      
+
       label {
         font-size: 0.75rem;
         margin-bottom: 5px;
       }
-      
+
       input {
         padding: 8px 10px;
         font-size: 0.85rem;
       }
     }
   }
-  
+
   // Products Section Mobile
   .products-section {
     .product-item {
-      grid-template-columns: 50px 1fr auto !important; // Adjusted for mobile
-      grid-template-areas: 
+      display: grid;
+      grid-template-columns: 76px 1fr auto !important; // Adjusted for mobile
+      grid-template-areas:
         "img info remove"
         "qty price price";
       gap: 8px;
       padding: 10px;
-      
+
       .product-image {
-        width: 50px;
-        height: 50px;
+        width: 80%;
+        height: 80%;
         grid-area: img;
       }
-      
+
       .product-info {
         grid-area: info;
-        
+
         h3 {
           font-size: 0.85rem;
           margin-bottom: 3px;
         }
-        
+
         .product-variant {
           font-size: 0.7rem;
         }
       }
-      
+
       .product-quantity {
         grid-area: qty;
-        padding: 5px 8px;
-        gap: 8px; // Increased gap
-        
+        padding: 5px 1px;
+        gap: 0px; // Increased gap
+
         .qty-btn img {
           width: 16px;
           height: 16px;
         }
-        
+
         .qty-value {
           font-size: 1rem; // Increased font size
           min-width: 25px; // Increased min-width
         }
       }
-      
+
       .product-price {
         grid-area: price;
         text-align: right;
         margin-top: 5px;
         align-self: center;
-        
+
         .price-label {
           font-size: 0.65rem;
         }
-        
+
         .price-value {
           font-size: 0.95rem;
         }
@@ -568,7 +579,7 @@
       .remove-btn {
         grid-area: remove;
         padding: 5px;
-        
+
         img {
           width: 20px;
           height: 20px;
@@ -576,77 +587,80 @@
       }
     }
   }
-  
+
   // Payment Section Mobile
   .payment-section {
     .payment-methods {
-      grid-template-columns: repeat(3, 1fr) !important; // Keep 3 columns on mobile
+      grid-template-columns: repeat(
+        3,
+        1fr
+      ) !important; // Keep 3 columns on mobile
       gap: 10px;
-      
+
       .payment-option {
         padding: 8px; // Reduced padding
       }
     }
-    
+
     .card-details {
       .form-group {
         margin-bottom: 10px;
-        
+
         label {
           font-size: 0.75rem;
           margin-bottom: 5px;
         }
-        
+
         .card-select {
           padding: 8px 10px;
           font-size: 0.85rem;
         }
       }
-      
+
       .add-card-btn {
         padding: 8px;
         font-size: 0.85rem;
       }
     }
-    
+
     .discount-section {
       margin-bottom: 15px;
-      
+
       label {
         font-size: 0.75rem;
         margin-bottom: 5px;
       }
-      
+
       input {
-        padding: 8px 10px;
+        padding: 8px 0;
         font-size: 0.85rem;
       }
     }
-    
+
     .total-section {
       padding: 12px;
       margin-bottom: 15px;
-      
+
       .total-label {
         font-size: 0.85rem;
         margin-bottom: 5px;
       }
-      
+
       .total-value {
         font-size: 1.4rem;
       }
     }
-    
+
     .checkout-btn {
       padding: 12px;
       font-size: 0.9rem;
       margin-bottom: 10px;
     }
-    
+
     .secure-purchase {
       padding: 8px;
       font-size: 0.85rem;
-      
+
       img {
         width: 16px;
         height: 16px;
@@ -654,4 +668,3 @@
     }
   }
 }
-
