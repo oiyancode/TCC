@@ -227,14 +227,12 @@
 }
 
 .navbar__search-popup-content input {
-  width: 100%;
+  width: 98%;
   height: 40px;
   background: #ffffff url("/assets/lupa_busca.png") 12px center / 16px
     no-repeat;
   border: 2px solid rgba(255, 217, 0, 0.9);
   border-radius: 8px;
-  color: #27272a;
-  padding: 0 2.5rem 0 2.5rem;
   font-size: 14px;
 
   &::placeholder {
@@ -249,7 +247,7 @@
 
 .navbar__search-popup-close {
   position: absolute;
-  top: 1rem;
+  top: 25px;
   right: 1.25rem;
   background: none;
   border: none;
