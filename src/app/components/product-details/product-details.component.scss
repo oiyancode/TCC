@@ -1,18 +1,19 @@
 .product-details {
   position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column; // Alterado para coluna para melhor controle
   align-items: center;
-  min-height: 100vh;
+  background-color: #f0f0f0; // Cor de fundo para a página
+  padding: 90px 23px;
 }
 
 .bg-yellow {
-  position: fixed;
+  position: absolute; // Mudado para absoluto para rolar com a página
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  z-index: 0;
+  height: 50vh; // Altura ajustada
+  z-index: 0; // Ajustado para ficar visível
   pointer-events: none;
 
   img {
@@ -22,36 +23,22 @@
   }
 }
 
-// Logo posicionado no topo esquerdo
-.logo-absolute {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  height: 80px;
-  z-index: 100;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  @media (max-width: 1200px) {
-    height: 60px;
-  }
-}
-
 .main-content {
   position: relative;
-  z-index: 5;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rem;
-  margin: 0 auto;
-  padding: 2rem;
+  z-index: 1; // Trazido para frente
+  display: flex;
+  justify-content: space-around;
+  gap: 0;
+  width: 100%;
+  max-width: 1400px; // Aumentado para telas maiores
+  margin: 0;
+  // padding: 2rem;
 
   @media (max-width: 1200px) {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 3rem;
+    padding: 1rem;
   }
 }
 
@@ -65,7 +52,7 @@
 
   .recommendations-panel {
     width: 100%;
-    padding: 3rem 1.5rem;
+    padding: 3rem 0rem;
     background: url("/assets/Section_Detalhes_Prod/Fundo_Recomendados.png")
       center/contain no-repeat;
 
@@ -74,7 +61,7 @@
     justify-content: flex-start;
     align-items: center;
     text-align: center;
-    gap: 1.5rem;
+    gap: 0.5rem;
     justify-content: center;
 
     h3 {
@@ -119,7 +106,7 @@
 .center-section {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   gap: 0;
 
   .product-display {
@@ -186,7 +173,7 @@
 .right-section {
   display: flex;
   justify-content: center;
-  z-index: -1; // Adicionado para garantir que fique abaixo da imagem do produto
+  align-items: center; // Centraliza o painel de preço
 }
 
 .price-panel {
@@ -276,7 +263,7 @@
 // Responsividade
 @media (max-width: 1200px) {
   .main-content {
-    padding: 1rem;
+    padding: 0rem;
     // Adicionando a ordem para as seções em telas menores
     .center-section {
       order: 1;

@@ -1,17 +1,10 @@
+<app-navbar></app-navbar>
+
 <div class="product-details">
   <!-- Background Yellow -->
   <div class="bg-yellow">
     <img src="/assets/BGs/BG_Yellow.svg" alt="Background" />
   </div>
-
-  <!-- Logo (posição absoluta no topo esquerdo) -->
-  <img
-    src="/assets/LOGO_Marca.png"
-    alt="Logo"
-    class="logo-absolute"
-    (click)="goHome()"
-    style="cursor: pointer"
-  />
 
   <!-- Conteúdo principal -->
   <main class="main-content" *ngIf="product">

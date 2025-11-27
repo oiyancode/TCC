@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService, Product } from '../../services/products.service';
 import { CartService } from '../../services/cart.service';
+import { NavbarComponent } from '../navbar/navbar.component'; // Import NavbarComponent
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NavbarComponent], // Add NavbarComponent to imports
   templateUrl: './product-details.component.html',
-  styleUrl: './product-details.component.scss',
+  styleUrls: ['./product-details.component.scss'],
 })
 export class ProductDetailsComponent implements OnInit {
   product: Product | null = null;
@@ -26,6 +27,9 @@ export class ProductDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Rola para o topo da página ao inicializar
+    window.scrollTo(0, 0);
+
     // Subscribe to route params to reload when product ID changes
     this.route.params.subscribe((params) => {
       const id = Number(params['id']);
@@ -89,7 +93,8 @@ export class ProductDetailsComponent implements OnInit {
       variant: this.product.variant,
       cssClass: this.product.cssClass,
       size: this.selectedSize !== 'ÚNICO' ? this.selectedSize : undefined,
-      shoeSize: this.selectedShoeSize !== 39 ? this.selectedShoeSize : undefined
+      shoeSize:
+        this.selectedShoeSize !== 39 ? this.selectedShoeSize : undefined,
     };
 
     this.cartService.addItem(cartItem, 1);
