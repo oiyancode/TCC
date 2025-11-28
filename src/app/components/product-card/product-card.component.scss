@@ -86,31 +86,39 @@
 
 /* Desktop styles for individual product classes */
 .product-street-king-pro {
-  width: min(85%, 300px);
-}
-.product-slam-dunk-pro {
-  width: min(85%, 300px);
-}
-.product-air-max-court {
-  width: min(85%, 300px);
-}
-.product-court-master {
-  width: min(85%, 300px);
-}
-.product-night-cruiser {
-  width: min(70%, 300px);
-}
-.product-speed-runner {
-  width: min(85%, 300px);
-}
-.product-urban-runner-pro {
-  width: min(78%, 320px);
-}
-.product-urban-shredder {
+  position: relative;
   width: min(75%, 300px);
 }
+.product-slam-dunk-pro {
+position: relative;
+  width: min(70%, 300px);
+}
+.product-air-max-court {
+  position: relative;
+  width: min(75%, 300px);
+}
+.product-court-master {
+  position: relative;
+  width: min(70%, 300px);
+}
+.product-night-cruiser {
+  position: relative;
+  width: min(50%, 300px);
+}
+.product-speed-runner {
+  position: relative;
+  width: min(75%, 300px);
+}
+.product-urban-runner-pro {
+  position: relative;
+  width: min(65%, 300px);
+}
+.product-urban-shredder {
+  position: relative;
+  width: min(65%, 300px);
+}
 .product-elite-bounce {
-  width: min(80%, 355px);
+  width: min(70%, 355px);
 }
 .product-wilson-nba-team {
   width: min(70%, 300px);
@@ -126,7 +134,7 @@
 .news__foot {
   position: absolute;
   left: 52%;
-  bottom: 50px;
+  bottom: 36px;
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
