@@ -61,7 +61,7 @@
 }
 .news__item--tenis .news__item-grunge {
   background-image: url("/assets/Grunge_dos_lancamentos/grunge_tenis_blue.svg");
-  left: 50%;
+  left: 60%;
 }
 .news__item--skate .news__item-grunge {
   background-image: url("/assets/Grunge_dos_lancamentos/grunge_skate_green.svg");
@@ -90,7 +90,7 @@
   width: min(75%, 300px);
 }
 .product-slam-dunk-pro {
-position: relative;
+  position: relative;
   width: min(70%, 300px);
 }
 .product-air-max-court {
@@ -133,7 +133,7 @@ position: relative;
 
 .news__foot {
   position: absolute;
-  left: 52%;
+  left: 48%;
   bottom: 36px;
   transform: translateX(-50%);
   display: inline-flex;
@@ -152,8 +152,19 @@ position: relative;
   display: inline-block;
 }
 .icon--bag {
+  position: absolute;
+  top: -19px;
   vertical-align: middle;
-  width: 32px;
+  width: 40px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.clicked {
+    transform: scale(1.1);
+  }
 }
 
 @media (max-width: 1024px) {

@@ -502,13 +502,13 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     const normalizedDy = dy / rect.height;
 
     // Fator de sensibilidade (2 * PI significa uma rotação completa de 360 graus ao arrastar pela tela)
-    const rotationSpeed = 2 * Math.PI;
+    const rotationSpeed = 1.5 * Math.PI;
 
     this.modelGroup.rotation.y += normalizedDx * rotationSpeed;
 
     // Limitar a rotação vertical para evitar que o modelo vire de cabeça para baixo
     const nextX = this.modelGroup.rotation.x + normalizedDy * rotationSpeed;
-    this.modelGroup.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, nextX));
+    this.modelGroup.rotation.x = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, nextX));
   }
 
   private onWheel(e: WheelEvent) {

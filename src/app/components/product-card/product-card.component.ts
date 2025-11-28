@@ -24,7 +24,17 @@ export class ProductCardComponent {
   @Output() productClicked = new EventEmitter<Product>();
   @Output() addToCart = new EventEmitter<Product>();
 
+  isAddedToCart = false;
+
   constructor(private router: Router, private cartService: CartService) {}
+
+  handleAddToCart(event: Event) {
+    this.isAddedToCart = true;
+    this.goToCart(event);
+    setTimeout(() => {
+      this.isAddedToCart = false;
+    }, 300);
+  }
 
   goToCart(event: Event) {
     event.stopPropagation();

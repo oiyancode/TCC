@@ -55,6 +55,16 @@ export class ProductsService {
     );
   }
 
+  getRecommendedProducts(currentProductId: number, variant: 'skate' | 'basket' | 'tenis', limit = 2): Observable<Product[]> {
+    return this.getProductsByVariant(variant).pipe(
+      map(products => products
+        .filter(p => p.id !== currentProductId) // Exclui o produto atual
+        .slice(0, limit) // Limita a 2 recomendações
+      ),
+      catchError(() => of([]))
+    );
+  }
+
   searchProducts(query: string): Observable<Product[]> {
     const sanitizedQuery = this.sanitizeSearchTerm(query);
     if (!sanitizedQuery) {

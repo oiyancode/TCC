@@ -14,6 +14,9 @@ import { NavbarComponent } from '../navbar/navbar.component'; // Import NavbarCo
 })
 export class ProductDetailsComponent implements OnInit {
   product: Product | null = null;
+  recommendedProducts: Product[] = [];
+  isVariantTenis = false;
+  isAddedToCart = false;
   selectedSize = 'V2'; // default size for tennis
   availableSizes: string[] = [];
   shoeSizes: number[] = [37, 38, 39, 40, 41, 42];
@@ -43,9 +46,22 @@ export class ProductDetailsComponent implements OnInit {
     this.productsService.getProductById(id).subscribe((product) => {
       if (product) {
         this.product = product;
+        this.isVariantTenis = product.variant === 'tenis';
         this.setupSizes();
+        this.loadRecommendedProducts(product.id, product.variant);
       }
     });
+  }
+
+  private loadRecommendedProducts(
+    currentProductId: number,
+    variant: 'skate' | 'basket' | 'tenis'
+  ) {
+    this.productsService
+      .getRecommendedProducts(currentProductId, variant)
+      .subscribe((products) => {
+        this.recommendedProducts = products;
+      });
   }
 
   private setupSizes() {
@@ -70,6 +86,14 @@ export class ProductDetailsComponent implements OnInit {
 
   goHome() {
     this.router.navigate(['/']);
+  }
+
+  handleAddToCart() {
+    this.isAddedToCart = true;
+    this.addToCart();
+    setTimeout(() => {
+      this.isAddedToCart = false;
+    }, 300); // A animação dura 300ms
   }
 
   addToCart() {

@@ -16,11 +16,8 @@
         
         <!-- Produtos Recomendados (2 colunas) -->
         <div class="recommended-products">
-          <div class="product-thumb" (click)="switchProduct(1)" style="cursor: pointer">
-            <img src="/assets/produtos_geral/Tenis_V1.svg" alt="Street King Pro" />
-          </div>
-          <div class="product-thumb" (click)="switchProduct(3)" style="cursor: pointer">
-            <img src="/assets/produtos_geral/Tenis_V2.svg" alt="Air Max Court" />
+          <div class="product-thumb" *ngFor="let recommended of recommendedProducts" (click)="switchProduct(recommended.id)" style="cursor: pointer">
+            <img [src]="recommended.imageSrc" [alt]="recommended.name" />
           </div>
         </div>
       </div>
@@ -59,32 +56,40 @@
         <h3 class="size-title">Selecione o tamanho</h3>
 
         <!-- Seletor de Tamanho (SVG em 2 colunas) -->
-        <div class="size-selector-grid">
-          <div
-            *ngFor="let size of shoeSizes"
-            class="size-option"
-            [class.selected]="size === selectedShoeSize"
-            (click)="selectShoeSize(size)"
-            style="cursor: pointer"
-          >
-            <img
-              [src]="'/assets/Section_Detalhes_Prod/numeros_tenis/' + size + '.svg'"
-              [alt]="'Tamanho ' + size"
-            />
+        <div *ngIf="isVariantTenis; else singleSize">
+          <div class="size-selector-grid">
+            <div
+              *ngFor="let size of shoeSizes"
+              class="size-option"
+              [class.selected]="size === selectedShoeSize"
+              (click)="selectShoeSize(size)"
+              style="cursor: pointer"
+            >
+              <img
+                [src]="'/assets/Section_Detalhes_Prod/numeros_tenis/' + size + '.svg'"
+                [alt]="'Tamanho ' + size"
+              />
+            </div>
           </div>
         </div>
+        <ng-template #singleSize>
+          <img src="/assets/btn_assets/icons_tamanho_Bolas_Skates.svg" alt="Tamanho Único" class="single-size-icon">
+        </ng-template>
 
         <!-- Preço -->
         <p class="price">{{ product.price }}</p>
 
         <!-- Botão Adicionar ao Carrinho -->
-        <img
-          src="/assets/Section_Detalhes_Prod/btn_add_sacola.svg"
-          alt="Adicionar ao Carrinho"
-          class="btn-add-cart"
-          (click)="addToCart()"
-          style="cursor: pointer"
-        />
+        <div class="btn-add-sacola">
+          <img
+            [src]="isAddedToCart ? '/assets/icons/bag_buyed.svg' : '/assets/icons/bag_buy.svg'"
+            alt="Adicionar ao Carrinho"
+            class="btn-add-cart"
+            [class.clicked]="isAddedToCart"
+            (click)="handleAddToCart()"
+            style="cursor: pointer"
+          />
+        </div>
       </div>
     </div>
   </main>

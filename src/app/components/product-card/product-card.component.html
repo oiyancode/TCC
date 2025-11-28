@@ -19,12 +19,13 @@
       <div
         class="news__bag"
         aria-label="Adicionar ao carrinho"
-        (click)="goToCart($event)"
+        (click)="handleAddToCart($event)"
         style="cursor: pointer"
       >
         <img
           class="icon icon--bag"
-          src="/assets/icons/shopping_bag.svg"
+          [src]="isAddedToCart ? '/assets/icons/bag_buyed.svg' : '/assets/icons/bag_buy.svg'"
+          [class.clicked]="isAddedToCart"
           alt="Adicionar ao carrinho"
           loading="lazy"
         />
