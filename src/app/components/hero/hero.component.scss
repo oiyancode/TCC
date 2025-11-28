@@ -181,12 +181,12 @@ iframe.hero__product {
   .hero__product {
     position: absolute;
     left: 50%; // Centered horizontally
-    top: 58%; // Moved down to prevent overlap with title
+    top: 68%; // Moved down to prevent overlap with title
     transform: translate(-50%, -50%) rotate(-3deg);
-    width: min(65vw, 240px); // Smaller to fit better
-    height: clamp(150px, 30vh, 240px);
+    width: min(100vw, 420px); // Aumentado para melhor visualização
+    height: clamp(300px, 60vh, 420px); // Aumentado para melhor visualização
     z-index: 3; // Below content
-    max-width: 240px; // Prevent canvas overflow
+    max-width: 340px; // Prevent canvas overflow
   }
 
   // Make canvas responsive inside three-viewer

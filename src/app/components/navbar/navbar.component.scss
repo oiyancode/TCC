@@ -57,6 +57,12 @@
   font-weight: 600;
   color: #27272a;
   text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    color: #ffd900;
+    transform: scale(1.05);
+  }
 }
 
 .navbar__right {
@@ -156,6 +162,10 @@
 
 .navbar__mobile-menu--open {
   left: 0;
+
+  &:hover {
+    background: linear-gradient(135deg, #c90000 0%, #2a2020 100%);
+  }
 }
 
 .navbar__mobile-nav {

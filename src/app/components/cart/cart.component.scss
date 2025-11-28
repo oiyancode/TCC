@@ -4,6 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  padding: 32px;
 }
 
 .cart-container {
@@ -83,8 +85,8 @@
 .products-section {
   background: url("/assets/Section_Cart/BG_Produto_cart.svg") center/cover;
   color: white;
-  height: 880px;
-  width: 680px; // Fixed width
+  height:760px;
+  width: 580px; // Fixed width
   left: 50%;
   transform: translateX(-50%);
   z-index: 2; // Middle layer
@@ -488,7 +490,6 @@
   }
 
   .cart-section {
-    padding: 15px;
     min-height: auto;
 
     h2 {
@@ -509,7 +510,7 @@
       }
 
       input {
-        padding: 8px 10px;
+        padding: 8px 0px 8px  0px;
         font-size: 0.85rem;
       }
     }

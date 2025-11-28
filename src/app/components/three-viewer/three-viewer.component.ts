@@ -425,7 +425,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     gsap.to(this.modelGroup.rotation, {
       y: (70 * Math.PI) / 180,
       z: (-5 * Math.PI) / 180,
-      duration: 1, ease: 'power2.out'
+      duration: 2, ease: 'power2.out'
     });
     
     gsap.to(this.containerRef.nativeElement, {
@@ -487,13 +487,28 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private onPointerMove(e: PointerEvent) {
     if (!this.isDragging || !this.modelGroup) return;
+
+    const el = this.containerRef.nativeElement;
+    const rect = el.getBoundingClientRect();
+
     const dx = e.clientX - this.lastX;
     const dy = e.clientY - this.lastY;
+
     this.lastX = e.clientX;
     this.lastY = e.clientY;
-    this.modelGroup.rotation.y += dx * 0.005;
-    const nextX = this.modelGroup.rotation.x + dy * 0.005;
-    this.modelGroup.rotation.x = Math.max(-0.8, Math.min(0.8, nextX));
+
+    // Normalizar o movimento pelo tamanho do contêiner para uma experiência consistente
+    const normalizedDx = dx / rect.width;
+    const normalizedDy = dy / rect.height;
+
+    // Fator de sensibilidade (2 * PI significa uma rotação completa de 360 graus ao arrastar pela tela)
+    const rotationSpeed = 2 * Math.PI;
+
+    this.modelGroup.rotation.y += normalizedDx * rotationSpeed;
+
+    // Limitar a rotação vertical para evitar que o modelo vire de cabeça para baixo
+    const nextX = this.modelGroup.rotation.x + normalizedDy * rotationSpeed;
+    this.modelGroup.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, nextX));
   }
 
   private onWheel(e: WheelEvent) {
