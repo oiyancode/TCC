@@ -13,10 +13,15 @@
       <!-- Painel de Recomendados -->
       <div class="recommendations-panel">
         <h3>Produtos Recomendados</h3>
-        
+
         <!-- Produtos Recomendados (2 colunas) -->
         <div class="recommended-products">
-          <div class="product-thumb" *ngFor="let recommended of recommendedProducts" (click)="switchProduct(recommended.id)" style="cursor: pointer">
+          <div
+            class="product-thumb"
+            *ngFor="let recommended of recommendedProducts"
+            (click)="switchProduct(recommended.id)"
+            style="cursor: pointer"
+          >
             <img [src]="recommended.imageSrc" [alt]="recommended.name" />
           </div>
         </div>
@@ -45,7 +50,6 @@
         <div class="product-image">
           <img [src]="product.imageSrc" [alt]="product.name" />
         </div>
-
       </div>
     </div>
 
@@ -66,14 +70,20 @@
               style="cursor: pointer"
             >
               <img
-                [src]="'/assets/Section_Detalhes_Prod/numeros_tenis/' + size + '.svg'"
+                [src]="
+                  '/assets/Section_Detalhes_Prod/numeros_tenis/' + size + '.svg'
+                "
                 [alt]="'Tamanho ' + size"
               />
             </div>
           </div>
         </div>
         <ng-template #singleSize>
-          <img src="/assets/btn_assets/icons_tamanho_Bolas_Skates.svg" alt="Tamanho Único" class="single-size-icon">
+          <img
+            src="/assets/btn_assets/icons_tamanho_Bolas_Skates.svg"
+            alt="Tamanho Único"
+            class="single-size-icon"
+          />
         </ng-template>
 
         <!-- Preço -->

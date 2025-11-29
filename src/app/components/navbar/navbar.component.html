@@ -1,11 +1,19 @@
-<header class="navbar" [class.navbar--cart-page]="isCartPage" [class.navbar--product-details]="isProductDetailsPage">
+<header
+  class="navbar"
+  [class.navbar--cart-page]="isCartPage"
+  [class.navbar--product-details]="isProductDetailsPage"
+>
   <div class="navbar__left">
     <a href="#hero" aria-label="Hero" class="navbar__logo-link">
       <img class="navbar__logo" src="/assets/LOGO_Marca.png" alt="Logo" />
     </a>
 
     <!-- Hamburger Menu Button (Mobile Only) - AFTER logo -->
-    <button class="navbar__hamburger" (click)="toggleMobileMenu()" aria-label="Menu">
+    <button
+      class="navbar__hamburger"
+      (click)="toggleMobileMenu()"
+      aria-label="Menu"
+    >
       <img src="/assets/icons/menu_navbar.png" alt="Menu" />
     </button>
 
@@ -13,43 +21,63 @@
     <nav class="navbar__links" *ngIf="!isCartPage">
       <a href="#lancamentos">Lançamentos</a>
       <a href="#produtos-populares">Produtos</a>
-      <a href="#">Contato</a>
+      <a href="#footer">Sobre</a>
     </nav>
   </div>
 
   <div class="navbar__right">
     <!-- Desktop Search Bar (hidden on cart page) -->
     <div class="navbar__search navbar__search--desktop" *ngIf="!isCartPage">
-      <input 
-        type="text" 
-        placeholder="Buscar" 
+      <input
+        type="text"
+        placeholder="Buscar"
         [(ngModel)]="searchQuery"
         (input)="onSearchInput($event)"
         (focus)="onSearchFocus()"
         (blur)="onSearchBlur()"
       />
       <!-- Search Results Dropdown -->
-      <div class="navbar__search-results" *ngIf="showSearchResults && searchResults.length > 0">
-        <div 
-          class="navbar__search-result-item" 
+      <div
+        class="navbar__search-results"
+        *ngIf="showSearchResults && searchResults.length > 0"
+      >
+        <div
+          class="navbar__search-result-item"
           *ngFor="let product of searchResults"
           (click)="selectProduct(product)"
         >
-          <img [src]="product.imageSrc" [alt]="product.name" class="search-result-image">
+          <img
+            [src]="product.imageSrc"
+            [alt]="product.name"
+            class="search-result-image"
+          />
           <span class="search-result-name">{{ product.name }}</span>
         </div>
       </div>
-      <div class="navbar__search-results navbar__search-results--empty" *ngIf="showSearchResults && searchResults.length === 0 && searchQuery.trim().length >= 2">
+      <div
+        class="navbar__search-results navbar__search-results--empty"
+        *ngIf="
+          showSearchResults &&
+          searchResults.length === 0 &&
+          searchQuery.trim().length >= 2
+        "
+      >
         <p>Nenhum produto encontrado</p>
       </div>
     </div>
 
     <!-- Mobile Search Icon Button -->
-    <button class="navbar__search-btn" (click)="toggleSearchPopup()" aria-label="Buscar">
+    <button
+      class="navbar__search-btn"
+      (click)="toggleSearchPopup()"
+      aria-label="Buscar"
+    >
       <img src="/assets/lupa_busca.png" alt="Buscar" />
     </button>
 
-    <button class="navbar__btn navbar__btn--outline" *ngIf="!isCartPage">Entrar</button>
+    <button class="navbar__btn navbar__btn--outline" *ngIf="!isCartPage">
+      Entrar
+    </button>
     <button
       class="navbar__btn navbar__btn--cart"
       (click)="goToCart()"
@@ -61,7 +89,10 @@
   </div>
 
   <!-- Mobile Menu Drawer -->
-  <div class="navbar__mobile-menu" [class.navbar__mobile-menu--open]="isMobileMenuOpen">
+  <div
+    class="navbar__mobile-menu"
+    [class.navbar__mobile-menu--open]="isMobileMenuOpen"
+  >
     <nav class="navbar__mobile-nav">
       <a href="#lancamentos" (click)="closeMobileMenu()">Lançamentos</a>
       <a href="#produtos-populares" (click)="closeMobileMenu()">Produtos</a>
@@ -70,31 +101,57 @@
   </div>
 
   <!-- Mobile Menu Overlay -->
-  <div class="navbar__overlay" [class.navbar__overlay--visible]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+  <div
+    class="navbar__overlay"
+    [class.navbar__overlay--visible]="isMobileMenuOpen"
+    (click)="closeMobileMenu()"
+  ></div>
 
   <!-- Search Popup -->
-  <div class="navbar__search-popup" [class.navbar__search-popup--open]="isSearchPopupOpen">
+  <div
+    class="navbar__search-popup"
+    [class.navbar__search-popup--open]="isSearchPopupOpen"
+  >
     <div class="navbar__search-popup-content">
-      <input 
-        type="text" 
-        placeholder="Buscar produtos..." 
+      <input
+        type="text"
+        placeholder="Buscar produtos..."
         [(ngModel)]="searchQuery"
         (input)="onSearchInputMobile($event)"
-        (focus)="showSearchResults = searchResults.length > 0 && searchQuery.trim().length >= 2"
+        (focus)="
+          showSearchResults =
+            searchResults.length > 0 && searchQuery.trim().length >= 2
+        "
       />
-      <button class="navbar__search-popup-close" (click)="closeSearchPopup()">✕</button>
+      <button class="navbar__search-popup-close" (click)="closeSearchPopup()">
+        ✕
+      </button>
       <!-- Search Results Dropdown (Mobile) -->
-      <div class="navbar__search-results navbar__search-results--mobile" *ngIf="showSearchResults && searchResults.length > 0">
-        <div 
-          class="navbar__search-result-item" 
+      <div
+        class="navbar__search-results navbar__search-results--mobile"
+        *ngIf="showSearchResults && searchResults.length > 0"
+      >
+        <div
+          class="navbar__search-result-item"
           *ngFor="let product of searchResults"
           (click)="selectProduct(product)"
         >
-          <img [src]="product.imageSrc" [alt]="product.name" class="search-result-image">
+          <img
+            [src]="product.imageSrc"
+            [alt]="product.name"
+            class="search-result-image"
+          />
           <span class="search-result-name">{{ product.name }}</span>
         </div>
       </div>
-      <div class="navbar__search-results navbar__search-results--mobile navbar__search-results--empty" *ngIf="showSearchResults && searchResults.length === 0 && searchQuery.trim().length >= 2">
+      <div
+        class="navbar__search-results navbar__search-results--mobile navbar__search-results--empty"
+        *ngIf="
+          showSearchResults &&
+          searchResults.length === 0 &&
+          searchQuery.trim().length >= 2
+        "
+      >
         <p>Nenhum produto encontrado</p>
       </div>
     </div>

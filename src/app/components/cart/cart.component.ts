@@ -19,13 +19,10 @@ export class CartComponent implements OnInit, OnDestroy {
   cartItemCount = 0;
   isLoading = false;
   selectedPayment: 'pix' | 'visa' | 'mastercard' | null = null;
-  
+
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private cartService: CartService,
-    private router: Router
-  ) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit() {
     this.setupCartSubscriptions();
@@ -44,7 +41,12 @@ export class CartComponent implements OnInit, OnDestroy {
     if (quantity <= 0) {
       this.removeItem(item);
     } else {
-      this.cartService.updateQuantity(item.id, quantity, item.size, item.shoeSize);
+      this.cartService.updateQuantity(
+        item.id,
+        quantity,
+        item.size,
+        item.shoeSize
+      );
     }
   }
 
@@ -75,7 +77,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.showEmptyCartMessage();
       return;
     }
-    
+
     this.showCheckoutComingSoon();
   }
 
@@ -94,11 +96,11 @@ export class CartComponent implements OnInit, OnDestroy {
   private setupCartSubscriptions() {
     this.cartService.cartItemCount$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(count => this.cartItemCount = count);
+      .subscribe((count) => (this.cartItemCount = count));
 
     this.cartService.cartItems$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(items => {
+      .subscribe((items) => {
         this.cartItems = items;
         this.updateTotals();
       });
@@ -114,7 +116,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private showEmptyCartMessage(): void {
-    alert('Seu carrinho está vazio. Adicione produtos antes de prosseguir para o checkout.');
+    alert(
+      'Seu carrinho está vazio. Adicione produtos antes de prosseguir para o checkout.'
+    );
   }
 
   private showCheckoutComingSoon(): void {

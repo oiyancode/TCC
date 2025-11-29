@@ -1,11 +1,11 @@
 <div class="cart-page">
   <app-navbar></app-navbar>
-  
+
   <div class="cart-container">
     <!-- SEÇÃO 1: CARRINHO DE COMPRAS (AZUL) -->
     <div class="cart-section products-section">
       <h2>CARRINHO DE COMPRAS</h2>
-      
+
       <div *ngIf="isLoading" class="loading-cart">
         <p>Carregando carrinho...</p>
       </div>
@@ -19,7 +19,7 @@
 
       <div *ngIf="!isLoading && !isCartEmpty()" class="products-list">
         <div *ngFor="let item of cartItems" class="product-item">
-          <img [src]="item.imageSrc" [alt]="item.name" class="product-image">
+          <img [src]="item.imageSrc" [alt]="item.name" class="product-image" />
           <div class="product-info">
             <h3>{{ item.name }}</h3>
             <p class="product-variant" *ngIf="item.size || item.shoeSize">
@@ -27,20 +27,28 @@
             </p>
           </div>
           <div class="product-quantity">
-            <button (click)="decrementQuantity(item)" class="qty-btn" [disabled]="item.quantity <= 1">
-              <img src="assets/Section_Cart/Less.svg" alt="Diminuir">
+            <button
+              (click)="decrementQuantity(item)"
+              class="qty-btn"
+              [disabled]="item.quantity <= 1"
+            >
+              <img src="assets/Section_Cart/Less.svg" alt="Diminuir" />
             </button>
             <span class="qty-value">{{ item.quantity }}</span>
             <button (click)="incrementQuantity(item)" class="qty-btn">
-              <img src="assets/Section_Cart/Plus.svg" alt="Aumentar">
+              <img src="assets/Section_Cart/Plus.svg" alt="Aumentar" />
             </button>
           </div>
           <div class="product-price">
             <span class="price-label">PREÇO</span>
             <span class="price-value">{{ item.price }}</span>
           </div>
-          <button class="remove-btn" (click)="removeItem(item)" title="Remover item">
-            <img src="assets/icons/trash.png" alt="Remover">
+          <button
+            class="remove-btn"
+            (click)="removeItem(item)"
+            title="Remover item"
+          >
+            <img src="assets/icons/trash.png" alt="Remover" />
           </button>
         </div>
       </div>
@@ -52,23 +60,23 @@
       <form class="address-form">
         <div class="form-group">
           <label>NOME</label>
-          <input type="text" placeholder="João Santos">
+          <input type="text" placeholder="João Santos" />
         </div>
         <div class="form-group">
           <label>CEP</label>
-          <input type="text" placeholder="12345-00">
+          <input type="text" placeholder="12345-00" />
         </div>
         <div class="form-group">
           <label>ENDEREÇO DA ENTREGA</label>
-          <input type="text" placeholder="Rua do exemplo">
+          <input type="text" placeholder="Rua do exemplo" />
         </div>
         <div class="form-group">
           <label>PAÍS</label>
-          <input type="text" placeholder="Brasil">
+          <input type="text" placeholder="Brasil" />
         </div>
         <div class="form-group">
           <label>CIDADE</label>
-          <input type="text" placeholder="Salvador">
+          <input type="text" placeholder="Salvador" />
         </div>
       </form>
     </div>
@@ -76,22 +84,28 @@
     <!-- SEÇÃO 3: PAGAMENTO (AMARELA) -->
     <div class="cart-section payment-section">
       <h2>PAGAMENTO</h2>
-      
+
       <div class="payment-methods">
-        <button class="payment-option" 
-                [class.selected]="selectedPayment === 'pix'"
-                (click)="selectPaymentMethod('pix')">
-          <img src="assets/Section_Cart/pix_logo.svg" alt="PIX">
+        <button
+          class="payment-option"
+          [class.selected]="selectedPayment === 'pix'"
+          (click)="selectPaymentMethod('pix')"
+        >
+          <img src="assets/Section_Cart/pix_logo.svg" alt="PIX" />
         </button>
-        <button class="payment-option" 
-                [class.selected]="selectedPayment === 'visa'"
-                (click)="selectPaymentMethod('visa')">
-          <img src="assets/Section_Cart/visa_logo.svg" alt="VISA">
+        <button
+          class="payment-option"
+          [class.selected]="selectedPayment === 'visa'"
+          (click)="selectPaymentMethod('visa')"
+        >
+          <img src="assets/Section_Cart/visa_logo.svg" alt="VISA" />
         </button>
-        <button class="payment-option" 
-                [class.selected]="selectedPayment === 'mastercard'"
-                (click)="selectPaymentMethod('mastercard')">
-          <img src="assets/Section_Cart/mastercard_logo.svg" alt="Mastercard">
+        <button
+          class="payment-option"
+          [class.selected]="selectedPayment === 'mastercard'"
+          (click)="selectPaymentMethod('mastercard')"
+        >
+          <img src="assets/Section_Cart/mastercard_logo.svg" alt="Mastercard" />
         </button>
       </div>
 
@@ -107,7 +121,7 @@
 
       <div class="discount-section">
         <label>DADOS DE DESCONTO</label>
-        <input type="text" placeholder="Código de desconto">
+        <input type="text" placeholder="Código de desconto" />
       </div>
 
       <div class="total-section">
@@ -115,12 +129,16 @@
         <div class="total-value">{{ cartTotalFormatted }}</div>
       </div>
 
-      <button class="checkout-btn" (click)="proceedToCheckout()" [disabled]="isCartEmpty()">
+      <button
+        class="checkout-btn"
+        (click)="proceedToCheckout()"
+        [disabled]="isCartEmpty()"
+      >
         CONFIRMAR E PAGAR
       </button>
 
       <div class="secure-purchase">
-        <img src="assets/Section_Cart/Padlock.svg" alt="Seguro">
+        <img src="assets/Section_Cart/Padlock.svg" alt="Seguro" />
         COMPRA SEGURA
       </div>
     </div>
