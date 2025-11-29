@@ -58,6 +58,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private draco?: DRACOLoader;
   private ktx2?: KTX2Loader;
   private gltfLoader?: GLTFLoader;
+  private isPageVisible = true;
+  private isAnimating = false;
+  private glContextLost = false;
   
   // Store bound event handlers for proper cleanup
   private boundResizeHandler?: () => void;
@@ -65,6 +68,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private boundPointerDownHandler?: (e: PointerEvent) => void;
   private boundPointerUpHandler?: (e: PointerEvent) => void;
   private boundWheelHandler?: (e: WheelEvent) => void;
+  private boundVisibilityChangeHandler?: () => void;
+  private boundContextLostHandler?: (e: Event) => void;
+  private boundContextRestoredHandler?: (e: Event) => void;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -74,6 +80,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private initializeViewer() {
     try {
+      // Initialize page visibility state
+      this.isPageVisible = !document.hidden;
+      
       this.initThree();
       this.loadModel();
       this.addEvents();
@@ -98,6 +107,11 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       this.boundResizeHandler = undefined;
     }
     
+    if (this.boundVisibilityChangeHandler) {
+      document.removeEventListener('visibilitychange', this.boundVisibilityChangeHandler);
+      this.boundVisibilityChangeHandler = undefined;
+    }
+    
     const el = this.containerRef?.nativeElement;
     if (el) {
       if (this.boundPointerMoveHandler) {
@@ -117,12 +131,27 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         this.boundWheelHandler = undefined;
       }
     }
+    
+    // Cleanup WebGL context handlers
+    if (this.renderer && this.renderer.domElement) {
+      const canvas = this.renderer.domElement;
+      if (this.boundContextLostHandler) {
+        canvas.removeEventListener('webglcontextlost', this.boundContextLostHandler);
+        this.boundContextLostHandler = undefined;
+      }
+      if (this.boundContextRestoredHandler) {
+        canvas.removeEventListener('webglcontextrestored', this.boundContextRestoredHandler);
+        this.boundContextRestoredHandler = undefined;
+      }
+    }
      
     // Stop animation loop
     if (this.frameId !== null) {
       cancelAnimationFrame(this.frameId);
       this.frameId = null;
     }
+    
+    this.isAnimating = false;
 
     // Enhanced Three.js cleanup
     this.disposeScene();
@@ -264,9 +293,89 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       this.renderer = new WebGLRenderer(this.getRendererConfig());
       this.configureRenderer();
       this.addCanvasToDOM();
+      this.setupWebGLContextHandlers();
     } catch (error) {
       console.error('Failed to create WebGL renderer:', error);
       throw new Error('WebGL renderer creation failed');
+    }
+  }
+
+  private setupWebGLContextHandlers() {
+    const canvas = this.renderer.domElement;
+    
+    // Handle WebGL context loss (common on mobile)
+    this.boundContextLostHandler = (e: Event) => {
+      e.preventDefault();
+      console.warn('WebGL context lost - attempting recovery');
+      this.glContextLost = true;
+      this.isAnimating = false;
+      if (this.frameId !== null) {
+        cancelAnimationFrame(this.frameId);
+        this.frameId = null;
+      }
+    };
+    
+    this.boundContextRestoredHandler = () => {
+      console.log('WebGL context restored - reinitializing');
+      this.glContextLost = false;
+      // Reinitialize renderer and scene
+      setTimeout(() => {
+        try {
+          this.reinitializeAfterContextLoss();
+        } catch (error) {
+          console.error('Failed to restore WebGL context:', error);
+          this.showFallback = true;
+          this.loading = false;
+          this.cdr.detectChanges();
+        }
+      }, 100);
+    };
+    
+    canvas.addEventListener('webglcontextlost', this.boundContextLostHandler);
+    canvas.addEventListener('webglcontextrestored', this.boundContextRestoredHandler);
+  }
+
+  private reinitializeAfterContextLoss() {
+    // Dispose old renderer (but keep scene and modelGroup)
+    if (this.renderer) {
+      const oldCanvas = this.renderer.domElement;
+      this.renderer.dispose();
+      // Remove old canvas if it exists
+      if (oldCanvas && oldCanvas.parentNode) {
+        oldCanvas.parentNode.removeChild(oldCanvas);
+      }
+    }
+    
+    // Recreate renderer
+    this.renderer = new WebGLRenderer(this.getRendererConfig());
+    this.configureRenderer();
+    
+    // Re-add canvas to DOM
+    const el = this.containerRef.nativeElement;
+    el.appendChild(this.renderer.domElement);
+    
+    // Re-setup context handlers
+    this.setupWebGLContextHandlers();
+    
+    // Update camera and renderer size
+    this.onResize();
+    
+    // Reload model - WebGL resources (textures, buffers) are lost, so we need to reload
+    // But first, clear the old model from the group
+    if (this.modelGroup) {
+      while (this.modelGroup.children.length > 0) {
+        this.modelGroup.remove(this.modelGroup.children[0]);
+      }
+    }
+    
+    // Reload the model
+    this.loading = true;
+    this.showFallback = false;
+    this.loadModel();
+    
+    // Resume animation
+    if (this.isPageVisible) {
+      this.animate();
     }
   }
 
@@ -289,6 +398,14 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
     this.renderer.shadowMap.enabled = false;
+    
+    // Preserve drawing buffer for better mobile compatibility
+    const gl = this.renderer.getContext();
+    if (gl) {
+      // Enable context preservation hints
+      const loseContextExtension = gl.getExtension('WEBGL_lose_context');
+      // Note: We don't actually lose context here, just checking if extension exists
+    }
   }
 
   private addCanvasToDOM() {
@@ -460,13 +577,31 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.boundPointerDownHandler = (e) => this.onPointerDown(e);
     this.boundPointerUpHandler = (e) => this.onPointerUp(e);
     this.boundWheelHandler = (e) => this.onWheel(e);
+    this.boundVisibilityChangeHandler = () => this.onVisibilityChange();
 
     window.addEventListener('resize', this.boundResizeHandler);
+    document.addEventListener('visibilitychange', this.boundVisibilityChangeHandler);
     const el = this.containerRef.nativeElement;
     el.addEventListener('pointermove', this.boundPointerMoveHandler);
     el.addEventListener('pointerdown', this.boundPointerDownHandler);
     el.addEventListener('pointerup', this.boundPointerUpHandler);
     el.addEventListener('wheel', this.boundWheelHandler, { passive: true });
+  }
+
+  private onVisibilityChange() {
+    this.isPageVisible = !document.hidden;
+    
+    if (!this.isPageVisible) {
+      // Pause animation when page is hidden
+      if (this.frameId !== null) {
+        cancelAnimationFrame(this.frameId);
+        this.frameId = null;
+      }
+      this.isAnimating = false;
+    } else if (!this.isAnimating && !this.glContextLost) {
+      // Resume animation when page becomes visible
+      this.animate();
+    }
   }
 
   private onPointerDown(e: PointerEvent) {
@@ -527,14 +662,45 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   private animate() {
-    this.frameId = requestAnimationFrame(() => this.animate());
-
-    // Auto rotation when not interacting with model
-    if (this.isAutoRotating && this.modelGroup) {
-      this.modelGroup.rotation.y += 0.001; // Gentle auto rotation on Y axis
+    // Don't animate if page is not visible, context is lost, or already animating
+    if (!this.isPageVisible || this.glContextLost || this.isAnimating) {
+      return;
     }
+    
+    this.isAnimating = true;
+    this.frameId = requestAnimationFrame(() => {
+      this.isAnimating = false;
+      this.animate();
+    });
 
-    this.renderer.render(this.scene, this.camera);
+    try {
+      // Check if renderer and context are still valid
+      if (!this.renderer || !this.renderer.domElement) {
+        return;
+      }
+      
+      const gl = this.renderer.getContext();
+      if (!gl || gl.isContextLost()) {
+        this.glContextLost = true;
+        return;
+      }
+
+      // Auto rotation when not interacting with model
+      if (this.isAutoRotating && this.modelGroup) {
+        this.modelGroup.rotation.y += 0.001; // Gentle auto rotation on Y axis
+      }
+
+      this.renderer.render(this.scene, this.camera);
+    } catch (error) {
+      console.error('Error during render:', error);
+      // Try to recover by showing fallback
+      if (error instanceof Error && error.message.includes('context')) {
+        this.glContextLost = true;
+        this.showFallback = true;
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    }
   }
 
   private onResize() {
