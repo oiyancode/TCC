@@ -1,4 +1,4 @@
-<header class="navbar" [class.navbar--cart-page]="isCartPage">
+<header class="navbar" [class.navbar--cart-page]="isCartPage" [class.navbar--product-details]="isProductDetailsPage">
   <div class="navbar__left">
     <a href="#hero" aria-label="Hero" class="navbar__logo-link">
       <img class="navbar__logo" src="/assets/LOGO_Marca.png" alt="Logo" />
@@ -20,7 +20,28 @@
   <div class="navbar__right">
     <!-- Desktop Search Bar (hidden on cart page) -->
     <div class="navbar__search navbar__search--desktop" *ngIf="!isCartPage">
-      <input type="text" placeholder="Buscar" />
+      <input 
+        type="text" 
+        placeholder="Buscar" 
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInput($event)"
+        (focus)="onSearchFocus()"
+        (blur)="onSearchBlur()"
+      />
+      <!-- Search Results Dropdown -->
+      <div class="navbar__search-results" *ngIf="showSearchResults && searchResults.length > 0">
+        <div 
+          class="navbar__search-result-item" 
+          *ngFor="let product of searchResults"
+          (click)="selectProduct(product)"
+        >
+          <img [src]="product.imageSrc" [alt]="product.name" class="search-result-image">
+          <span class="search-result-name">{{ product.name }}</span>
+        </div>
+      </div>
+      <div class="navbar__search-results navbar__search-results--empty" *ngIf="showSearchResults && searchResults.length === 0 && searchQuery.trim().length >= 2">
+        <p>Nenhum produto encontrado</p>
+      </div>
     </div>
 
     <!-- Mobile Search Icon Button -->
@@ -54,8 +75,28 @@
   <!-- Search Popup -->
   <div class="navbar__search-popup" [class.navbar__search-popup--open]="isSearchPopupOpen">
     <div class="navbar__search-popup-content">
-      <input type="text" placeholder="Buscar produtos..." />
+      <input 
+        type="text" 
+        placeholder="Buscar produtos..." 
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInputMobile($event)"
+        (focus)="showSearchResults = searchResults.length > 0 && searchQuery.trim().length >= 2"
+      />
       <button class="navbar__search-popup-close" (click)="closeSearchPopup()">✕</button>
+      <!-- Search Results Dropdown (Mobile) -->
+      <div class="navbar__search-results navbar__search-results--mobile" *ngIf="showSearchResults && searchResults.length > 0">
+        <div 
+          class="navbar__search-result-item" 
+          *ngFor="let product of searchResults"
+          (click)="selectProduct(product)"
+        >
+          <img [src]="product.imageSrc" [alt]="product.name" class="search-result-image">
+          <span class="search-result-name">{{ product.name }}</span>
+        </div>
+      </div>
+      <div class="navbar__search-results navbar__search-results--mobile navbar__search-results--empty" *ngIf="showSearchResults && searchResults.length === 0 && searchQuery.trim().length >= 2">
+        <p>Nenhum produto encontrado</p>
+      </div>
     </div>
   </div>
 </header>
