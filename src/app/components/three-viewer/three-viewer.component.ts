@@ -282,7 +282,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private configureRenderer() {
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    
+    // Otimização para mobile: reduzir resolução para melhorar performance
+    const isMobile = window.innerWidth < 768;
+    const maxPixelRatio = isMobile ? 1.0 : 1.5;
+    
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
     this.renderer.shadowMap.enabled = false;
   }
 

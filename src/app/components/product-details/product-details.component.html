@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<div class="product-details">
+<div class="product-details product-details-mobile">
   <!-- Background Yellow -->
   <div class="bg-yellow">
     <img src="/assets/BGs/BG_Yellow.svg" alt="Background" />
@@ -82,7 +82,7 @@
         <!-- Botão Adicionar ao Carrinho -->
         <div class="btn-add-sacola">
           <img
-            [src]="isAddedToCart ? '/assets/icons/bag_buyed.svg' : '/assets/icons/bag_buy.svg'"
+            [src]="'/assets/Section_Detalhes_Prod/btn_add_sacola.svg'"
             alt="Adicionar ao Carrinho"
             class="btn-add-cart"
             [class.clicked]="isAddedToCart"

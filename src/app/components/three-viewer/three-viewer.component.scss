@@ -3,6 +3,9 @@
   width: 100%;
   aspect-ratio: 1.8;
   cursor: grab;
+  touch-action: none; /* Previne scroll da página ao tocar no modelo */
+  user-select: none; /* Previne seleção acidental */
+  -webkit-user-select: none;
 }
 .viewer canvas, .viewer img {
   width: 100%;
