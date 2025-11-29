@@ -1,27 +1,58 @@
 .scroll-wrapper {
   width: 100%;
-  // Enable smooth scrolling
-  scroll-behavior: smooth;
-  // Optimize scroll performance
-  -webkit-overflow-scrolling: touch;
+  position: relative;
+  /* Altura será controlada pelo GSAP pin no desktop */
 }
 
 .scroll-section {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   overflow: hidden;
-  
-  // GPU acceleration for smoother scrolling
   will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+}
+
+/* Desktop: Efeito de Empilhamento (Stacking) */
+@media (min-width: 769px) {
+  .scroll-wrapper {
+    height: 100vh; /* Altura da viewport para o container fixo */
+    overflow: hidden; /* Garante que nada saia do container durante a animação */
+    background-color: #000; /* Evita flashes brancos em scroll rápido */
+    perspective: 1000px; /* Ajuda na renderização 3D */
+    transform-style: preserve-3d;
+  }
+
+  .scroll-section {
+    position: absolute !important; /* Força sobreposição no desktop */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform; /* Otimização de performance */
+    backface-visibility: hidden; /* Evita flickering */
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0); /* Força GPU */
+  }
+
+  /* Ordem de empilhamento */
+  .section-tenis { z-index: 1; }
+  .section-skate { z-index: 2; }
+  .section-basket { z-index: 3; }
+}
+
+/* Mobile: Fluxo Vertical Normal */
+@media (max-width: 768px) {
+  .scroll-wrapper {
+    height: auto;
+  }
   
-  // CSS containment for better rendering performance
-  contain: layout style paint;
+  .scroll-section {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+  }
 }
 
 .content-wrapper {
@@ -139,7 +170,6 @@
 .section-tenis {
   background: url('/assets/scroll_trigger_assets/sessao_tenis/Bg_Section_Tenis.webp') center/cover no-repeat;
   background-color: #0066CC;
-  position: relative;
   
   // Optimize background rendering
   background-attachment: scroll;
@@ -149,7 +179,6 @@
 .section-skate {
   background: url('/assets/scroll_trigger_assets/sessao_skate/Bg_Section_skate.webp') center/cover no-repeat;
   background-color: #CC0000;
-  position: relative;
   
   // Optimize background rendering
   background-attachment: scroll;
@@ -163,7 +192,6 @@
 .section-basket {
   background: url('/assets/scroll_trigger_assets/sessao_basket/Bg_Section_basket.webp') center/cover no-repeat;
   background-color: #0066CC;
-  position: relative;
   
   // Optimize background rendering
   background-attachment: scroll;
@@ -185,7 +213,7 @@
   }
 
   .object-image {
-    max-width: 50%;
+    max-width: 450px;
     bottom: -30px;
   }
 }
