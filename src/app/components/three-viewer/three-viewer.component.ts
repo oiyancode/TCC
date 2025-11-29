@@ -20,6 +20,8 @@ import {
   Vector3,
   Box3,
   Mesh,
+  LinearFilter,
+  LinearMipmapLinearFilter,
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
@@ -59,8 +61,13 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private ktx2?: KTX2Loader;
   private gltfLoader?: GLTFLoader;
   private isPageVisible = true;
+  private isElementVisible = true;
   private isAnimating = false;
   private glContextLost = false;
+  private intersectionObserver?: IntersectionObserver;
+  private lastFrameTime = 0;
+  private targetFPS = 30; // Limitar FPS no mobile para economizar recursos
+  private frameInterval = 1000 / 30; // 30 FPS
   
   // Store bound event handlers for proper cleanup
   private boundResizeHandler?: () => void;
@@ -82,6 +89,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     try {
       // Initialize page visibility state
       this.isPageVisible = !document.hidden;
+      this.lastFrameTime = performance.now();
       
       this.initThree();
       this.loadModel();
@@ -110,6 +118,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     if (this.boundVisibilityChangeHandler) {
       document.removeEventListener('visibilitychange', this.boundVisibilityChangeHandler);
       this.boundVisibilityChangeHandler = undefined;
+    }
+    
+    // Cleanup Intersection Observer
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+      this.intersectionObserver = undefined;
     }
     
     const el = this.containerRef?.nativeElement;
@@ -392,9 +406,11 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
     
-    // Otimização para mobile: reduzir resolução para melhorar performance
+    // Otimização agressiva para mobile: reduzir resolução e FPS
     const isMobile = window.innerWidth < 768;
-    const maxPixelRatio = isMobile ? 1.0 : 1.5;
+    const maxPixelRatio = isMobile ? 0.75 : 1.5; // Reduzido de 1.0 para 0.75 no mobile
+    this.targetFPS = isMobile ? 24 : 60; // Limitar a 24 FPS no mobile
+    this.frameInterval = 1000 / this.targetFPS;
     
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
     this.renderer.shadowMap.enabled = false;
@@ -495,10 +511,22 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   private processModelMaterials(obj: any) {
+    const isMobile = window.innerWidth < 768;
+    
     obj.traverse((child: any) => {
       if (child.isMesh && child.material) {
         const m = child.material;
         this.updateMaterialColorSpaces(m);
+        
+        // Otimizar texturas no mobile
+        if (isMobile && m.map) {
+          // Reduzir qualidade de textura no mobile
+          m.map.generateMipmaps = true;
+          // Usar filtros mais simples no mobile para economizar memória
+          m.map.minFilter = LinearMipmapLinearFilter;
+          m.map.magFilter = LinearFilter;
+        }
+        
         m.needsUpdate = true;
       }
     });
@@ -586,6 +614,43 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     el.addEventListener('pointerdown', this.boundPointerDownHandler);
     el.addEventListener('pointerup', this.boundPointerUpHandler);
     el.addEventListener('wheel', this.boundWheelHandler, { passive: true });
+    
+    // Setup Intersection Observer to pause when element is not visible
+    this.setupIntersectionObserver();
+  }
+
+  private setupIntersectionObserver() {
+    if (typeof IntersectionObserver === 'undefined') {
+      // Fallback if IntersectionObserver is not supported
+      this.isElementVisible = true;
+      return;
+    }
+
+    this.intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          this.isElementVisible = entry.isIntersecting && entry.intersectionRatio > 0;
+          
+          if (!this.isElementVisible && this.isAnimating) {
+            // Pause animation when element is not visible
+            if (this.frameId !== null) {
+              cancelAnimationFrame(this.frameId);
+              this.frameId = null;
+            }
+            this.isAnimating = false;
+          } else if (this.isElementVisible && !this.isAnimating && !this.glContextLost && this.isPageVisible) {
+            // Resume animation when element becomes visible
+            this.animate();
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when at least 10% of element is visible
+        rootMargin: '50px' // Start loading slightly before element enters viewport
+      }
+    );
+
+    this.intersectionObserver.observe(this.containerRef.nativeElement);
   }
 
   private onVisibilityChange() {
@@ -598,8 +663,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         this.frameId = null;
       }
       this.isAnimating = false;
-    } else if (!this.isAnimating && !this.glContextLost) {
-      // Resume animation when page becomes visible
+    } else if (!this.isAnimating && !this.glContextLost && this.isElementVisible) {
+      // Resume animation when page becomes visible and element is visible
       this.animate();
     }
   }
@@ -662,12 +727,23 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   private animate() {
-    // Don't animate if page is not visible, context is lost, or already animating
-    if (!this.isPageVisible || this.glContextLost || this.isAnimating) {
+    // Don't animate if page/element is not visible, context is lost, or already animating
+    if (!this.isPageVisible || !this.isElementVisible || this.glContextLost || this.isAnimating) {
       return;
     }
     
+    const now = performance.now();
+    const elapsed = now - this.lastFrameTime;
+    
+    // Throttle FPS no mobile
+    if (elapsed < this.frameInterval) {
+      this.frameId = requestAnimationFrame(() => this.animate());
+      return;
+    }
+    
+    this.lastFrameTime = now - (elapsed % this.frameInterval);
     this.isAnimating = true;
+    
     this.frameId = requestAnimationFrame(() => {
       this.isAnimating = false;
       this.animate();
@@ -682,6 +758,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       const gl = this.renderer.getContext();
       if (!gl || gl.isContextLost()) {
         this.glContextLost = true;
+        console.warn('WebGL context lost detected in animate loop');
         return;
       }
 
@@ -694,7 +771,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     } catch (error) {
       console.error('Error during render:', error);
       // Try to recover by showing fallback
-      if (error instanceof Error && error.message.includes('context')) {
+      if (error instanceof Error && (error.message.includes('context') || error.message.includes('lost'))) {
         this.glContextLost = true;
         this.showFallback = true;
         this.loading = false;
