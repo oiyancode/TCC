@@ -68,8 +68,7 @@
 .navbar__right {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-right: 16px;
+  gap: 16px;
 }
 
 .navbar__search {
@@ -260,8 +259,8 @@
   height: 36px;
 
   img {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 30px;
   }
 }
 
@@ -285,6 +284,38 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+}
+
+// Mobile Cart Icon
+.navbar__cart-mobile {
+  display: none; // Hidden on desktop
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0.5rem;
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .navbar__cart-count {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    // background: var(--brand-yellow);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 18px;
+    // height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+  }
 }
 
 .navbar__glow {
@@ -416,7 +447,7 @@
 .navbar__search-popup-close {
   position: absolute;
   top: 25px;
-  right: 1.25rem;
+  right: 2.25rem;
   background: none;
   border: none;
   font-size: 20px;
@@ -519,6 +550,14 @@
   .navbar__hamburger {
     display: flex; // Show hamburger menu
   }
+
+  .navbar__btn--desktop {
+    display: none; // Hide desktop buttons when hamburger menu is shown
+  }
+
+  .navbar__cart-mobile {
+    display: flex; // Show mobile cart icon
+  }
 }
 
 // Mobile Responsive Styles
@@ -547,6 +586,7 @@
 
   .navbar__search-btn {
     display: flex; // Show search icon button on mobile
+    justify-content: center;
   }
 
   .navbar__btn {
@@ -557,6 +597,14 @@
 
   .navbar__btn--outline {
     display: none; // Hide "Entrar" button on mobile to save space
+  }
+
+  .navbar__btn--desktop {
+    display: none; // Hide desktop cart button on mobile
+  }
+
+  .navbar__cart-mobile {
+    display: flex; // Show mobile cart icon
   }
 
   .navbar__search-popup {

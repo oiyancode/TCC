@@ -20,7 +20,7 @@
     <!-- Desktop Navigation Links (hidden on cart page) -->
     <nav class="navbar__links" *ngIf="!isCartPage">
       <a href="#lancamentos">Lançamentos</a>
-      <a href="#produtos-populares">Produtos</a>
+      <a routerLink="/products">Produtos</a>
       <a href="#footer">Sobre</a>
     </nav>
   </div>
@@ -75,16 +75,29 @@
       <img src="/assets/lupa_busca.png" alt="Buscar" />
     </button>
 
-    <button class="navbar__btn navbar__btn--outline" *ngIf="!isCartPage" routerLink="/login">
+    <button class="navbar__btn navbar__btn--outline navbar__btn--desktop" *ngIf="!isCartPage" routerLink="/login">
       Entrar
     </button>
+    
+    <!-- Desktop Cart Button -->
     <button
-      class="navbar__btn navbar__btn--cart"
+      class="navbar__btn navbar__btn--cart navbar__btn--desktop"
       (click)="goToCart()"
       style="cursor: pointer"
       *ngIf="!isCartPage"
     >
       Carrinho {{ cartItemCount }}
+    </button>
+
+    <!-- Mobile Cart Icon -->
+    <button
+      class="navbar__cart-mobile"
+      (click)="goToCart()"
+      aria-label="Carrinho"
+      *ngIf="!isCartPage"
+    >
+      <img src="/assets/icons/cart_mobile_icon.webp" alt="Carrinho" />
+      <span class="navbar__cart-count">{{ cartItemCount }}</span>
     </button>
   </div>
 

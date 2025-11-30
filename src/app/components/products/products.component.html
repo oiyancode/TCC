@@ -1,0 +1,68 @@
+<app-navbar></app-navbar>
+
+<div class="products-page">
+  <div class="products-container">
+    <!-- Header -->
+    <div class="products-header">
+      <div class="breadcrumbs">
+        <a routerLink="/">Home</a>
+        <span>/</span>
+        <span>Produtos</span>
+      </div>
+      <h1 class="products-title">NOSSOS PRODUTOS</h1>
+      <p class="products-subtitle">{{ getFilterLabel() }} - {{ filteredProducts.length }} itens</p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <button class="filter-btn" (click)="toggleFilterMenu()">
+        <img src="/assets/icons/menu_filtro.png" alt="Filtrar">
+        <span>FILTRAR E ORGANIZAR</span>
+      </button>
+
+      <!-- Filter Dropdown -->
+      <div class="filter-menu" *ngIf="showFilterMenu">
+        <button 
+          class="filter-option" 
+          [class.active]="selectedFilter === 'all'"
+          (click)="applyFilter('all')">
+          Todos os Produtos
+        </button>
+        <button 
+          class="filter-option" 
+          [class.active]="selectedFilter === 'tenis'"
+          (click)="applyFilter('tenis')">
+          Tênis
+        </button>
+        <button 
+          class="filter-option" 
+          [class.active]="selectedFilter === 'skate'"
+          (click)="applyFilter('skate')">
+          Skate
+        </button>
+        <button 
+          class="filter-option" 
+          [class.active]="selectedFilter === 'basket'"
+          (click)="applyFilter('basket')">
+          Basquete
+        </button>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid">
+      <div 
+        class="product-card" 
+        *ngFor="let product of filteredProducts"
+        (click)="navigateToProduct(product.id)">
+        <div class="product-image-wrapper">
+          <img [src]="product.imageSrc" [alt]="product.name" class="product-image">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-price">{{ product.price }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

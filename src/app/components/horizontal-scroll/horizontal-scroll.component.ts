@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
@@ -16,6 +17,8 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
   @ViewChild('scrollWrapper') scrollWrapper!: ElementRef<HTMLDivElement>;
   
   private mm: gsap.MatchMedia | undefined;
+
+  constructor(private router: Router) {}
 
   ngAfterViewInit() {
     const wrapper = this.scrollWrapper.nativeElement;
@@ -137,6 +140,10 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
         });
       });
     });
+  }
+
+  navigateToProducts() {
+    this.router.navigate(['/products']);
   }
 
   ngOnDestroy() {

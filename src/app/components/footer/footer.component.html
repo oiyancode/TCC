@@ -18,14 +18,13 @@
         </ul>
       </div>
 
-      <!-- Produtos -->
       <div class="footer__links-group">
         <h3 class="footer__title">Produtos</h3>
         <ul class="footer__links">
           <li><a href="#lancamentos" class="footer__link">Lançamentos</a></li>
-          <li><a href="#produtos-populares" class="footer__link">Tênis</a></li>
-          <li><a href="#produtos-populares" class="footer__link">Skates</a></li>
-          <li><a href="#produtos-populares" class="footer__link">Bolas</a></li>
+          <li><a (click)="navigateToProducts('tenis')" class="footer__link" style="cursor: pointer;">Tênis</a></li>
+          <li><a (click)="navigateToProducts('skate')" class="footer__link" style="cursor: pointer;">Skates</a></li>
+          <li><a (click)="navigateToProducts('basket')" class="footer__link" style="cursor: pointer;">Bolas</a></li>
         </ul>
       </div>
 
