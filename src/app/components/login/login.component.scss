@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+@use '../../../styles.scss' as *;
 
 .login-container {
   min-height: 100vh;
@@ -225,7 +225,7 @@
   transition: all 0.3s ease;
 
   &:hover {
-    background: darken(#7b0000, 5%);
+    background: #6a0000;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(123, 0, 0, 0.3);
   }
@@ -485,7 +485,7 @@
   transition: all 0.3s ease;
 
   &:hover:not(:disabled) {
-    background: darken(#7b0000, 5%);
+    background: #6a0000;
     transform: translateY(-2px);
   }
 
