@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import SplitType from 'split-type';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,89 +15,132 @@ gsap.registerPlugin(ScrollTrigger);
 export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
   @ViewChild('scrollWrapper') scrollWrapper!: ElementRef<HTMLDivElement>;
   
-  private scrollTrigger: ScrollTrigger | undefined;
+  private mm: gsap.MatchMedia | undefined;
 
   ngAfterViewInit() {
     const wrapper = this.scrollWrapper.nativeElement;
     const skateSection = wrapper.querySelector('.section-skate') as HTMLElement;
     const basketSection = wrapper.querySelector('.section-basket') as HTMLElement;
+    
+    const tenisText = wrapper.querySelector('.section-tenis .section-description') as HTMLElement;
+    const skateText = wrapper.querySelector('.section-skate .section-description') as HTMLElement;
+    const basketText = wrapper.querySelector('.section-basket .section-description') as HTMLElement;
 
-    // Configuração Responsiva com matchMedia
-    const mm = gsap.matchMedia();
+    // Aguardar fontes carregarem para evitar layout shifts no split
+    document.fonts.ready.then(() => {
+      this.mm = gsap.matchMedia();
 
-    // Contexto Desktop (> 768px)
-    mm.add("(min-width: 769px)", () => {
-      // Estado inicial: Skate e Basquete fora da tela à direita
-      gsap.set([skateSection, basketSection], { 
-        xPercent: 100,
-        autoAlpha: 1 // Garante visibilidade otimizada
-      });
+      // Contexto Desktop (> 768px)
+      this.mm.add("(min-width: 769px)", () => {
+        // Split text apenas no desktop
+        const splitTenis = new SplitType(tenisText, { types: 'words' });
+        const splitSkate = new SplitType(skateText, { types: 'words' });
+        const splitBasket = new SplitType(basketText, { types: 'words' });
 
-      // Calcular altura baseada no número de seções
-      // Cada seção precisa de espaço completo de scroll (3 seções = 3x viewport)
-      // Usar função para recalcular dinamicamente em cada refresh
-      const getScrollDistance = () => {
-        return window.innerHeight * 4; // 4x a altura da viewport
-      };
+        // Estado inicial
+        gsap.set([skateSection, basketSection], { 
+          xPercent: 100,
+          autoAlpha: 1 
+        });
 
-      // Timeline principal atrelada ao scroll
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: wrapper,
-          start: 'top top',
-          end: () => `+=${getScrollDistance()}px`, // Função para recalcular dinamicamente
-          pin: true,        // Fixa o wrapper
-          scrub: 0.2,       // Valor menor = resposta mais rápida, menos "pulos"
-          anticipatePin: 1, // Melhora a detecção do pin
-          fastScrollEnd: false, // Desabilitado para evitar pulos
-          preventOverlaps: true,
-          invalidateOnRefresh: true,
-          refreshPriority: -1, // Prioridade de refresh
-        }
-      });
+        const getScrollDistance = () => window.innerHeight * 3; // 3x altura
 
-      // Passo 1: Skate entra cobrindo o Tênis
-      // Primeira parte do scroll (0% a 50% da timeline)
-      tl.to(skateSection, {
-        xPercent: 0,
-        ease: 'none',
-        duration: 1,
-        overwrite: 'auto',
-        force3D: true,
-        immediateRender: false
-      }, 0);
+        // Animação Tenis
+        gsap.from(splitTenis.words, {
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top 60%', 
+            end: () => `+=${getScrollDistance()}px`, 
+            toggleActions: 'play reset play reset' 
+          },
+          y: 100,
+          autoAlpha: 0,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
 
-      // Passo 2: Basquete entra cobrindo o Skate
-      // Segunda parte do scroll (50% a 100% da timeline)
-      // Começar APÓS o skate ter completado completamente (em 1.0)
-      tl.to(basketSection, {
-        xPercent: 0,
-        ease: 'none',
-        duration: 1,
-        overwrite: 'auto',
-        force3D: true,
-        immediateRender: false
-      }, 1); // Começar em 1.0 para garantir que o skate complete primeiro
+        // Timeline
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top top',
+            end: () => `+=${getScrollDistance()}px`, 
+            pin: true,        
+            scrub: 0.2,       
+            anticipatePin: 1, 
+            fastScrollEnd: false, 
+            preventOverlaps: true,
+            invalidateOnRefresh: true,
+            refreshPriority: -1, 
+          }
+        });
 
-      // Forçar refresh após todas as animações serem configuradas
-      // Usar setTimeout para garantir que o DOM esteja totalmente renderizado
-      setTimeout(() => {
+        // Skate
+        tl.to(skateSection, {
+          xPercent: 0,
+          ease: 'none',
+          duration: 1,
+          overwrite: 'auto',
+          force3D: true,
+          immediateRender: false,
+          onStart: () => {
+               gsap.fromTo(splitSkate.words, 
+                  { y: 100, autoAlpha: 0 },
+                  { y: 0, autoAlpha: 1, stagger: 0.05, duration: 0.8, delay: 0.2, ease: 'power2.out', overwrite: true }
+               );
+          },
+          onReverseComplete: () => {
+              gsap.set(splitSkate.words, { autoAlpha: 0, y: 100 });
+          }
+        }, 0);
+
+        // Basket
+        tl.to(basketSection, {
+          xPercent: 0,
+          ease: 'none',
+          duration: 1,
+          overwrite: 'auto',
+          force3D: true,
+          immediateRender: false,
+          onStart: () => {
+               gsap.fromTo(splitBasket.words, 
+                  { y: 100, autoAlpha: 0 },
+                  { y: 0, autoAlpha: 1, stagger: 0.05, duration: 0.8, delay: 0.2, ease: 'power2.out', overwrite: true }
+               );
+          },
+          onReverseComplete: () => {
+               gsap.set(splitBasket.words, { autoAlpha: 0, y: 100 });
+          }
+        }, 1); 
+
         ScrollTrigger.refresh();
-      }, 100);
-    });
 
-    // Contexto Mobile (<= 768px) - Opcional, apenas para garantir limpeza
-    mm.add("(max-width: 768px)", () => {
-      // Garante que as seções estejam visíveis e na posição original
-      gsap.set([skateSection, basketSection], { 
-        xPercent: 0,
-        clearProps: "all" // Limpa propriedades injetadas pelo GSAP
+        // Cleanup function: Revert splits quando sair do breakpoint ou destruir
+        return () => {
+          splitTenis.revert();
+          splitSkate.revert();
+          splitBasket.revert();
+        };
+      });
+
+      // Contexto Mobile (<= 768px)
+      this.mm.add("(max-width: 768px)", () => {
+        gsap.set([skateSection, basketSection], { 
+          xPercent: 0,
+          clearProps: "all" 
+        });
+        // Texto normal sem split
+        gsap.set([tenisText, skateText, basketText], {
+            autoAlpha: 1,
+            y: 0
+        });
       });
     });
   }
 
   ngOnDestroy() {
-    // Limpa os triggers e animações ao destruir o componente
-    ScrollTrigger.getAll().forEach(t => t.kill());
+    // Reverte tudo (matchMedia limpa triggers e chama a função de cleanup retornada)
+    this.mm?.revert();
   }
 }

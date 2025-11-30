@@ -28,6 +28,7 @@
     "@modelcontextprotocol/sdk": "^1.23.0",
     "gsap": "^3.13.0",
     "rxjs": "~7.8.0",
+    "split-type": "^0.3.4",
     "swiper": "^12.0.3",
     "three": "^0.181.1",
     "tslib": "^2.3.0",
