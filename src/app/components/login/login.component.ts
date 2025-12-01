@@ -5,6 +5,8 @@ import { Router, RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import Draggable from 'gsap/Draggable';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
+import { APP_CONFIG } from '../../core/constants/app.constants';
 
 gsap.registerPlugin(Draggable);
 
@@ -27,7 +29,11 @@ export class LoginComponent implements AfterViewInit {
   lgpdRequiredChecked = false;
   lgpdOptionalChecked = false;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastService: ToastService
+  ) {
     // Check if LGPD was already accepted
     const lgpdAccepted = localStorage.getItem('lgpd_accepted');
     if (lgpdAccepted) {
@@ -42,17 +48,17 @@ export class LoginComponent implements AfterViewInit {
 
   onSubmit() {
     if (!this.email || !this.password) {
-      alert('Por favor, preencha todos os campos.');
+      this.toastService.error('Por favor, preencha todos os campos.');
       return;
     }
 
     if (this.isSignUp) {
       this.authService.register({ email: this.email, password: this.password }).subscribe(success => {
         if (success) {
-          alert('Conta criada com sucesso! Faça login para continuar.');
+          this.toastService.success('Conta criada com sucesso! Faça login para continuar.');
           this.toggleMode();
         } else {
-          alert('Este e-mail já está cadastrado.');
+          this.toastService.error('Este e-mail já está cadastrado.');
         }
       });
     } else {
@@ -60,7 +66,7 @@ export class LoginComponent implements AfterViewInit {
         if (success) {
           this.router.navigate(['/']);
         } else {
-          alert('E-mail ou senha incorretos.');
+          this.toastService.error('E-mail ou senha incorretos.');
         }
       });
     }
@@ -81,10 +87,10 @@ export class LoginComponent implements AfterViewInit {
       inertia: true,
       throwProps: true, 
       onDragStart: function() {
-        gsap.to((this as any).target, { scale: 1.1, duration: 0.1 });
+        gsap.to((this as any).target, { scale: 1.1, duration: APP_CONFIG.ANIMATION_DURATION });
       },
       onDragEnd: function() {
-        gsap.to((this as any).target, { scale: 1, duration: 0.1 });
+        gsap.to((this as any).target, { scale: 1, duration: APP_CONFIG.ANIMATION_DURATION });
       }
     });
   }

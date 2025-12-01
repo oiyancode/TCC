@@ -50,7 +50,8 @@
     </div>
 
     <!-- Products Grid -->
-    <div class="products-grid">
+    <app-loading *ngIf="isLoading" message="Carregando produtos..."></app-loading>
+    <div class="products-grid" *ngIf="!isLoading">
       <div 
         class="product-card" 
         *ngFor="let product of filteredProducts"

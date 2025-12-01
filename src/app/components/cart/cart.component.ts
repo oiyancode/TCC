@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CartService, CartItem } from '../../services/cart.service';
+import { ToastService } from '../../services/toast.service';
+import { APP_CONFIG } from '../../core/constants/app.constants';
 
 @Component({
   selector: 'app-cart',
@@ -22,7 +24,11 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cartService: CartService, private router: Router) {}
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.setupCartSubscriptions();
@@ -116,13 +122,13 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private showEmptyCartMessage(): void {
-    alert(
+    this.toastService.info(
       'Seu carrinho está vazio. Adicione produtos antes de prosseguir para o checkout.'
     );
   }
 
   private showCheckoutComingSoon(): void {
     console.log('Proceeding to checkout with items:', this.cartItems);
-    alert('Funcionalidade de checkout será implementada em breve!');
+    this.toastService.info('Funcionalidade de checkout será implementada em breve!');
   }
 }

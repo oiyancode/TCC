@@ -6,8 +6,10 @@
     <img src="/assets/BGs/BG_Yellow.svg" alt="Background" />
   </div>
 
+  <app-loading *ngIf="isLoading" [fullScreen]="true" message="Carregando detalhes..."></app-loading>
+
   <!-- Conteúdo principal -->
-  <main class="main-content" *ngIf="product">
+  <main class="main-content" *ngIf="product && !isLoading">
     <!-- Seção Esquerda: Recomendados + Seletor de Tamanho -->
     <div class="left-section">
       <!-- Painel de Recomendados -->
@@ -103,7 +105,4 @@
       </div>
     </div>
   </main>
-
-  <!-- Loading state -->
-  <div *ngIf="!product" class="loading">Carregando produto...</div>
 </div>

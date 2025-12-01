@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductsService, Product } from '../../services/products.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent, LoadingComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
@@ -16,6 +17,7 @@ export class ProductsComponent implements OnInit {
   filteredProducts: Product[] = [];
   selectedFilter: 'all' | 'tenis' | 'skate' | 'basket' = 'all';
   showFilterMenu = false;
+  isLoading = true;
 
   constructor(
     private productsService: ProductsService,
@@ -24,9 +26,11 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.productsService.getProducts().subscribe(products => {
       this.allProducts = products;
       this.filteredProducts = products;
+      this.isLoading = false;
       
       // Check for category query param
       this.route.queryParams.subscribe(params => {

@@ -4,11 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService, Product } from '../../services/products.service';
 import { CartService } from '../../services/cart.service';
 import { NavbarComponent } from '../navbar/navbar.component'; // Import NavbarComponent
+import { LoadingComponent } from '../loading/loading.component';
+import { ToastService } from '../../services/toast.service';
+import { APP_CONFIG } from '../../core/constants/app.constants';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, NavbarComponent], // Add NavbarComponent to imports
+  imports: [CommonModule, NavbarComponent, LoadingComponent], // Add NavbarComponent to imports
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss'],
 })
@@ -17,16 +20,18 @@ export class ProductDetailsComponent implements OnInit {
   recommendedProducts: Product[] = [];
   isVariantTenis = false;
   isAddedToCart = false;
+  isLoading = true;
   selectedSize = 'V2'; // default size for tennis
   availableSizes: string[] = [];
-  shoeSizes: number[] = [37, 38, 39, 40, 41, 42];
+  shoeSizes: number[] = APP_CONFIG.SHOE_SIZES;
   selectedShoeSize: number = 39; // default shoe size
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productsService: ProductsService,
-    private cartService: CartService
+    private cartService: CartService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -43,7 +48,9 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   private loadProduct(id: number) {
+    this.isLoading = true;
     this.productsService.getProductById(id).subscribe((product) => {
+      this.isLoading = false;
       if (product) {
         this.product = product;
         this.isVariantTenis = product.variant === 'tenis';
@@ -93,7 +100,7 @@ export class ProductDetailsComponent implements OnInit {
     this.addToCart();
     setTimeout(() => {
       this.isAddedToCart = false;
-    }, 300); // A animação dura 300ms
+    }, APP_CONFIG.ANIMATION_DURATION_MS); // A animação dura 300ms
   }
 
   addToCart() {
@@ -135,7 +142,7 @@ export class ProductDetailsComponent implements OnInit {
     );
 
     // Show success feedback (could be improved with a toast notification)
-    alert(`Produto "${cartItem.name}" adicionado ao carrinho!`);
+    this.toastService.success(`Produto "${cartItem.name}" adicionado ao carrinho!`);
 
     // Navigate to cart page
     this.router.navigate(['/cart']);
