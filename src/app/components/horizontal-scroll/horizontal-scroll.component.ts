@@ -43,6 +43,17 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
       '.section-basket .section-description'
     ) as HTMLElement;
 
+    // Títulos H2
+    const tenisTitle = wrapper.querySelector(
+      '.section-tenis .section-title'
+    ) as HTMLElement;
+    const skateTitle = wrapper.querySelector(
+      '.section-skate .section-title'
+    ) as HTMLElement;
+    const basketTitle = wrapper.querySelector(
+      '.section-basket .section-title'
+    ) as HTMLElement;
+
     // Aguardar fontes carregarem para evitar layout shifts no split
     document.fonts.ready.then(() => {
       this.mm = gsap.matchMedia();
@@ -54,7 +65,17 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
         const splitSkate = new SplitType(skateText, { types: 'words' });
         const splitBasket = new SplitType(basketText, { types: 'words' });
 
-        // Estado inicial
+        // Split TODOS os títulos para animações letra por letra
+        const splitTenisTitle = new SplitType(tenisTitle, { types: 'chars' });
+        const splitSkateTitle = new SplitType(skateTitle, { types: 'chars' });
+        const splitBasketTitle = new SplitType(basketTitle, { types: 'chars' });
+
+        // Estado inicial - esconder títulos (apenas Basket e Skate que usam fromTo/set inicial)
+        gsap.set([splitSkateTitle.chars, splitBasketTitle.chars], {
+          autoAlpha: 0,
+        });
+
+        // Estado inicial das seções
         gsap.set([skateSection, basketSection], {
           xPercent: 100,
           autoAlpha: 1,
@@ -62,7 +83,22 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
 
         const getScrollDistance = () => window.innerHeight * 3; // 3x altura
 
-        // Animação Tenis
+        // ===== ANIMAÇÃO TÍTULO TÊNIS: Rotação + Escala letra por letra =====
+        gsap.from(splitTenisTitle.chars, {
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top 80%',
+            end: 'top 30%',
+            scrub: 1,
+          },
+          rotation: -180,
+          scale: 0.3,
+          opacity: 0,
+          stagger: 0.03,
+          duration: 1,
+        });
+
+        // Animação Descrição Tenis
         gsap.from(splitTenis.words, {
           scrollTrigger: {
             trigger: wrapper,
@@ -104,6 +140,28 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
             force3D: true,
             immediateRender: false,
             onStart: () => {
+              // ===== ANIMAÇÃO TÍTULO SKATE: Entrada da direita + Letra por letra com rotação =====
+              gsap.fromTo(
+                splitSkateTitle.chars,
+                {
+                  x: 200,
+                  scale: 0,
+                  rotation: 360,
+                  autoAlpha: 0,
+                },
+                {
+                  x: 0,
+                  scale: 1,
+                  rotation: 0,
+                  autoAlpha: 1,
+                  stagger: 0.05,
+                  duration: 0.8,
+                  ease: 'back.out(1.7)',
+                  delay: 0.3, // Aumentado delay
+                }
+              );
+
+              // Animação descrição Skate
               gsap.fromTo(
                 splitSkate.words,
                 { y: 100, autoAlpha: 0 },
@@ -112,7 +170,7 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
                   autoAlpha: 1,
                   stagger: 0.05,
                   duration: 0.8,
-                  delay: 0.2,
+                  delay: 0.7, // Aumentado delay
                   ease: 'power2.out',
                   overwrite: true,
                 }
@@ -120,6 +178,12 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
             },
             onReverseComplete: () => {
               gsap.set(splitSkate.words, { autoAlpha: 0, y: 100 });
+              gsap.set(splitSkateTitle.chars, {
+                autoAlpha: 0,
+                x: 200,
+                scale: 0,
+                rotation: 360,
+              });
             },
           },
           0
@@ -136,6 +200,24 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
             force3D: true,
             immediateRender: false,
             onStart: () => {
+              // ===== ANIMAÇÃO TÍTULO BASKET: Entrada de cima + Bouncing Ball letra por letra =====
+              gsap.fromTo(
+                splitBasketTitle.chars,
+                {
+                  y: -300,
+                  autoAlpha: 0,
+                },
+                {
+                  y: 0,
+                  autoAlpha: 1,
+                  stagger: 0.04,
+                  duration: 1.2,
+                  ease: 'bounce.out',
+                  delay: 0.3, // Aumentado delay
+                }
+              );
+
+              // Animação descrição Basket
               gsap.fromTo(
                 splitBasket.words,
                 { y: 100, autoAlpha: 0 },
@@ -144,7 +226,7 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
                   autoAlpha: 1,
                   stagger: 0.05,
                   duration: 0.8,
-                  delay: 0.2,
+                  delay: 0.8, // Aumentado delay
                   ease: 'power2.out',
                   overwrite: true,
                 }
@@ -152,6 +234,7 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
             },
             onReverseComplete: () => {
               gsap.set(splitBasket.words, { autoAlpha: 0, y: 100 });
+              gsap.set(splitBasketTitle.chars, { autoAlpha: 0, y: -300 });
             },
           },
           1
@@ -164,6 +247,9 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
           splitTenis.revert();
           splitSkate.revert();
           splitBasket.revert();
+          splitTenisTitle.revert();
+          splitSkateTitle.revert();
+          splitBasketTitle.revert();
         };
       });
 
@@ -177,6 +263,11 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
         gsap.set([tenisText, skateText, basketText], {
           autoAlpha: 1,
           y: 0,
+        });
+        // Títulos visíveis no mobile
+        gsap.set([tenisTitle, skateTitle, basketTitle], {
+          autoAlpha: 1,
+          clearProps: 'all',
         });
       });
     });

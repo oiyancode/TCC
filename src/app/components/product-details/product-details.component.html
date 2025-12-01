@@ -112,7 +112,9 @@
   <section class="about-product-section" *ngIf="product && !isLoading">
     <div class="about-container">
       <h2>Sobre o Produto</h2>
-      <p class="about-description">{{ product.description }}</p>
+      <p class="about-description">
+        {{ product.description || 'Desenvolvido com tecnologia de ponta e materiais premium, este produto oferece conforto excepcional e design inovador. Perfeito para quem busca performance e estilo em cada passo.' }}
+      </p>
     </div>
   </section>
 
