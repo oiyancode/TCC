@@ -259,8 +259,8 @@
   height: 36px;
 
   img {
-    width: 40px;
-    height: 30px;
+    width: 36px;
+    height: 24px;
   }
 }
 
@@ -296,22 +296,23 @@
   padding: 0.5rem;
 
   img {
-    width: 60px;
-    height: 60px;
+    position: relative;
+    top: 3px;
+    width: 70px;
+    height: 75px;
   }
 
   .navbar__cart-count {
     position: absolute;
-    top: 14px;
-    right: 20px;
-    // background: var(--brand-yellow);
+    top: 17px;
+    right: 24px;
     color: white;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 600;
     min-width: 18px;
-    // height: 18px;
-    border-radius: 50%;
-    display: flex;
+    border-radius: 20%;
+    display: flex
+;
     align-items: center;
     justify-content: center;
     padding: 4px;

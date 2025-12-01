@@ -78,7 +78,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private checkIfCartPage() {
-    this.isCartPage = this.router.url.includes('/cart');
+    this.isCartPage = this.router.url.includes('/cart') || this.router.url.includes('/products');
   }
 
   get isProductDetailsPage(): boolean {

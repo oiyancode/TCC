@@ -107,9 +107,10 @@
     [class.navbar__mobile-menu--open]="isMobileMenuOpen"
   >
     <nav class="navbar__mobile-nav">
+      <a routerLink="/" (click)="closeMobileMenu()">Home</a>
       <a href="#lancamentos" (click)="closeMobileMenu()">Lançamentos</a>
-      <a href="#produtos-populares" (click)="closeMobileMenu()">Produtos</a>
-      <a href="#" (click)="closeMobileMenu()">Contato</a>
+      <a routerLink="/products" (click)="closeMobileMenu()">Produtos</a>
+      <a href="#footer" (click)="closeMobileMenu()">Sobre</a>
     </nav>
   </div>
 
