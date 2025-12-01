@@ -418,7 +418,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private getRendererConfig(): any {
     const isMobile = window.innerWidth < 768;
-    const antialias = isMobile ? this.mobileQuality === 'high' : true;
+    const effectiveQuality = isMobile ? 'balanced' : this.mobileQuality;
+    const antialias = isMobile ? effectiveQuality === 'high' : true;
     return {
       antialias,
       alpha: true,
@@ -432,13 +433,14 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.renderer.toneMapping = ACESFilmicToneMapping;
 
     const isMobile = window.innerWidth < 768;
+    const effectiveQuality = isMobile ? 'balanced' : this.mobileQuality;
     let maxPixelRatio = 1.5;
     this.targetFPS = 60;
     if (isMobile) {
-      if (this.mobileQuality === 'low') {
+      if (effectiveQuality === 'low') {
         maxPixelRatio = 0.75;
         this.targetFPS = 24;
-      } else if (this.mobileQuality === 'balanced') {
+      } else if (effectiveQuality === 'balanced') {
         maxPixelRatio = Math.min(window.devicePixelRatio, 1.0);
         this.targetFPS = 30;
       } else {
@@ -567,6 +569,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private processModelMaterials(obj: any) {
     const isMobile = window.innerWidth < 768;
+    const effectiveQuality = isMobile ? 'balanced' : this.mobileQuality;
 
     obj.traverse((child: any) => {
       if (child.isMesh && child.material) {
@@ -575,10 +578,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
         if (isMobile && m.map) {
           m.map.generateMipmaps = true;
-          if (this.mobileQuality === 'low') {
+          if (effectiveQuality === 'low') {
             m.map.minFilter = LinearMipmapLinearFilter;
             m.map.magFilter = LinearFilter;
-          } else if (this.mobileQuality === 'balanced') {
+          } else if (effectiveQuality === 'balanced') {
             m.map.minFilter = LinearMipmapLinearFilter;
             m.map.magFilter = LinearFilter;
             m.map.anisotropy = Math.min(
