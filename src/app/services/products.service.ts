@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap, catchError, shareReplay, map } from 'rxjs';
+import { Observable, of, tap, catchError, shareReplay, map, retry } from 'rxjs';
+import { ToastService } from './toast.service';
 
 export interface Product {
   id: number;
@@ -19,7 +20,7 @@ export class ProductsService {
   private productsCacheTime?: number;
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastService: ToastService) {}
 
   getProducts(): Observable<Product[]> {
     if (this.isCacheValid()) {
@@ -31,6 +32,7 @@ export class ProductsService {
         this.productsCache = products;
         this.productsCacheTime = Date.now();
       }),
+      retry(2),
       catchError(() => this.handleError()),
       shareReplay(this.cacheConfig)
     );
@@ -106,6 +108,7 @@ export class ProductsService {
 
   private handleError(): Observable<Product[]> {
     console.warn('No cached products available, returning empty array');
+    this.toastService.error('Erro ao carregar produtos. Verifique sua conexão.');
     return this.productsCache ? of(this.productsCache) : of([]);
   }
 

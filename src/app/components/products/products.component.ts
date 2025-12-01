@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ProductsService, Product } from '../../services/products.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoadingComponent } from '../loading/loading.component';
+import gsap from 'gsap';
+import { APP_CONFIG } from '../../core/constants/app.constants';
 
 @Component({
   selector: 'app-products',
@@ -31,6 +33,7 @@ export class ProductsComponent implements OnInit {
       this.allProducts = products;
       this.filteredProducts = products;
       this.isLoading = false;
+      this.animateItems();
       
       // Check for category query param
       this.route.queryParams.subscribe(params => {
@@ -56,6 +59,24 @@ export class ProductsComponent implements OnInit {
     }
     
     this.showFilterMenu = false;
+    this.animateItems();
+  }
+
+  private animateItems() {
+    setTimeout(() => {
+      gsap.fromTo(
+        '.product-card',
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: 'power2.out',
+          clearProps: 'all'
+        }
+      );
+    }, 100); // Wait for DOM update
   }
 
   navigateToProduct(id: number) {

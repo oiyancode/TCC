@@ -615,3 +615,59 @@
     left: 0.75rem; // Center it
   }
 }
+
+/* Recent Searches Styles */
+.recent-searches-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  
+  span {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  
+  button {
+    font-size: 0.75rem;
+    color: #ef4444;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    
+    &:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 4px;
+    }
+  }
+}
+
+.recent-icon {
+  width: 16px !important;
+  height: 16px !important;
+  opacity: 0.4;
+  margin-right: 12px;
+  object-fit: contain;
+}
+
+.recent-search-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.03);
+  }
+  
+  span {
+    font-size: 14px;
+    color: #333;
+  }
+}

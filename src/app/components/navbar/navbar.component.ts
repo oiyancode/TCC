@@ -23,6 +23,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   searchQuery = '';
   searchResults: Product[] = [];
   showSearchResults = false;
+  recentSearches: string[] = [];
+  showRecentSearches = false;
   private searchSubject = new Subject<string>();
   private searchSubscription?: Subscription;
 
@@ -37,7 +39,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setupCartSubscription();
     this.checkIfCartPage();
+    this.checkIfCartPage();
     this.setupSearch();
+    this.loadRecentSearches();
   }
 
   ngOnDestroy() {
@@ -112,11 +116,47 @@ export class NavbarComponent implements OnInit, OnDestroy {
     ).subscribe(results => {
       this.searchResults = results;
       this.showSearchResults = results.length > 0 && this.searchQuery.trim().length >= 2;
+      this.searchResults = results;
+      this.showSearchResults = results.length > 0 && this.searchQuery.trim().length >= 2;
+      this.showRecentSearches = this.searchQuery.trim().length === 0;
     });
+  }
+
+  private loadRecentSearches() {
+    const saved = localStorage.getItem('recentSearches');
+    if (saved) {
+      this.recentSearches = JSON.parse(saved);
+    }
+  }
+
+  private saveRecentSearch(query: string) {
+    if (!query.trim()) return;
+    
+    // Remove if already exists to move to top
+    this.recentSearches = this.recentSearches.filter(s => s !== query);
+    this.recentSearches.unshift(query);
+    
+    // Limit to 5
+    if (this.recentSearches.length > 5) {
+      this.recentSearches.pop();
+    }
+    
+    localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
+  }
+
+  clearRecentSearches() {
+    this.recentSearches = [];
+    localStorage.removeItem('recentSearches');
+  }
+
+  selectRecentSearch(query: string) {
+    this.searchQuery = query;
+    this.searchSubject.next(query);
   }
 
   onSearchFocus() {
     this.showSearchResults = this.searchResults.length > 0 && this.searchQuery.trim().length >= 2;
+    this.showRecentSearches = this.searchQuery.trim().length === 0 && this.recentSearches.length > 0;
   }
 
   onSearchBlur() {
@@ -127,6 +167,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   selectProduct(product: Product) {
+    this.saveRecentSearch(this.searchQuery);
     this.router.navigate(['/product', product.id]);
     this.closeSearchResults();
     this.closeSearchPopup();
@@ -134,6 +175,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   closeSearchResults() {
     this.showSearchResults = false;
+    this.showRecentSearches = false;
     this.searchQuery = '';
     // Limpar os inputs
     const desktopInput = document.querySelector('.navbar__search--desktop input') as HTMLInputElement;

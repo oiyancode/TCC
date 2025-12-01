@@ -64,6 +64,20 @@
       >
         <p>Nenhum produto encontrado</p>
       </div>
+      <!-- Recent Searches -->
+      <div class="navbar__search-results navbar__recent-searches" *ngIf="showRecentSearches && recentSearches.length > 0">
+        <div class="recent-searches-header">
+          <span>Buscas Recentes</span>
+          <button (click)="clearRecentSearches()">Limpar</button>
+        </div>
+        <div 
+          class="navbar__search-result-item recent-search-item" 
+          *ngFor="let term of recentSearches"
+          (click)="selectRecentSearch(term)">
+          <img src="/assets/lupa_busca.png" alt="Search" class="recent-icon">
+          <span>{{ term }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Mobile Search Icon Button -->
@@ -167,6 +181,20 @@
         "
       >
         <p>Nenhum produto encontrado</p>
+      </div>
+      <!-- Recent Searches (Mobile) -->
+      <div class="navbar__search-results navbar__search-results--mobile navbar__recent-searches" *ngIf="showRecentSearches && recentSearches.length > 0">
+        <div class="recent-searches-header">
+          <span>Buscas Recentes</span>
+          <button (click)="clearRecentSearches()">Limpar</button>
+        </div>
+        <div 
+          class="navbar__search-result-item recent-search-item" 
+          *ngFor="let term of recentSearches"
+          (click)="selectRecentSearch(term)">
+          <img src="/assets/lupa_busca.png" alt="Search" class="recent-icon">
+          <span>{{ term }}</span>
+        </div>
       </div>
     </div>
   </div>
