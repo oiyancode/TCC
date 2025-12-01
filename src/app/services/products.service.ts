@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap, catchError, shareReplay, map, retry, BehaviorSubject, finalize } from 'rxjs';
+import {
+  Observable,
+  of,
+  tap,
+  catchError,
+  shareReplay,
+  map,
+  retry,
+  BehaviorSubject,
+  finalize,
+} from 'rxjs';
 import { ToastService } from './toast.service';
 
 export interface Product {
@@ -30,7 +40,7 @@ export class ProductsService {
 
     this.isLoading$.next(true);
     return this.http.get<Product[]>('/assets/products.json').pipe(
-      tap(products => {
+      tap((products) => {
         this.productsCache = products;
         this.productsCacheTime = Date.now();
       }),
@@ -48,23 +58,31 @@ export class ProductsService {
     }
 
     return this.getProducts().pipe(
-      map(products => products.find(p => p.id === id)),
+      map((products) => products.find((p) => p.id === id)),
       catchError(() => of(undefined))
     );
   }
 
-  getProductsByVariant(variant: 'skate' | 'basket' | 'tenis'): Observable<Product[]> {
+  getProductsByVariant(
+    variant: 'skate' | 'basket' | 'tenis'
+  ): Observable<Product[]> {
     return this.getProducts().pipe(
-      map(products => products.filter(p => p.variant === variant)),
+      map((products) => products.filter((p) => p.variant === variant)),
       catchError(() => of([]))
     );
   }
 
-  getRecommendedProducts(currentProductId: number, variant: 'skate' | 'basket' | 'tenis', limit = 2): Observable<Product[]> {
+  getRecommendedProducts(
+    currentProductId: number,
+    variant: 'skate' | 'basket' | 'tenis',
+    limit = 2
+  ): Observable<Product[]> {
     return this.getProductsByVariant(variant).pipe(
-      map(products => products
-        .filter(p => p.id !== currentProductId) // Exclui o produto atual
-        .slice(0, limit) // Limita a 2 recomendações
+      map(
+        (products) =>
+          products
+            .filter((p) => p.id !== currentProductId) // Exclui o produto atual
+            .slice(0, limit) // Limita a 2 recomendações
       ),
       catchError(() => of([]))
     );
@@ -77,10 +95,13 @@ export class ProductsService {
     }
 
     return this.getProducts().pipe(
-      map(products => products.filter(p => 
-        p.name.toLowerCase().includes(sanitizedQuery) ||
-        p.variant.toLowerCase().includes(sanitizedQuery)
-      )),
+      map((products) =>
+        products.filter(
+          (p) =>
+            p.name.toLowerCase().includes(sanitizedQuery) ||
+            p.variant.toLowerCase().includes(sanitizedQuery)
+        )
+      ),
       catchError(() => of([]))
     );
   }
@@ -98,7 +119,7 @@ export class ProductsService {
     return {
       bufferSize: 1,
       refCount: false,
-      windowTime: this.CACHE_DURATION
+      windowTime: this.CACHE_DURATION,
     };
   }
 
@@ -106,7 +127,7 @@ export class ProductsService {
     if (!this.productsCache || !this.productsCacheTime) {
       return false;
     }
-    return (Date.now() - this.productsCacheTime) < this.CACHE_DURATION;
+    return Date.now() - this.productsCacheTime < this.CACHE_DURATION;
   }
 
   private isValidProductId(id: number): boolean {
@@ -115,7 +136,9 @@ export class ProductsService {
 
   private handleError(): Observable<Product[]> {
     console.warn('No cached products available, returning empty array');
-    this.toastService.error('Erro ao carregar produtos. Verifique sua conexão.');
+    this.toastService.error(
+      'Erro ao carregar produtos. Verifique sua conexão.'
+    );
     return this.productsCache ? of(this.productsCache) : of([]);
   }
 
@@ -127,7 +150,7 @@ export class ProductsService {
     return query
       .trim()
       .replace(/<[^>]*>/g, '') // HTML tags
-      .replace(/[<>"'&]/g, '') // Dangerous chars  
+      .replace(/[<>"'&]/g, '') // Dangerous chars
       .replace(/javascript:/gi, '') // JS protocols
       .replace(/on\w+\s*=/gi, '') // Event handlers
       .replace(/\s+/g, ' ') // Normalize whitespace

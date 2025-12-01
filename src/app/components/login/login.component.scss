@@ -89,9 +89,7 @@
       font-size: 0.9rem;
       color: var(--color-text-muted);
       cursor: pointer;
-      transition: color 0.3s ease;
-
-      transition: color 0.2s ease, transform 0.2s ease;
+      transition: var(--transition-fast);
 
       &.active {
         color: var(--color-text);
@@ -132,7 +130,7 @@
   color: var(--color-text);
   font-family: var(--font-secondary);
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -183,7 +181,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     color: var(--color-text);
-    transition: all 0.3s ease;
+    transition: var(--transition-smooth);
 
     &:focus {
       outline: none;
@@ -202,7 +200,7 @@
     font-size: 0.875rem;
     color: var(--color-text-muted);
     margin-top: 0.5rem;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: var(--transition-fast);
     display: inline-block; // Needed for transform
     
     &:hover {
@@ -222,7 +220,7 @@
   font-weight: 600;
   font-size: 1rem;
   margin-top: 1rem;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
 
   &:hover {
     background: #6a0000;
@@ -242,7 +240,7 @@
     font-weight: 600;
     cursor: pointer;
     margin-left: 0.5rem;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: var(--transition-fast);
     display: inline-block; // Needed for transform
 
     &:hover {

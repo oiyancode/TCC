@@ -1,16 +1,17 @@
-@use '../../../styles.scss' as *;
+@use "../../../styles.scss" as *;
 
 .products-page {
   min-height: 100vh;
-  background: url('/assets/scroll_trigger_assets/sessao_basket/Bg_Section_basket.webp') center/cover no-repeat;
-  background-color: #CC0000;
+  background: url("/assets/scroll_trigger_assets/sessao_basket/Bg_Section_basket.webp")
+    center/cover no-repeat;
+  background-color: #cc0000;
   padding-top: 90px;
   position: relative;
   overflow: hidden;
 
   // Background gradient mesh effect (mantendo para adicionar profundidade)
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20%;
     left: -10%;
@@ -22,13 +23,17 @@
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -20%;
     right: -10%;
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgba(255, 217, 0, 0.15) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 217, 0, 0.15) 0%,
+      transparent 70%
+    );
     filter: blur(100px);
     z-index: 0;
   }
@@ -110,7 +115,7 @@
     font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition-smooth);
 
     &:hover {
       background: rgba(255, 255, 255, 0.1);
@@ -147,7 +152,7 @@
       font-family: var(--font-secondary);
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: var(--transition-fast);
 
       &:hover {
         background: rgba(255, 255, 255, 0.05);
@@ -167,23 +172,27 @@
   gap: 2rem;
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1rem;
   }
 }
 
 .product-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
 
   &:hover {
     transform: translateY(-8px);
     border-color: var(--brand-yellow);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-elevated);
 
     .product-image {
       transform: scale(1.1);
@@ -191,16 +200,23 @@
   }
 
   .product-image-wrapper {
-    background: linear-gradient(135deg, rgb(205 175 0) 0%, rgb(3 125 211 / 47%) 100%);
+    background: linear-gradient(
+      135deg,
+      rgb(205 175 0) 0%,
+      rgb(3 125 211 / 47%) 100%
+    );
     padding: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
     overflow: hidden;
+    // max-height: 220px;
 
     @media (max-width: 768px) {
       padding: 1rem;
+      // aspect-ratio: 3 / 4;
+      // max-height: 180px;
     }
   }
 

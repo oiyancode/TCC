@@ -43,6 +43,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   @Input() minZoom = 2.5;
   @Input() maxZoom = 7;
   @Input() enableZoom = true;
+  @Input() mobileQuality: 'low' | 'balanced' | 'high' = 'balanced';
   @ViewChild('container', { static: true })
   containerRef!: ElementRef<HTMLDivElement>;
 
@@ -68,7 +69,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private lastFrameTime = 0;
   private targetFPS = 30; // Limitar FPS no mobile para economizar recursos
   private frameInterval = 1000 / 30; // 30 FPS
-  
+
   // Store bound event handlers for proper cleanup
   private boundResizeHandler?: () => void;
   private boundPointerMoveHandler?: (e: PointerEvent) => void;
@@ -90,7 +91,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       // Initialize page visibility state
       this.isPageVisible = !document.hidden;
       this.lastFrameTime = performance.now();
-      
+
       this.initThree();
       this.loadModel();
       this.addEvents();
@@ -114,18 +115,21 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       window.removeEventListener('resize', this.boundResizeHandler);
       this.boundResizeHandler = undefined;
     }
-    
+
     if (this.boundVisibilityChangeHandler) {
-      document.removeEventListener('visibilitychange', this.boundVisibilityChangeHandler);
+      document.removeEventListener(
+        'visibilitychange',
+        this.boundVisibilityChangeHandler
+      );
       this.boundVisibilityChangeHandler = undefined;
     }
-    
+
     // Cleanup Intersection Observer
     if (this.intersectionObserver) {
       this.intersectionObserver.disconnect();
       this.intersectionObserver = undefined;
     }
-    
+
     const el = this.containerRef?.nativeElement;
     if (el) {
       if (this.boundPointerMoveHandler) {
@@ -145,26 +149,32 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         this.boundWheelHandler = undefined;
       }
     }
-    
+
     // Cleanup WebGL context handlers
     if (this.renderer && this.renderer.domElement) {
       const canvas = this.renderer.domElement;
       if (this.boundContextLostHandler) {
-        canvas.removeEventListener('webglcontextlost', this.boundContextLostHandler);
+        canvas.removeEventListener(
+          'webglcontextlost',
+          this.boundContextLostHandler
+        );
         this.boundContextLostHandler = undefined;
       }
       if (this.boundContextRestoredHandler) {
-        canvas.removeEventListener('webglcontextrestored', this.boundContextRestoredHandler);
+        canvas.removeEventListener(
+          'webglcontextrestored',
+          this.boundContextRestoredHandler
+        );
         this.boundContextRestoredHandler = undefined;
       }
     }
-     
+
     // Stop animation loop
     if (this.frameId !== null) {
       cancelAnimationFrame(this.frameId);
       this.frameId = null;
     }
-    
+
     this.isAnimating = false;
 
     // Enhanced Three.js cleanup
@@ -187,7 +197,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       if (object.geometry) {
         object.geometry.dispose();
       }
-      
+
       // Dispose material(s)
       if (object.material) {
         this.disposeMaterial(object.material);
@@ -205,7 +215,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
    */
   private disposeMaterial(material: any) {
     if (Array.isArray(material)) {
-      material.forEach(mat => this.disposeMaterial(mat));
+      material.forEach((mat) => this.disposeMaterial(mat));
       return;
     }
 
@@ -213,12 +223,20 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
     // Dispose all possible texture maps
     const textureProperties = [
-      'map', 'normalMap', 'roughnessMap', 'metalnessMap', 
-      'emissiveMap', 'alphaMap', 'aoMap', 'displacementMap',
-      'specularMap', 'envMap', 'bumpMap'
+      'map',
+      'normalMap',
+      'roughnessMap',
+      'metalnessMap',
+      'emissiveMap',
+      'alphaMap',
+      'aoMap',
+      'displacementMap',
+      'specularMap',
+      'envMap',
+      'bumpMap',
     ];
 
-    textureProperties.forEach(prop => {
+    textureProperties.forEach((prop) => {
       if (material[prop]) {
         material[prop].dispose?.();
         material[prop] = null;
@@ -246,7 +264,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
       // Remove canvas from DOM
       if (this.renderer.domElement && this.renderer.domElement.parentNode) {
-        this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+        this.renderer.domElement.parentNode.removeChild(
+          this.renderer.domElement
+        );
       }
     }
   }
@@ -316,7 +336,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private setupWebGLContextHandlers() {
     const canvas = this.renderer.domElement;
-    
+
     // Handle WebGL context loss (common on mobile)
     this.boundContextLostHandler = (e: Event) => {
       e.preventDefault();
@@ -328,7 +348,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         this.frameId = null;
       }
     };
-    
+
     this.boundContextRestoredHandler = () => {
       console.log('WebGL context restored - reinitializing');
       this.glContextLost = false;
@@ -344,9 +364,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         }
       }, 100);
     };
-    
+
     canvas.addEventListener('webglcontextlost', this.boundContextLostHandler);
-    canvas.addEventListener('webglcontextrestored', this.boundContextRestoredHandler);
+    canvas.addEventListener(
+      'webglcontextrestored',
+      this.boundContextRestoredHandler
+    );
   }
 
   private reinitializeAfterContextLoss() {
@@ -359,21 +382,21 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         oldCanvas.parentNode.removeChild(oldCanvas);
       }
     }
-    
+
     // Recreate renderer
     this.renderer = new WebGLRenderer(this.getRendererConfig());
     this.configureRenderer();
-    
+
     // Re-add canvas to DOM
     const el = this.containerRef.nativeElement;
     el.appendChild(this.renderer.domElement);
-    
+
     // Re-setup context handlers
     this.setupWebGLContextHandlers();
-    
+
     // Update camera and renderer size
     this.onResize();
-    
+
     // Reload model - WebGL resources (textures, buffers) are lost, so we need to reload
     // But first, clear the old model from the group
     if (this.modelGroup) {
@@ -381,12 +404,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         this.modelGroup.remove(this.modelGroup.children[0]);
       }
     }
-    
+
     // Reload the model
     this.loading = true;
     this.showFallback = false;
     this.loadModel();
-    
+
     // Resume animation
     if (this.isPageVisible) {
       this.animate();
@@ -394,27 +417,42 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   private getRendererConfig(): any {
+    const isMobile = window.innerWidth < 768;
+    const antialias = isMobile ? this.mobileQuality === 'high' : true;
     return {
-      antialias: false,
+      antialias,
       alpha: true,
       powerPreference: 'high-performance' as const,
-      failIfMajorPerformanceCaveat: false
+      failIfMajorPerformanceCaveat: false,
     };
   }
 
   private configureRenderer() {
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
-    
-    // Otimização agressiva para mobile: reduzir resolução e FPS
+
     const isMobile = window.innerWidth < 768;
-    const maxPixelRatio = isMobile ? 0.75 : 1.5; // Reduzido de 1.0 para 0.75 no mobile
-    this.targetFPS = isMobile ? 24 : 60; // Limitar a 24 FPS no mobile
+    let maxPixelRatio = 1.5;
+    this.targetFPS = 60;
+    if (isMobile) {
+      if (this.mobileQuality === 'low') {
+        maxPixelRatio = 0.75;
+        this.targetFPS = 24;
+      } else if (this.mobileQuality === 'balanced') {
+        maxPixelRatio = Math.min(window.devicePixelRatio, 1.0);
+        this.targetFPS = 30;
+      } else {
+        maxPixelRatio = Math.min(window.devicePixelRatio, 1.5);
+        this.targetFPS = 60;
+      }
+    }
     this.frameInterval = 1000 / this.targetFPS;
-    
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
+
+    this.renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, maxPixelRatio)
+    );
     this.renderer.shadowMap.enabled = false;
-    
+
     // Preserve drawing buffer for better mobile compatibility
     const gl = this.renderer.getContext();
     if (gl) {
@@ -431,19 +469,35 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private setupLighting() {
     const lights = this.createLights();
-    lights.forEach(light => this.scene.add(light));
+    lights.forEach((light) => this.scene.add(light));
   }
 
   private createLights() {
     return [
       new AmbientLight(0xffffff, 6.2),
-      this.createDirectionalLight(0xffffff, 2.5, [5, 5, 5] as [number, number, number]),
-      this.createDirectionalLight(0xffffff, 2.0, [-4, 2, 3] as [number, number, number]),
-      this.createDirectionalLight(0xffffff, 10.8, [0, 8, 0] as [number, number, number])
+      this.createDirectionalLight(0xffffff, 2.5, [5, 5, 5] as [
+        number,
+        number,
+        number
+      ]),
+      this.createDirectionalLight(0xffffff, 2.0, [-4, 2, 3] as [
+        number,
+        number,
+        number
+      ]),
+      this.createDirectionalLight(0xffffff, 10.8, [0, 8, 0] as [
+        number,
+        number,
+        number
+      ]),
     ];
   }
 
-  private createDirectionalLight(color: number, intensity: number, position: [number, number, number]) {
+  private createDirectionalLight(
+    color: number,
+    intensity: number,
+    position: [number, number, number]
+  ) {
     const light = new DirectionalLight(color, intensity);
     light.position.set(position[0], position[1], position[2]);
     return light;
@@ -458,7 +512,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private isWebGLAvailable(): boolean {
     try {
       const canvas = document.createElement('canvas');
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      const gl =
+        canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       return !!gl;
     } catch (e) {
       return false;
@@ -473,11 +528,11 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private setupLoaders() {
     this.gltfLoader = new GLTFLoader();
     this.gltfLoader.setMeshoptDecoder(MeshoptDecoder);
-    
+
     this.draco = new DRACOLoader();
     this.draco.setDecoderPath('/assets/draco/');
     this.gltfLoader.setDRACOLoader(this.draco);
-    
+
     this.ktx2 = new KTX2Loader();
     this.ktx2.setTranscoderPath('/assets/basis/');
     this.ktx2.detectSupport(this.renderer);
@@ -512,29 +567,47 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private processModelMaterials(obj: any) {
     const isMobile = window.innerWidth < 768;
-    
+
     obj.traverse((child: any) => {
       if (child.isMesh && child.material) {
         const m = child.material;
         this.updateMaterialColorSpaces(m);
-        
-        // Otimizar texturas no mobile
+
         if (isMobile && m.map) {
-          // Reduzir qualidade de textura no mobile
           m.map.generateMipmaps = true;
-          // Usar filtros mais simples no mobile para economizar memória
-          m.map.minFilter = LinearMipmapLinearFilter;
-          m.map.magFilter = LinearFilter;
+          if (this.mobileQuality === 'low') {
+            m.map.minFilter = LinearMipmapLinearFilter;
+            m.map.magFilter = LinearFilter;
+          } else if (this.mobileQuality === 'balanced') {
+            m.map.minFilter = LinearMipmapLinearFilter;
+            m.map.magFilter = LinearFilter;
+            m.map.anisotropy = Math.min(
+              4,
+              this.renderer.capabilities.getMaxAnisotropy()
+            );
+          } else {
+            m.map.minFilter = LinearMipmapLinearFilter;
+            m.map.magFilter = LinearFilter;
+            m.map.anisotropy = Math.min(
+              8,
+              this.renderer.capabilities.getMaxAnisotropy()
+            );
+          }
         }
-        
+
         m.needsUpdate = true;
       }
     });
   }
 
   private updateMaterialColorSpaces(material: any) {
-    const colorSpaceProps = ['map', 'emissiveMap', 'roughnessMap', 'metalnessMap'];
-    colorSpaceProps.forEach(prop => {
+    const colorSpaceProps = [
+      'map',
+      'emissiveMap',
+      'roughnessMap',
+      'metalnessMap',
+    ];
+    colorSpaceProps.forEach((prop) => {
       if (material[prop]) {
         material[prop].colorSpace = SRGBColorSpace;
       }
@@ -548,38 +621,45 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     const center = new Vector3();
     box.getCenter(center);
     obj.position.sub(center);
-    
+
     const maxDim = Math.max(size.x, size.y, size.z);
     const scale = 1.5 / maxDim;
     obj.scale.setScalar(scale);
-    
+
     this.camera.position.z = this.calculateOptimalZ(size, scale);
   }
 
   private calculateOptimalZ(size: Vector3, scale: number): number {
     const desiredScale = 1.2;
     const fovRad = (this.fov * Math.PI) / 180;
-    const fitHeightDistance = (size.y * scale * desiredScale) / (2 * Math.tan(fovRad / 2));
+    const fitHeightDistance =
+      (size.y * scale * desiredScale) / (2 * Math.tan(fovRad / 2));
     return Math.min(this.maxZoom, Math.max(this.minZoom, fitHeightDistance));
   }
 
   private animateModel() {
     this.containerRef.nativeElement.style.opacity = '0';
     this.modelGroup.scale.set(0.01, 0.01, 0.01);
-    
+
     gsap.to(this.modelGroup.scale, {
-      x: 1.2, y: 1.2, z: 1.2,
-      duration: 1, ease: 'power2.out'
+      x: 1.2,
+      y: 1.2,
+      z: 1.2,
+      duration: 1,
+      ease: 'power2.out',
     });
-    
+
     gsap.to(this.modelGroup.rotation, {
       y: (70 * Math.PI) / 180,
       z: (-5 * Math.PI) / 180,
-      duration: 2, ease: 'power2.out'
+      duration: 2,
+      ease: 'power2.out',
     });
-    
+
     gsap.to(this.containerRef.nativeElement, {
-      opacity: 1, duration: 0.8, ease: 'power2.out'
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
     });
   }
 
@@ -608,13 +688,16 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.boundVisibilityChangeHandler = () => this.onVisibilityChange();
 
     window.addEventListener('resize', this.boundResizeHandler);
-    document.addEventListener('visibilitychange', this.boundVisibilityChangeHandler);
+    document.addEventListener(
+      'visibilitychange',
+      this.boundVisibilityChangeHandler
+    );
     const el = this.containerRef.nativeElement;
     el.addEventListener('pointermove', this.boundPointerMoveHandler);
     el.addEventListener('pointerdown', this.boundPointerDownHandler);
     el.addEventListener('pointerup', this.boundPointerUpHandler);
     el.addEventListener('wheel', this.boundWheelHandler, { passive: true });
-    
+
     // Setup Intersection Observer to pause when element is not visible
     this.setupIntersectionObserver();
   }
@@ -629,8 +712,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          this.isElementVisible = entry.isIntersecting && entry.intersectionRatio > 0;
-          
+          this.isElementVisible =
+            entry.isIntersecting && entry.intersectionRatio > 0;
+
           if (!this.isElementVisible && this.isAnimating) {
             // Pause animation when element is not visible
             if (this.frameId !== null) {
@@ -638,7 +722,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
               this.frameId = null;
             }
             this.isAnimating = false;
-          } else if (this.isElementVisible && !this.isAnimating && !this.glContextLost && this.isPageVisible) {
+          } else if (
+            this.isElementVisible &&
+            !this.isAnimating &&
+            !this.glContextLost &&
+            this.isPageVisible
+          ) {
             // Resume animation when element becomes visible
             this.animate();
           }
@@ -646,7 +735,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       },
       {
         threshold: 0.1, // Trigger when at least 10% of element is visible
-        rootMargin: '50px' // Start loading slightly before element enters viewport
+        rootMargin: '50px', // Start loading slightly before element enters viewport
       }
     );
 
@@ -655,7 +744,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private onVisibilityChange() {
     this.isPageVisible = !document.hidden;
-    
+
     if (!this.isPageVisible) {
       // Pause animation when page is hidden
       if (this.frameId !== null) {
@@ -663,7 +752,11 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         this.frameId = null;
       }
       this.isAnimating = false;
-    } else if (!this.isAnimating && !this.glContextLost && this.isElementVisible) {
+    } else if (
+      !this.isAnimating &&
+      !this.glContextLost &&
+      this.isElementVisible
+    ) {
       // Resume animation when page becomes visible and element is visible
       this.animate();
     }
@@ -713,7 +806,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
     // Limitar a rotação vertical para evitar que o modelo vire de cabeça para baixo
     const nextX = this.modelGroup.rotation.x + normalizedDy * rotationSpeed;
-    this.modelGroup.rotation.x = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, nextX));
+    this.modelGroup.rotation.x = Math.max(
+      -Math.PI / 3,
+      Math.min(Math.PI / 3, nextX)
+    );
   }
 
   private onWheel(e: WheelEvent) {
@@ -728,22 +824,27 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private animate() {
     // Don't animate if page/element is not visible, context is lost, or already animating
-    if (!this.isPageVisible || !this.isElementVisible || this.glContextLost || this.isAnimating) {
+    if (
+      !this.isPageVisible ||
+      !this.isElementVisible ||
+      this.glContextLost ||
+      this.isAnimating
+    ) {
       return;
     }
-    
+
     const now = performance.now();
     const elapsed = now - this.lastFrameTime;
-    
+
     // Throttle FPS no mobile
     if (elapsed < this.frameInterval) {
       this.frameId = requestAnimationFrame(() => this.animate());
       return;
     }
-    
+
     this.lastFrameTime = now - (elapsed % this.frameInterval);
     this.isAnimating = true;
-    
+
     this.frameId = requestAnimationFrame(() => {
       this.isAnimating = false;
       this.animate();
@@ -754,7 +855,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       if (!this.renderer || !this.renderer.domElement) {
         return;
       }
-      
+
       const gl = this.renderer.getContext();
       if (!gl || gl.isContextLost()) {
         this.glContextLost = true;
@@ -764,14 +865,17 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
       // Auto rotation when not interacting with model
       if (this.isAutoRotating && this.modelGroup) {
-        this.modelGroup.rotation.y += 0.001; // Gentle auto rotation on Y axis
+        this.modelGroup.rotation.y += 0.009; // Gentle auto rotation on Y axis
       }
 
       this.renderer.render(this.scene, this.camera);
     } catch (error) {
       console.error('Error during render:', error);
       // Try to recover by showing fallback
-      if (error instanceof Error && (error.message.includes('context') || error.message.includes('lost'))) {
+      if (
+        error instanceof Error &&
+        (error.message.includes('context') || error.message.includes('lost'))
+      ) {
         this.glContextLost = true;
         this.showFallback = true;
         this.loading = false;

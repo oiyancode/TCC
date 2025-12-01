@@ -100,14 +100,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   // Search methods
   onSearchInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.searchQuery = input.value;
-    this.searchSubject.next(this.searchQuery);
+    this.updateSearchQuery(input.value);
   }
 
   onSearchInputMobile(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.searchQuery = input.value;
-    this.searchSubject.next(this.searchQuery);
+    this.updateSearchQuery(input.value);
   }
 
   private setupSearch() {
@@ -129,6 +127,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
           results.length > 0 && this.searchQuery.trim().length >= 2;
         this.showRecentSearches = this.searchQuery.trim().length === 0;
       });
+  }
+
+  private updateSearchQuery(value: string) {
+    this.searchQuery = value;
+    this.searchSubject.next(this.searchQuery);
   }
 
   private loadRecentSearches() {

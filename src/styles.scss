@@ -119,16 +119,16 @@ body {
 
 /* Mobile Improvements */
 @media (max-width: 768px) {
-  button, 
-  a, 
-  input, 
-  select, 
+  button,
+  a,
+  input,
+  select,
   textarea {
     min-height: 44px; /* Apple's recommended minimum touch target */
     min-width: 44px;
     touch-action: manipulation;
   }
-  
+
   /* Improve tap highlight color */
   * {
     -webkit-tap-highlight-color: transparent;
