@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductsService, Product } from '../../services/products.service';
+import { ProductsService, Product, Review } from '../../services/products.service';
 import { CartService } from '../../services/cart.service';
 import { NavbarComponent } from '../navbar/navbar.component'; // Import NavbarComponent
 import { LoadingComponent } from '../loading/loading.component';
 import { ToastService } from '../../services/toast.service';
-import { APP_CONFIG } from '../../core/constants/app.constants';
 
 @Component({
   selector: 'app-product-details',
@@ -23,8 +22,9 @@ export class ProductDetailsComponent implements OnInit {
   isLoading = true;
   selectedSize = 'V2'; // default size for tennis
   availableSizes: string[] = [];
-  shoeSizes: number[] = APP_CONFIG.SHOE_SIZES;
+  shoeSizes: number[] = []; // Will be populated from product data
   selectedShoeSize: number = 39; // default shoe size
+  productScale: number = 1; // Scale factor for product image animation
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +56,8 @@ export class ProductDetailsComponent implements OnInit {
         this.isVariantTenis = product.variant === 'tenis';
         this.setupSizes();
         this.loadRecommendedProducts(product.id, product.variant);
+        // Set initial scale based on default size
+        this.updateProductScale();
       }
     });
   }
@@ -74,8 +76,13 @@ export class ProductDetailsComponent implements OnInit {
   private setupSizes() {
     if (this.product?.variant === 'tenis') {
       this.availableSizes = ['V1', 'V2'];
+      // Use product-specific shoe sizes if available, otherwise use default
+      this.shoeSizes = this.product.shoeSizes || [37, 38, 39, 40, 41, 42];
+      // Set default selected size to first available or 39
+      this.selectedShoeSize = this.shoeSizes.includes(39) ? 39 : this.shoeSizes[0];
     } else {
       this.availableSizes = ['ÚNICO'];
+      this.shoeSizes = [];
     }
   }
 
@@ -85,6 +92,32 @@ export class ProductDetailsComponent implements OnInit {
 
   selectShoeSize(size: number) {
     this.selectedShoeSize = size;
+    this.updateProductScale();
+  }
+
+  private updateProductScale() {
+    if (!this.isVariantTenis || !this.shoeSizes.length) {
+      this.productScale = 1;
+      return;
+    }
+    
+    // Calculate scale based on shoe size
+    // Smallest size = 0.85, largest size = 1.15
+    const minSize = Math.min(...this.shoeSizes);
+    const maxSize = Math.max(...this.shoeSizes);
+    const sizeRange = maxSize - minSize;
+    
+    if (sizeRange === 0) {
+      this.productScale = 1;
+      return;
+    }
+    
+    const normalizedSize = (this.selectedShoeSize - minSize) / sizeRange;
+    this.productScale = 0.85 + (normalizedSize * 0.3); // Range: 0.85 to 1.15
+  }
+
+  getStarArray(rating: number): number[] {
+    return Array(rating).fill(0);
   }
 
   switchProduct(productId: number) {
@@ -100,7 +133,7 @@ export class ProductDetailsComponent implements OnInit {
     this.addToCart();
     setTimeout(() => {
       this.isAddedToCart = false;
-    }, APP_CONFIG.ANIMATION_DURATION_MS); // A animação dura 300ms
+    }, 300); // Animation duration in ms
   }
 
   addToCart() {

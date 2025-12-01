@@ -46,10 +46,12 @@
 
         <!-- Descrição do Produto (agora abaixo do título) -->
         <p class="product-description">
-          Produto de alta qualidade, perfeito para seu estilo.
+          Desenvolvido com tecnologia de ponta e materiais premium, este produto oferece 
+          conforto excepcional e design inovador. Perfeito para quem busca performance 
+          e estilo em cada passo.
         </p>
-        <!-- Imagem do Produto -->
-        <div class="product-image">
+        <!-- Imagem do Produto com animação de escala -->
+        <div class="product-image" [style.transform]="'translate(-50%, -50%) scale(' + productScale + ')'">
           <img [src]="product.imageSrc" [alt]="product.name" />
         </div>
       </div>
@@ -105,4 +107,37 @@
       </div>
     </div>
   </main>
+
+  <!-- Nova Seção: Sobre o Produto -->
+  <section class="about-product-section" *ngIf="product && !isLoading">
+    <div class="about-container">
+      <h2>Sobre o Produto</h2>
+      <p class="about-description">{{ product.description }}</p>
+    </div>
+  </section>
+
+  <!-- Nova Seção: Avaliações -->
+  <section class="reviews-section" *ngIf="product && !isLoading && product.reviews && product.reviews.length > 0">
+    <div class="reviews-container">
+      <h2>Avaliações</h2>
+      
+      <div class="reviews-grid">
+        <div class="review-card" *ngFor="let review of product.reviews">
+          <div class="review-header">
+            <span class="review-user">{{ review.userName }}</span>
+            <div class="review-rating">
+              <img 
+                *ngFor="let star of getStarArray(review.rating)" 
+                src="/assets/icons/star.png" 
+                alt="Star" 
+                class="star-icon"
+              />
+            </div>
+          </div>
+          <p class="review-comment">{{ review.comment }}</p>
+          <span class="review-date">{{ review.date }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>

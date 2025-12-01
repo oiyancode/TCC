@@ -3,9 +3,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  overflow: hidden;
+  justify-content: flex-start;
+  min-height: 100vh;
+  overflow-y: auto; // Enable vertical scroll
+  overflow-x: hidden;
 }
 
 @media (max-width: 1200px) {
@@ -20,7 +21,7 @@
 
 
 .bg-yellow {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -48,6 +49,7 @@
   width: 100%;
   max-width: 1400px;
   margin: 0;
+  padding-top: 8rem;
 
   @media (max-width: 1200px) {
     display: flex;
@@ -70,11 +72,10 @@
     width: 100%;
     padding: 3rem 0rem;
     background: url("/assets/Section_Detalhes_Prod/Fundo_Recomendados.png")
-      center/contain no-repeat;
+      center/102% 101% no-repeat;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     text-align: center;
     gap: 0.5rem;
@@ -83,8 +84,8 @@
     h3 {
       font-family: var(--font-headline);
       font-size: 1.3rem;
-      color: #fff;
-      margin: 0;
+      color: #1a1a1a; // Dark color
+      margin: 0 20px;
       text-transform: uppercase;
     }
 
@@ -147,40 +148,44 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--font-headline);
-      font-size: clamp(1.5rem, 3.5vw, 2rem);
-      color: #000;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: #1a1a1a;
       margin: 0;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       text-align: center;
       width: 80%;
       z-index: 3;
+      font-weight: 700;
     }
 
     .product-image {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 350px; /* Ajuste o valor conforme necessário */
+      max-width: 350px;
       z-index: 2;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); // Smooth bounce animation
 
       img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
+    width: 90%;
+    height: auto;
+    position: relative;
+    bottom: 55px;
+    object-fit: contain;
       }
     }
 
     .product-description {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: #000;
+      font-size: 0.95rem;
+      color: #1a1a1a;
       max-width: 70%;
-      line-height: 1.4;
+      line-height: 1.6;
       margin: 1rem auto 0 auto; /* Adicionado margin-top e centralizado */
       text-align: center;
       z-index: 3;
+      font-weight: 500;
     }
   }
 }
@@ -194,6 +199,7 @@
 
 .price-panel {
   position: relative;
+  bottom: 40px;
   width: 120%;
   max-width: 500px;
   background: url("/assets/Section_Detalhes_Prod/Fundo_Tela_Preco.png")
@@ -206,8 +212,8 @@
   .size-title {
     font-family: var(--font-headline);
     font-size: 1.5rem;
-    color: #fff;
-    margin-bottom: 35px;
+    color: #1a1a1a; // Dark color
+    margin: 35px;
     text-transform: uppercase;
     text-align: center;
   }
@@ -232,6 +238,7 @@
       &.selected {
         background: rgba(255, 255, 255, 0.3);
         border-color: #fff;
+        transform: scale(1.05);
       }
 
       &:hover {
@@ -266,6 +273,130 @@
 
     &.clicked {
       transform: scale(1.1);
+    }
+  }
+}
+
+// Nova Seção: Sobre o Produto
+.about-product-section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .about-container {
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      font-family: var(--font-headline);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: #1a1a1a;
+      margin: 0 0 1.5rem 0;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .about-description {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: #1a1a1a;
+      line-height: 1.8;
+      text-align: center;
+      margin: 0;
+    }
+  }
+}
+
+// Nova Seção: Avaliações
+.reviews-section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .reviews-container {
+    max-width: 1200px;
+    width: 100%;
+
+    h2 {
+      font-family: var(--font-headline);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: #1a1a1a;
+      margin: 0 0 2rem 0;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+
+      .review-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+          border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .review-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+
+          .review-user {
+            font-family: var(--font-headline);
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            font-weight: 600;
+          }
+
+          .review-rating {
+            display: flex;
+            gap: 0.25rem;
+
+            .star-icon {
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
+
+        .review-comment {
+          font-family: var(--font-mono);
+          font-size: 0.95rem;
+          color: #1a1a1a;
+          line-height: 1.6;
+          margin: 0 0 1rem 0;
+        }
+
+        .review-date {
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          color: rgba(26, 26, 26, 0.7);
+        }
+      }
     }
   }
 }
@@ -327,6 +458,25 @@
 
     .btn-add-cart {
       width: 150px;
+    }
+  }
+
+  .about-product-section {
+    padding: 3rem 1rem;
+
+    .about-container {
+      padding: 2rem;
+    }
+  }
+
+  .reviews-section {
+    padding: 3rem 1rem;
+
+    .reviews-container {
+      .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
     }
   }
 }

@@ -13,6 +13,14 @@ import {
 } from 'rxjs';
 import { ToastService } from './toast.service';
 
+export interface Review {
+  id: number;
+  userName: string;
+  rating: number; // 1-5 estrelas
+  comment: string;
+  date: string;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -20,6 +28,9 @@ export interface Product {
   imageSrc: string;
   variant: 'skate' | 'basket' | 'tenis';
   cssClass: string;
+  description?: string;
+  shoeSizes?: number[];
+  reviews?: Review[];
 }
 
 @Injectable({
