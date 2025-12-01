@@ -52,6 +52,11 @@ export class LoginComponent implements AfterViewInit {
       return;
     }
 
+    if (!this.isValidEmail(this.email)) {
+      this.toastService.error('E-mail inválido.');
+      return;
+    }
+
     if (this.isSignUp) {
       this.authService.register({ email: this.email, password: this.password }).subscribe(success => {
         if (success) {
@@ -70,6 +75,11 @@ export class LoginComponent implements AfterViewInit {
         }
       });
     }
+  }
+
+  private isValidEmail(value: string): boolean {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    return re.test(value);
   }
 
   acceptLgpd() {

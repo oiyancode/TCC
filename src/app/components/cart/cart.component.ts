@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CartService, CartItem } from '../../services/cart.service';
@@ -10,7 +10,7 @@ import { APP_CONFIG } from '../../core/constants/app.constants';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, RouterLink],
+  imports: [NavbarComponent, CommonModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap, catchError, shareReplay, map, retry } from 'rxjs';
+import { Observable, of, tap, catchError, shareReplay, map, retry, BehaviorSubject, finalize } from 'rxjs';
 import { ToastService } from './toast.service';
 
 export interface Product {
@@ -19,6 +19,7 @@ export class ProductsService {
   private productsCache?: Product[];
   private productsCacheTime?: number;
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private isLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private toastService: ToastService) {}
 
@@ -27,6 +28,7 @@ export class ProductsService {
       return of(this.productsCache!);
     }
 
+    this.isLoading$.next(true);
     return this.http.get<Product[]>('/assets/products.json').pipe(
       tap(products => {
         this.productsCache = products;
@@ -34,7 +36,8 @@ export class ProductsService {
       }),
       retry(2),
       catchError(() => this.handleError()),
-      shareReplay(this.cacheConfig)
+      shareReplay(this.cacheConfig),
+      finalize(() => this.isLoading$.next(false))
     );
   }
 
@@ -85,6 +88,10 @@ export class ProductsService {
   clearCache() {
     this.productsCache = undefined;
     this.productsCacheTime = undefined;
+  }
+
+  getLoadingState(): Observable<boolean> {
+    return this.isLoading$.asObservable();
   }
 
   private get cacheConfig() {

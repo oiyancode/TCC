@@ -2,7 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subscription, Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
+import {
+  Subscription,
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  of,
+} from 'rxjs';
 import { CartService } from '../../services/cart.service';
 import { ProductsService, Product } from '../../services/products.service';
 
@@ -18,7 +25,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isMobileMenuOpen = false;
   isSearchPopupOpen = false;
   isCartPage = false; // Detect if on cart page
-  
+
   // Search functionality
   searchQuery = '';
   searchResults: Product[] = [];
@@ -31,14 +38,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private cartService: CartService,
     private productsService: ProductsService
   ) {}
 
   ngOnInit() {
     this.setupCartSubscription();
-    this.checkIfCartPage();
     this.checkIfCartPage();
     this.setupSearch();
     this.loadRecentSearches();
@@ -72,7 +78,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private setupCartSubscription() {
     this.subscription.add(
       this.cartService.cartItemCount$.subscribe(
-        count => this.cartItemCount = this.formatCartCount(count)
+        (count) => (this.cartItemCount = this.formatCartCount(count))
       )
     );
   }
@@ -82,7 +88,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private checkIfCartPage() {
-    this.isCartPage = this.router.url.includes('/cart') || this.router.url.includes('/products');
+    this.isCartPage =
+      this.router.url.includes('/cart') ||
+      this.router.url.includes('/products');
   }
 
   get isProductDetailsPage(): boolean {
@@ -103,23 +111,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private setupSearch() {
-    this.searchSubscription = this.searchSubject.pipe(
-      debounceTime(300), // Aguarda 300ms após o usuário parar de digitar
-      distinctUntilChanged(), // Só busca se o termo mudou
-      switchMap(query => {
-        if (query.trim().length >= 2) {
-          return this.productsService.searchProducts(query);
-        } else {
-          return of([]);
-        }
-      })
-    ).subscribe(results => {
-      this.searchResults = results;
-      this.showSearchResults = results.length > 0 && this.searchQuery.trim().length >= 2;
-      this.searchResults = results;
-      this.showSearchResults = results.length > 0 && this.searchQuery.trim().length >= 2;
-      this.showRecentSearches = this.searchQuery.trim().length === 0;
-    });
+    this.searchSubscription = this.searchSubject
+      .pipe(
+        debounceTime(300), // Aguarda 300ms após o usuário parar de digitar
+        distinctUntilChanged(), // Só busca se o termo mudou
+        switchMap((query) => {
+          if (query.trim().length >= 2) {
+            return this.productsService.searchProducts(query);
+          } else {
+            return of([]);
+          }
+        })
+      )
+      .subscribe((results) => {
+        this.searchResults = results;
+        this.showSearchResults =
+          results.length > 0 && this.searchQuery.trim().length >= 2;
+        this.showRecentSearches = this.searchQuery.trim().length === 0;
+      });
   }
 
   private loadRecentSearches() {
@@ -131,16 +140,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private saveRecentSearch(query: string) {
     if (!query.trim()) return;
-    
+
     // Remove if already exists to move to top
-    this.recentSearches = this.recentSearches.filter(s => s !== query);
+    this.recentSearches = this.recentSearches.filter((s) => s !== query);
     this.recentSearches.unshift(query);
-    
+
     // Limit to 5
     if (this.recentSearches.length > 5) {
       this.recentSearches.pop();
     }
-    
+
     localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
   }
 
@@ -155,8 +164,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onSearchFocus() {
-    this.showSearchResults = this.searchResults.length > 0 && this.searchQuery.trim().length >= 2;
-    this.showRecentSearches = this.searchQuery.trim().length === 0 && this.recentSearches.length > 0;
+    this.showSearchResults =
+      this.searchResults.length > 0 && this.searchQuery.trim().length >= 2;
+    this.showRecentSearches =
+      this.searchQuery.trim().length === 0 && this.recentSearches.length > 0;
   }
 
   onSearchBlur() {
@@ -178,8 +189,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.showRecentSearches = false;
     this.searchQuery = '';
     // Limpar os inputs
-    const desktopInput = document.querySelector('.navbar__search--desktop input') as HTMLInputElement;
-    const mobileInput = document.querySelector('.navbar__search-popup-content input') as HTMLInputElement;
+    const desktopInput = document.querySelector(
+      '.navbar__search--desktop input'
+    ) as HTMLInputElement;
+    const mobileInput = document.querySelector(
+      '.navbar__search-popup-content input'
+    ) as HTMLInputElement;
     if (desktopInput) desktopInput.value = '';
     if (mobileInput) mobileInput.value = '';
   }

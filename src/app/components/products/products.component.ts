@@ -6,20 +6,21 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { LoadingComponent } from '../loading/loading.component';
 import gsap from 'gsap';
 import { APP_CONFIG } from '../../core/constants/app.constants';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-products',
   standalone: true,
   imports: [CommonModule, NavbarComponent, LoadingComponent],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  styleUrl: './products.component.scss',
 })
 export class ProductsComponent implements OnInit {
   allProducts: Product[] = [];
   filteredProducts: Product[] = [];
   selectedFilter: 'all' | 'tenis' | 'skate' | 'basket' = 'all';
   showFilterMenu = false;
-  isLoading = true;
+  loading$!: Observable<boolean>;
 
   constructor(
     private productsService: ProductsService,
@@ -28,15 +29,14 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isLoading = true;
-    this.productsService.getProducts().subscribe(products => {
+    this.loading$ = this.productsService.getLoadingState();
+    this.productsService.getProducts().subscribe((products) => {
       this.allProducts = products;
       this.filteredProducts = products;
-      this.isLoading = false;
       this.animateItems();
-      
+
       // Check for category query param
-      this.route.queryParams.subscribe(params => {
+      this.route.queryParams.subscribe((params) => {
         const category = params['category'];
         if (category && ['tenis', 'skate', 'basket'].includes(category)) {
           this.applyFilter(category as 'tenis' | 'skate' | 'basket');
@@ -51,13 +51,15 @@ export class ProductsComponent implements OnInit {
 
   applyFilter(filter: 'all' | 'tenis' | 'skate' | 'basket') {
     this.selectedFilter = filter;
-    
+
     if (filter === 'all') {
       this.filteredProducts = this.allProducts;
     } else {
-      this.filteredProducts = this.allProducts.filter(p => p.variant === filter);
+      this.filteredProducts = this.allProducts.filter(
+        (p) => p.variant === filter
+      );
     }
-    
+
     this.showFilterMenu = false;
     this.animateItems();
   }
@@ -73,7 +75,7 @@ export class ProductsComponent implements OnInit {
           duration: 0.4,
           stagger: 0.1,
           ease: 'power2.out',
-          clearProps: 'all'
+          clearProps: 'all',
         }
       );
     }, 100); // Wait for DOM update
@@ -85,10 +87,10 @@ export class ProductsComponent implements OnInit {
 
   getFilterLabel(): string {
     const labels = {
-      'all': 'Todos os Produtos',
-      'tenis': 'Tênis',
-      'skate': 'Skate',
-      'basket': 'Basquete'
+      all: 'Todos os Produtos',
+      tenis: 'Tênis',
+      skate: 'Skate',
+      basket: 'Basquete',
     };
     return labels[this.selectedFilter];
   }
