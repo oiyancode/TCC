@@ -10,11 +10,20 @@
         <p>Carregando carrinho...</p>
       </div>
 
-      <div *ngIf="!isLoading && isCartEmpty()" class="empty-cart">
-        <p>Seu carrinho está vazio</p>
-        <button class="continue-shopping-btn" (click)="continueShopping()">
-          Continuar Comprando
-        </button>
+      <div *ngIf="!isLoading && isCartEmpty()" class="empty-cart-state">
+        <div class="empty-cart-illustration">
+          <img width="200" height="200" src="/assets/icons/rec-carrinho-de-compras.webp" alt="Carrinho vazio" />
+        </div>
+        <h3 class="empty-cart-title">Seu carrinho está vazio</h3>
+        <p class="empty-cart-message">
+          Parece que você ainda não adicionou nenhum produto ao carrinho.<br>
+          Explore nossa coleção e encontre algo incrível!
+        </p>
+        <div class="empty-cart-actions">
+          <button class="btn-primary" (click)="continueShopping()">
+            Explorar Produtos
+          </button>
+        </div>
       </div>
 
       <div *ngIf="!isLoading && !isCartEmpty()" class="products-list">
