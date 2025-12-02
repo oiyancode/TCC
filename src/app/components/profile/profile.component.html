@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+
+<div class="profile-container">
+  <h1>Perfil do Usuário</h1>
+
+  <div class="user-info">
+    <div class="user-avatar">
+      <img src="/assets/icons/perfil_guest.svg" alt="Perfil" />
+    </div>
+
+    <div class="user-details">
+      <h2>{{ userName }}</h2>
+      <p>{{ userEmail }}</p>
+    </div>
+  </div>
+
+  <div class="profile-actions">
+    <button class="logout-button" (click)="logout()">Sair</button>
+  </div>
+</div>

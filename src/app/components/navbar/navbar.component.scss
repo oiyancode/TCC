@@ -68,7 +68,7 @@
 .navbar__right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 
 .navbar__search {
@@ -98,15 +98,15 @@
     center / 18px no-repeat !important;
   border: 1.5px solid rgba(255, 217, 0, 0.9);
   color: #27272a !important; // Texto escuro para contraste
-  
+
   &::placeholder {
     color: #666666 !important; // Placeholder mais escuro para visibilidade
     opacity: 1;
   }
-  
+
   &:focus {
-    background: #ffffff url("/assets/lupa_busca.png") 10px
-      center / 18px no-repeat !important;
+    background: #ffffff url("/assets/lupa_busca.png") 10px center / 18px
+      no-repeat !important;
     border-color: rgba(255, 217, 0, 1);
     color: #27272a !important;
   }
@@ -142,7 +142,7 @@
   &::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 3px;
-    
+
     &:hover {
       background-color: rgba(0, 0, 0, 0.2);
     }
@@ -218,18 +218,18 @@
   margin-top: 12px;
   max-height: 300px;
   border: 1px solid rgba(255, 217, 0, 0.3);
-  
+
   // No mobile, manter tamanhos menores
   .search-result-image {
     width: 60px;
     height: 60px;
     padding: 8px;
   }
-  
+
   .search-result-name {
     font-size: 14px;
   }
-  
+
   .navbar__search-result-item {
     gap: 12px;
     padding: 12px 16px;
@@ -243,20 +243,20 @@
     max-width: 550px;
     overflow-x: hidden; // Garante que não haja scroll horizontal
   }
-  
+
   .navbar__search-result-item {
     gap: 24px;
     padding: 20px 24px;
     overflow: hidden; // Previne overflow horizontal
   }
-  
+
   .search-result-image {
     width: 100px; // Imagem ainda maior no desktop
     height: 100px;
     padding: 14px;
     flex-shrink: 0; // Imagem não encolhe
   }
-  
+
   .search-result-name {
     font-size: 17px; // Fonte ainda maior
     line-height: 1.5;
@@ -341,15 +341,14 @@
   .navbar__cart-count {
     position: absolute;
     top: 10px;
-    right: 17px;
+    right: 19px;
     color: #3f3f3f;
     background-color: antiquewhite;
     font-size: 12px;
     font-weight: 600;
     min-width: 18px;
     border-radius: 20%;
-    display: flex
-;
+    display: flex;
     align-items: center;
     justify-content: center;
     padding: 4px;
@@ -518,10 +517,54 @@
     }
   }
 
+  // Show profile icon on cart page
+  .navbar__profile-mobile {
+    display: flex; // Show profile/login icon on cart page
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+  }
+
   // Ensure logo and icons are visible
   .navbar__left,
   .navbar__right {
     z-index: 1;
+  }
+}
+
+// Products Page Simplified Navbar
+.navbar--products-page {
+  .navbar__hamburger {
+    display: flex !important; // Always show hamburger on products page
+  }
+
+  .navbar__links {
+    display: none !important; // Hide desktop links on products page
+  }
+
+  .navbar__search--desktop {
+    display: none !important; // Hide desktop search on products page
+  }
+
+  .navbar__btn--desktop {
+    display: none !important; // Hide desktop buttons on products page
+  }
+
+  .navbar__cart-mobile {
+    display: flex !important; // Show mobile cart icon on products page
+  }
+
+  .navbar__profile-mobile {
+    display: flex !important; // Show profile icon on products page
+  }
+
+  .navbar__search-btn {
+    display: flex !important; // Show search icon on products page
   }
 }
 
@@ -577,6 +620,29 @@
   .navbar__search input {
     width: 180px; // Narrower search bar
   }
+
+  // Show profile icon on tablets to match mobile behavior
+  .navbar__profile-mobile {
+    display: flex; // Show profile icon on tablets
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 36px; // Slightly smaller than mobile
+      height: 36px;
+      object-fit: contain;
+    }
+  }
+
+  // Hide desktop "Entrar" button on tablets to save space
+  .navbar__btn--outline {
+    display: none; // Hide desktop button on tablets
+  }
+
+  // Show mobile cart icon on tablets
+  .navbar__cart-mobile {
+    display: flex; // Show mobile cart icon on tablets
+  }
 }
 
 // Hide navbar links on smaller tablets to prevent overlap
@@ -595,6 +661,19 @@
 
   .navbar__cart-mobile {
     display: flex; // Show mobile cart icon
+  }
+
+  // Ensure profile icon is visible on smaller tablets
+  .navbar__profile-mobile {
+    display: flex; // Show profile icon on smaller tablets
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+    }
   }
 }
 
@@ -664,7 +743,7 @@
   align-items: center;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  
+
   span {
     font-size: 0.75rem;
     color: #999;
@@ -672,7 +751,7 @@
     letter-spacing: 0.05em;
     font-weight: 600;
   }
-  
+
   button {
     font-size: 0.75rem;
     color: #ef4444;
@@ -680,7 +759,7 @@
     background: none;
     border: none;
     padding: 4px 8px;
-    
+
     &:hover {
       background: rgba(239, 68, 68, 0.1);
       border-radius: 4px;
@@ -702,11 +781,11 @@
   padding: 12px 16px;
   cursor: pointer;
   transition: background 0.2s;
-  
+
   &:hover {
     background: rgba(0, 0, 0, 0.03);
   }
-  
+
   span {
     font-size: 14px;
     color: #333;

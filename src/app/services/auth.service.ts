@@ -8,7 +8,7 @@ export interface User {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -30,7 +30,7 @@ export class AuthService {
 
   register(user: User): Observable<boolean> {
     const users = this.getUsers();
-    if (users.find(u => u.email === user.email)) {
+    if (users.find((u) => u.email === user.email)) {
       return of(false); // User already exists
     }
     users.push(user);
@@ -40,8 +40,11 @@ export class AuthService {
 
   login(credentials: User): Observable<boolean> {
     const users = this.getUsers();
-    const user = users.find(u => u.email === credentials.email && u.password === credentials.password);
-    
+    const user = users.find(
+      (u) =>
+        u.email === credentials.email && u.password === credentials.password
+    );
+
     if (user) {
       const { password, ...safeUser } = user;
       localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(safeUser));

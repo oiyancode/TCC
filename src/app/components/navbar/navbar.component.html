@@ -2,6 +2,7 @@
   class="navbar"
   [class.navbar--cart-page]="isCartPage"
   [class.navbar--product-details]="isProductDetailsPage"
+  [class.navbar--products-page]="isProductsPage"
 >
   <div class="navbar__left">
     <a href="#hero" aria-label="Hero" class="navbar__logo-link">
@@ -17,17 +18,17 @@
       <img src="/assets/icons/menu_navbar.png" alt="Menu" />
     </button>
 
-    <!-- Desktop Navigation Links (hidden on cart page) -->
-    <nav class="navbar__links" *ngIf="!isCartPage">
-      <a href="#lancamentos">Lançamentos</a>
+    <!-- Desktop Navigation Links (hidden on cart page and products page) -->
+    <nav class="navbar__links" *ngIf="!isCartPage && !isProductsPage">
+      <a routerLink="/">Home</a>
       <a routerLink="/products">Produtos</a>
       <a href="#footer">Sobre</a>
     </nav>
   </div>
 
   <div class="navbar__right">
-    <!-- Desktop Search Bar (hidden on cart page) -->
-    <div class="navbar__search navbar__search--desktop" *ngIf="!isCartPage">
+    <!-- Desktop Search Bar (hidden on cart page and products page) -->
+    <div class="navbar__search navbar__search--desktop" *ngIf="!isCartPage && !isProductsPage">
       <input
         type="text"
         placeholder="Buscar"
@@ -92,15 +93,14 @@
     <!-- Mobile Profile Icon -->
     <button
       class="navbar__profile-mobile"
-      routerLink="/login"
+      (click)="navigateToLoginOrProfile()"
       aria-label="Perfil"
-      *ngIf="!isCartPage"
     >
-      <img src="/assets/icons/perfil_guest.svg" alt="Perfil" />
+      <img [src]="isLoggedIn ? '/assets/icons/perfil_guest.svg' : '/assets/icons/perfil_guest_sem_login.svg'" alt="Perfil" />
     </button>
 
-    <button class="navbar__btn navbar__btn--outline navbar__btn--desktop" *ngIf="!isCartPage" routerLink="/login">
-      Entrar
+    <button class="navbar__btn navbar__btn--outline navbar__btn--desktop" *ngIf="!isCartPage && !isProductsPage" (click)="navigateToLoginOrProfile()">
+      {{ buttonText }}
     </button>
     
     <!-- Desktop Cart Button -->
@@ -108,7 +108,7 @@
       class="navbar__btn navbar__btn--cart navbar__btn--desktop"
       (click)="goToCart()"
       style="cursor: pointer"
-      *ngIf="!isCartPage"
+      *ngIf="!isCartPage && !isProductsPage"
     >
       Carrinho {{ cartItemCount }}
     </button>
@@ -118,7 +118,7 @@
       class="navbar__cart-mobile"
       (click)="goToCart()"
       aria-label="Carrinho"
-      *ngIf="!isCartPage"
+      *ngIf="!isCartPage && !isProductsPage"
     >
       <img src="/assets/icons/cart_mobile_icon.webp" alt="Carrinho" />
       <span class="navbar__cart-count">{{ cartItemCount }}</span>
@@ -132,7 +132,6 @@
   >
     <nav class="navbar__mobile-nav">
       <a routerLink="/" (click)="closeMobileMenu()">Home</a>
-      <a href="#lancamentos" (click)="closeMobileMenu()">Lançamentos</a>
       <a routerLink="/products" (click)="closeMobileMenu()">Produtos</a>
       <a href="#footer" (click)="closeMobileMenu()">Sobre</a>
     </nav>

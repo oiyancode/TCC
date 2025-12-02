@@ -57,10 +57,10 @@
 .news__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  gap: 2rem;
   margin-top: 1rem;
   max-width: 1400px; // Prevent overflow on ultra-wide screens
-  width: 100%;
+  // width: 100%;
 }
 
 .news__item {

@@ -12,6 +12,8 @@ import {
 } from 'rxjs';
 import { CartService } from '../../services/cart.service';
 import { ProductsService, Product } from '../../services/products.service';
+import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-navbar',
@@ -25,6 +27,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isMobileMenuOpen = false;
   isSearchPopupOpen = false;
   isCartPage = false; // Detect if on cart page
+  isLoggedIn = false;
+  buttonText = 'Entrar';
 
   // Search functionality
   searchQuery = '';
@@ -36,11 +40,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private searchSubscription?: Subscription;
 
   private subscription: Subscription = new Subscription();
+  private authSubscription?: Subscription;
 
   constructor(
     private router: Router,
     private cartService: CartService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private authService: AuthService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -48,12 +55,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.checkIfCartPage();
     this.setupSearch();
     this.loadRecentSearches();
+    this.setupAuthSubscription();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
     if (this.searchSubscription) {
       this.searchSubscription.unsubscribe();
+    }
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
 
@@ -87,12 +98,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return `[${count.toString().padStart(2, '0')}]`;
   }
 
-  private checkIfCartPage() {
-    this.isCartPage =
-      this.router.url.includes('/cart') ||
-      this.router.url.includes('/products');
+  private setupAuthSubscription() {
+    this.authSubscription = this.authService.currentUser$.subscribe((user) => {
+      this.isLoggedIn = !!user;
+      this.buttonText = this.isLoggedIn ? 'Perfil' : 'Entrar';
+
+      if (this.isLoggedIn) {
+        this.toastService.success('Login realizado com sucesso!');
+      }
+    });
   }
 
+  private checkIfCartPage() {
+    this.isCartPage = this.router.url.includes('/cart');
+  }
+
+  get isProductsPage(): boolean {
+    return this.router.url.includes('/products');
+  }
   get isProductDetailsPage(): boolean {
     return this.router.url.includes('/product/');
   }
@@ -101,6 +124,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   onSearchInput(event: Event) {
     const input = event.target as HTMLInputElement;
     this.updateSearchQuery(input.value);
+  }
+
+  navigateToLoginOrProfile() {
+    if (this.isLoggedIn) {
+      this.router.navigate(['/profile']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   onSearchInputMobile(event: Event) {
