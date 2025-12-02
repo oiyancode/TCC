@@ -1,9 +1,9 @@
-<svg width="538" height="623" viewBox="0 0 538 623" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="373" height="699" viewBox="0 0 373 699" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_dgn_190_38)">
-<path d="M526 574.663C526 583.29 519.16 590.364 510.537 590.654L28.537 606.841C19.4951 607.145 12 599.897 12 590.85V24.0002C12 14.9313 19.5299 7.67542 28.5925 8.01123L510.593 25.873C519.193 26.1917 526 33.256 526 41.8621V574.663Z" fill="url(#paint0_linear_190_38)"/>
+<path d="M361 648.405C361 656.896 354.368 663.908 345.89 664.38L28.8903 682.045C19.718 682.556 12 675.257 12 666.07V24.0007C12 14.7779 19.7766 7.46476 28.982 8.03081L345.982 27.5234C354.421 28.0424 361 35.038 361 43.4933V648.405Z" fill="url(#paint0_linear_190_38)"/>
 </g>
 <defs>
-<filter id="filter0_dgn_190_38" x="0" y="0" width="538" height="622.85" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_dgn_190_38" x="0" y="0" width="373" height="698.071" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dy="4"/>
@@ -30,7 +30,7 @@
 <feMergeNode in="color1" />
 </feMerge>
 </filter>
-<linearGradient id="paint0_linear_190_38" x1="-295.414" y1="840.757" x2="483.048" y2="257.755" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_190_38" x1="-196.73" y1="945.907" x2="488.676" y2="636.558" gradientUnits="userSpaceOnUse">
 <stop stop-color="#005716"/>
 <stop offset="1" stop-color="#30CF58"/>
 </linearGradient>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private toastService: ToastService,
     private fb: FormBuilder
   ) {
@@ -78,13 +79,16 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['tab'] === 'security') {
+        this.activeTab = 'security';
+      }
+    });
+
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.currentUser = user;
         this.savedCards = user.savedCards || [];
-        // Check if user has a photoUrl, otherwise use default
-        // For now, we'll just use the default or what's in local state if we persisted it
-        // In a real app, this would be in the User object
         this.profileImage = (user as any).photoUrl || '/assets/icons/perfil_guest.svg';
         this.patchPersonalForm(user);
       }
@@ -97,7 +101,6 @@ export class ProfileComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.profileImage = e.target.result;
-        // Update user profile with new image
         if (this.currentUser) {
             const updatedUser = { ...this.currentUser, photoUrl: this.profileImage };
             this.authService.updateProfile(updatedUser).subscribe();

@@ -75,7 +75,7 @@ export class LoginComponent implements AfterViewInit {
         .login({ email: this.email, password: this.password })
         .subscribe((success) => {
           if (success) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/profile']);
             this.toastService.success('Login realizado com sucesso!');
           } else {
             this.toastService.error('E-mail ou senha incorretos.');

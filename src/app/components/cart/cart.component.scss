@@ -43,9 +43,9 @@
 
 // SEÇÃO VERDE - ENDEREÇO
 .address-section {
-  background: url("/assets/Section_Cart/Bg_Endereco.svg") center/cover;
+  background: url("/assets/Section_Cart/Bg_Endereco.svg") center/100% 100% no-repeat;
   color: white;
-  width: 320px; // Fixed width
+  width: 400px; // Fixed width
   left: 0;
   z-index: 1;
 
@@ -84,7 +84,7 @@
 
 // SEÇÃO AZUL - PRODUTOS
 .products-section {
-  background: url("/assets/Section_Cart/BG_Produto_cart.svg") center/cover;
+  background: url("/assets/Section_Cart/BG_Produto_cart.svg") center/100% 100% no-repeat;
   color: white;
   height: 810px;
   width: 615px; // Fixed width
@@ -339,9 +339,9 @@
 
 // SEÇÃO AMARELA - PAGAMENTO
 .payment-section {
-  background: url("/assets/Section_Cart/Bg_Pagamento.svg") center/cover;
+  background: url("/assets/Section_Cart/Bg_Pagamento.svg") center/100% 100% no-repeat;
   color: #333;
-  width: 320px; // Fixed width
+  width: 400px; // Fixed width
   right: 0;
   z-index: 1;
 
@@ -430,41 +430,73 @@
   }
 
   .discount-section {
-    margin-bottom: 20px; // Reduced from 25px
+    margin-bottom: 20px;
 
     label {
       display: block;
-      font-size: 0.8rem; // Smaller font
-      font-weight: 600;
-      margin-bottom: 6px; // Reduced margin
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 8px;
     }
 
-    input {
-      width: 90%;
-      padding: 10px 14px; // Reduced padding
-      border: 2px solid rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.5);
-      font-size: 0.9rem; // Smaller font
+    .discount-input-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
 
-      &:focus {
-        outline: none;
-        border-color: #0066ff;
-        background: white;
+      input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .apply-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        
+        img {
+          width: 48px;
+          height: 48px;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
 
   .total-section {
+    margin-top: auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 8px 16px;
     background: rgba(0, 0, 0, 0.1);
-    padding: 20px;
     border-radius: 12px;
     margin-bottom: 20px;
+
+    .discount-info {
+      display: flex;
+      justify-content: space-between;
+      color: #2e7d32; // Green for discount
+      font-size: 14px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .total-label {
       font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 15px;
     }
 
     .total-value {
