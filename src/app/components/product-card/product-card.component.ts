@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../services/products.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-product-card',
@@ -26,7 +27,11 @@ export class ProductCardComponent {
 
   isAddedToCart = false;
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private toastService: ToastService
+  ) {}
 
   handleAddToCart(event: Event) {
     this.isAddedToCart = true;
@@ -46,6 +51,7 @@ export class ProductCardComponent {
     }
 
     this.cartService.addItem(productData);
+    this.toastService.success('Produto adicionado ao carrinho!');
     this.addToCart.emit(productData as Product);
   }
 
