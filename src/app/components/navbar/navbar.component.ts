@@ -98,14 +98,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return `[${count.toString().padStart(2, '0')}]`;
   }
 
+  userPhotoUrl: string | null = null;
+
   private setupAuthSubscription() {
     this.authSubscription = this.authService.currentUser$.subscribe((user) => {
       this.isLoggedIn = !!user;
       this.buttonText = this.isLoggedIn ? 'Perfil' : 'Entrar';
-
-      if (this.isLoggedIn) {
-        this.toastService.success('Login realizado com sucesso!');
-      }
+      this.userPhotoUrl = user?.photoUrl || null;
     });
   }
 

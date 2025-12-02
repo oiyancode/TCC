@@ -96,7 +96,7 @@
       (click)="navigateToLoginOrProfile()"
       aria-label="Perfil"
     >
-      <img [src]="isLoggedIn ? '/assets/icons/perfil_guest.svg' : '/assets/icons/perfil_guest_sem_login.svg'" alt="Perfil" />
+      <img [src]="isLoggedIn ? (userPhotoUrl || '/assets/icons/perfil_guest.svg') : '/assets/icons/perfil_guest_sem_login.svg'" alt="Perfil" class="profile-icon" />
     </button>
 
     <button class="navbar__btn navbar__btn--outline navbar__btn--desktop" *ngIf="!isCartPage && !isProductsPage" (click)="navigateToLoginOrProfile()">
