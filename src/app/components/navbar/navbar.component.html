@@ -89,6 +89,16 @@
       <img src="/assets/lupa_busca.png" alt="Buscar" />
     </button>
 
+    <!-- Mobile Profile Icon -->
+    <button
+      class="navbar__profile-mobile"
+      routerLink="/login"
+      aria-label="Perfil"
+      *ngIf="!isCartPage"
+    >
+      <img src="/assets/icons/perfil_guest.svg" alt="Perfil" />
+    </button>
+
     <button class="navbar__btn navbar__btn--outline navbar__btn--desktop" *ngIf="!isCartPage" routerLink="/login">
       Entrar
     </button>
