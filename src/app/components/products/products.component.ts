@@ -1,67 +1,70 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ProductsService, Product } from '../../services/products.service';
+import {
+  ProductsService,
+  Product,
+  FilterOptions,
+  SortOptions,
+} from '../../services/products.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoadingComponent } from '../loading/loading.component';
+import { FiltersComponent } from '../filters/filters.component'; // Importa o novo componente
 import gsap from 'gsap';
-import { APP_CONFIG } from '../../core/constants/app.constants';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { WishlistService } from '../../services/wishlist.service';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, LoadingComponent],
+  imports: [CommonModule, NavbarComponent, LoadingComponent, FiltersComponent], // Adiciona o FiltersComponent
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent implements OnInit {
-  allProducts: Product[] = [];
-  filteredProducts: Product[] = [];
-  selectedFilter: 'all' | 'tenis' | 'skate' | 'basket' = 'all';
-  showFilterMenu = false;
-  loading$!: Observable<boolean>;
+  products$: Observable<Product[]> = of([]);
+  loading$: Observable<boolean>;
+  wishlist: Set<number> = new Set();
+  initialFilterCategory: 'tenis' | 'skate' | 'basket' | undefined;
 
   constructor(
     private productsService: ProductsService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private wishlistService: WishlistService
+  ) {
+    this.loading$ = this.productsService.getLoadingState();
+  }
 
   ngOnInit() {
-    this.loading$ = this.productsService.getLoadingState();
-    this.productsService.getProducts().subscribe((products) => {
-      this.allProducts = products;
-      this.filteredProducts = products;
+    this.products$ = this.productsService.filteredProducts$;
+    this.productsService.getProducts().subscribe(() => {
       this.animateItems();
+    });
 
-      // Check for category query param
-      this.route.queryParams.subscribe((params) => {
-        const category = params['category'];
-        if (category && ['tenis', 'skate', 'basket'].includes(category)) {
-          this.applyFilter(category as 'tenis' | 'skate' | 'basket');
-        }
-      });
+    this.products$.subscribe(() => {
+      this.animateItems();
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      const category = params['category'];
+      if (category && ['tenis', 'skate', 'basket'].includes(category)) {
+        // Lógica para aplicar filtro inicial via categoria será movida para o filters.component
+        this.initialFilterCategory = category;
+      }
+    });
+
+    this.wishlistService.getWishlist().subscribe((wishlist) => {
+      this.wishlist = new Set(wishlist);
     });
   }
 
-  toggleFilterMenu() {
-    this.showFilterMenu = !this.showFilterMenu;
+  onFiltersChange(filters: FilterOptions) {
+    this.productsService.setFilters(filters);
   }
 
-  applyFilter(filter: 'all' | 'tenis' | 'skate' | 'basket') {
-    this.selectedFilter = filter;
-
-    if (filter === 'all') {
-      this.filteredProducts = this.allProducts;
-    } else {
-      this.filteredProducts = this.allProducts.filter(
-        (p) => p.variant === filter
-      );
-    }
-
-    this.showFilterMenu = false;
-    this.animateItems();
+  onSortChange(sort: SortOptions) {
+    this.productsService.setSort(sort);
   }
 
   private animateItems() {
@@ -93,5 +96,14 @@ export class ProductsComponent implements OnInit {
       basket: 'Basquete',
     };
     return labels[this.selectedFilter];
+  }
+
+  toggleWishlist(productId: number, event: Event) {
+    event.stopPropagation();
+    this.wishlistService.toggleWishlist(productId).subscribe();
+  }
+
+  isInWishlist(productId: number): boolean {
+    return this.wishlist.has(productId);
   }
 }

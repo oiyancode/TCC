@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+<div class="history-page">
+  <div class="history-container">
+    <div class="history-header">
+      <h1>Histórico de Pedidos</h1>
+      <p>Aqui estão todos os seus pedidos realizados.</p>
+    </div>
+
+    <app-loading *ngIf="isLoading"></app-loading>
+
+    <div *ngIf="!isLoading && orders.length > 0" class="orders-list">
+      <div *ngFor="let order of orders" class="order-card">
+        <div class="order-card-header">
+          <div>
+            <span class="order-number">Pedido #{{ order.orderNumber }}</span>
+            <span class="order-date">{{ order.date | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <span class="status-badge status-{{order.status}}">{{ order.status }}</span>
+        </div>
+        <div class="order-card-body">
+          <div class="items-preview">
+            <img *ngFor="let item of order.items.slice(0, 3)" [src]="item.imageSrc" class="item-thumbnail">
+            <span *ngIf="order.items.length > 3" class="more-items">+{{ order.items.length - 3 }}</span>
+          </div>
+          <div class="order-total">
+            <span>Total</span>
+            <strong>{{ order.total | currency:'BRL' }}</strong>
+          </div>
+        </div>
+        <div class="order-card-footer">
+          <button class="btn-secondary" (click)="viewOrderDetails(order.id)">Ver Detalhes</button>
+          <button class="btn-primary" (click)="trackOrder(order.id)">Rastrear Pedido</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && orders.length === 0" class="no-orders">
+      <img src="/assets/icons/empty-box.svg" alt="Nenhum pedido">
+      <h2>Nenhum Pedido Encontrado</h2>
+      <p>Você ainda não fez nenhum pedido. Que tal começar agora?</p>
+      <button class="btn-primary" routerLink="/products">Ver Produtos</button>
+    </div>
+  </div>
+</div>

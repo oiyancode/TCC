@@ -42,4 +42,27 @@ export const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
+  {
+    path: 'order-confirmation',
+    loadComponent: () =>
+      import(
+        './components/order-confirmation/order-confirmation.component'
+      ).then((c) => c.OrderConfirmationComponent),
+  },
+  {
+    path: 'orders-history',
+    loadComponent: () =>
+      import('./components/orders-history/orders-history.component').then(
+        (c) => c.OrdersHistoryComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'order-tracking',
+    loadComponent: () =>
+      import('./components/order-tracking/order-tracking.component').then(
+        (c) => c.OrderTrackingComponent
+      ),
+    canActivate: [authGuard],
+  },
 ];

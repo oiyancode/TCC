@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+
+<div class="tracking-container">
+  <ng-container *ngIf="order$ | async as order; else loading">
+    <div *ngIf="order; else notFound">
+      <div class="tracking-header">
+        <h1>Rastreamento do Pedido</h1>
+        <p><strong>Pedido:</strong> #{{ order.orderNumber }}</p>
+        <p><strong>Data:</strong> {{ order.date | date: 'dd/MM/yyyy' }}</p>
+      </div>
+
+      <div class="timeline-container">
+        <ul class="timeline">
+          <li 
+            *ngFor="let status of allStatuses; let i = index" 
+            class="timeline-item" 
+            [class.completed]="getStatusIndex(order.status) >= i">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h4>{{ status | titlecase }}</h4>
+              <p *ngIf="status === 'pending'">Pedido recebido</p>
+              <p *ngIf="status === 'processing'">Em processamento</p>
+              <p *ngIf="status === 'shipped'">Enviado</p>
+              <p *ngIf="status === 'delivered'">Entregue</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="order-details">
+        <h2>Itens do Pedido</h2>
+        <div *ngFor="let item of order.items" class="order-item">
+          <img [src]="item.imageSrc" [alt]="item.name">
+          <div class="item-info">
+            <p>{{ item.name }}</p>
+            <p>Qtd: {{ item.quantity }}</p>
+            <p>{{ item.price | currency:'BRL' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shipping-details">
+        <h2>Endereço de Entrega</h2>
+        <p>{{ order.shippingAddress.name }}</p>
+        <p>{{ order.shippingAddress.address }}</p>
+        <p>{{ order.shippingAddress.city }}, {{ order.shippingAddress.zip }}</p>
+        <p>{{ order.shippingAddress.country }}</p>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loading message="Carregando detalhes do pedido..."></app-loading>
+  </ng-template>
+
+  <ng-template #notFound>
+    <div class="not-found">
+      <h2>Pedido não encontrado</h2>
+      <p>O ID do pedido não foi encontrado ou é inválido.</p>
+    </div>
+  </ng-template>
+</div>

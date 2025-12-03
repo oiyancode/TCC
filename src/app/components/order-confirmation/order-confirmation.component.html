@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+<div class="confirmation-page">
+  <app-loading *ngIf="isLoading"></app-loading>
+
+  <div *ngIf="!isLoading && order" class="confirmation-container">
+    <div class="confirmation-header">
+      <img src="/assets/icons/check-circle.svg" alt="Success" class="success-icon">
+      <h1>Pedido Confirmado!</h1>
+      <p>Obrigado pela sua compra, {{ order.shippingAddress.name }}!</p>
+    </div>
+
+    <div class="order-summary">
+      <h2>Resumo do Pedido</h2>
+      <div class="order-details">
+        <p><strong>Número do Pedido:</strong> {{ order.orderNumber }}</p>
+        <p><strong>Data:</strong> {{ order.date | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Status:</strong> <span class="status-badge status-{{order.status}}">{{ order.status }}</span></p>
+        <p><strong>Total:</strong> {{ order.total | currency:'BRL' }}</p>
+      </div>
+
+      <h3>Itens Comprados</h3>
+      <div class="items-list">
+        <div *ngFor="let item of order.items" class="item-card">
+          <img [src]="item.imageSrc" [alt]="item.name" class="item-image">
+          <div class="item-info">
+            <p class="item-name">{{ item.name }}</p>
+            <p class="item-qty">Quantidade: {{ item.quantity }}</p>
+            <p class="item-price">{{ item.price | currency:'BRL' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Endereço de Entrega</h3>
+      <div class="shipping-address">
+        <p>{{ order.shippingAddress.address }}, {{ order.shippingAddress.city }}</p>
+        <p>{{ order.shippingAddress.zip }}, {{ order.shippingAddress.country }}</p>
+      </div>
+    </div>
+
+    <div class="confirmation-actions">
+        <button (click)="navigateToProducts()" class="btn-secondary">Continuar Comprando</button>
+        <button (click)="navigateToHome()" class="btn-primary">Ir para a Home</button>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && error" class="error-container">
+    <h2>Erro</h2>
+    <p>{{ error }}</p>
+    <button (click)="navigateToHome()">Voltar para a Home</button>
+  </div>
+</div>

@@ -10,6 +10,7 @@ import {
   retry,
   BehaviorSubject,
   finalize,
+  combineLatest,
 } from 'rxjs';
 import { ToastService } from './toast.service';
 
@@ -31,35 +32,133 @@ export interface Product {
   description?: string;
   shoeSizes?: number[];
   reviews?: Review[];
+  rating?: number; // Adicionado para facilitar a filtragem
+}
+
+export interface FilterOptions {
+  priceRange?: { min: number; max: number };
+  sizes?: number[];
+  rating?: number;
+  availability?: boolean;
+}
+
+export interface SortOptions {
+  sortBy?: 'price' | 'popularity' | 'newest' | 'rating';
+  order?: 'asc' | 'desc';
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private productsCache?: Product[];
+  private productsCache$ = new BehaviorSubject<Product[]>([]);
   private productsCacheTime?: number;
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
   private isLoading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient, private toastService: ToastService) {}
+  private filterOptions$ = new BehaviorSubject<FilterOptions>({});
+  private sortOptions$ = new BehaviorSubject<SortOptions>({
+    sortBy: 'popularity',
+    order: 'desc',
+  });
+
+  public filteredProducts$: Observable<Product[]>;
+
+  constructor(private http: HttpClient, private toastService: ToastService) {
+    this.filteredProducts$ = combineLatest([
+      this.productsCache$,
+      this.filterOptions$,
+      this.sortOptions$,
+    ]).pipe(
+      map(([products, filters, sort]) => {
+        let filtered = [...products];
+
+        if (filters.priceRange) {
+          filtered = filtered.filter((p) => {
+            const price = parseFloat(
+              p.price.replace('R$', '').replace(',', '.')
+            );
+            return (
+              price >= filters.priceRange!.min &&
+              price <= filters.priceRange!.max
+            );
+          });
+        }
+
+        if (filters.sizes && filters.sizes.length > 0) {
+          filtered = filtered.filter(
+            (p) =>
+              p.shoeSizes &&
+              p.shoeSizes.some((size) => filters.sizes!.includes(size))
+          );
+        }
+
+        if (filters.rating) {
+          filtered = filtered.filter(
+            (p) => p.rating && p.rating >= filters.rating!
+          );
+        }
+
+        // A lógica de disponibilidade será adicionada se houver um campo correspondente nos dados
+
+        if (sort.sortBy) {
+          filtered.sort((a, b) => {
+            const order = sort.order === 'asc' ? 1 : -1;
+            switch (sort.sortBy) {
+              case 'price':
+                return (
+                  (parseFloat(a.price.replace('R$', '').replace(',', '.')) -
+                    parseFloat(b.price.replace('R$', '').replace(',', '.'))) *
+                  order
+                );
+              case 'rating':
+                return ((a.rating || 0) - (b.rating || 0)) * order;
+              case 'popularity':
+                return (a.id - b.id) * order;
+              case 'newest':
+                return (b.id - a.id) * order;
+              default:
+                return 0;
+            }
+          });
+        }
+
+        return filtered;
+      })
+    );
+  }
 
   getProducts(): Observable<Product[]> {
     if (this.isCacheValid()) {
-      return of(this.productsCache!);
+      return this.productsCache$.asObservable();
     }
 
     this.isLoading$.next(true);
     return this.http.get<Product[]>('/assets/products.json').pipe(
       tap((products) => {
-        this.productsCache = products;
+        const productsWithRating = products.map((p) => ({
+          ...p,
+          rating:
+            p.reviews && p.reviews.length > 0
+              ? p.reviews.reduce((acc, review) => acc + review.rating, 0) /
+                p.reviews.length
+              : 0,
+        }));
+        this.productsCache$.next(productsWithRating);
         this.productsCacheTime = Date.now();
       }),
       retry(2),
       catchError(() => this.handleError()),
-      shareReplay(this.cacheConfig),
       finalize(() => this.isLoading$.next(false))
     );
+  }
+
+  setFilters(filters: FilterOptions): void {
+    this.filterOptions$.next(filters);
+  }
+
+  setSort(sort: SortOptions): void {
+    this.sortOptions$.next(sort);
   }
 
   getProductById(id: number): Observable<Product | undefined> {
@@ -99,6 +198,33 @@ export class ProductsService {
     );
   }
 
+  addReview(
+    productId: number,
+    review: Review
+  ): Observable<Product | undefined> {
+    const products = this.productsCache$.getValue();
+    const productIndex = products.findIndex((p) => p.id === productId);
+
+    if (productIndex > -1) {
+      const updatedProduct = { ...products[productIndex] };
+      updatedProduct.reviews = [...(updatedProduct.reviews || []), review];
+
+      const totalRating = updatedProduct.reviews.reduce(
+        (acc, r) => acc + r.rating,
+        0
+      );
+      updatedProduct.rating = totalRating / updatedProduct.reviews.length;
+
+      const updatedProducts = [...products];
+      updatedProducts[productIndex] = updatedProduct;
+
+      this.productsCache$.next(updatedProducts);
+      return of(updatedProduct);
+    }
+
+    return of(undefined);
+  }
+
   searchProducts(query: string): Observable<Product[]> {
     const sanitizedQuery = this.sanitizeSearchTerm(query);
     if (!sanitizedQuery) {
@@ -118,7 +244,7 @@ export class ProductsService {
   }
 
   clearCache() {
-    this.productsCache = undefined;
+    this.productsCache$.next([]);
     this.productsCacheTime = undefined;
   }
 
@@ -126,16 +252,11 @@ export class ProductsService {
     return this.isLoading$.asObservable();
   }
 
-  private get cacheConfig() {
-    return {
-      bufferSize: 1,
-      refCount: false,
-      windowTime: this.CACHE_DURATION,
-    };
-  }
-
   private isCacheValid(): boolean {
-    if (!this.productsCache || !this.productsCacheTime) {
+    if (
+      this.productsCache$.getValue().length === 0 ||
+      !this.productsCacheTime
+    ) {
       return false;
     }
     return Date.now() - this.productsCacheTime < this.CACHE_DURATION;
@@ -150,7 +271,9 @@ export class ProductsService {
     this.toastService.error(
       'Erro ao carregar produtos. Verifique sua conexão.'
     );
-    return this.productsCache ? of(this.productsCache) : of([]);
+    return this.productsCache$.getValue().length > 0
+      ? of(this.productsCache$.getValue())
+      : of([]);
   }
 
   private sanitizeSearchTerm(query: string): string {

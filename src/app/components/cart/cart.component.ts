@@ -6,6 +6,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { CartService, CartItem } from '../../services/cart.service';
 import { ToastService } from '../../services/toast.service';
 import { APP_CONFIG } from '../../core/constants/app.constants';
+import { OrderService, OrderData } from '../../services/order.service';
 
 import { FormsModule } from '@angular/forms';
 import { AuthService, CreditCard } from '../../services/auth.service';
@@ -23,7 +24,7 @@ export class CartComponent implements OnInit, OnDestroy {
   cartTotalFormatted = '';
   cartItemCount = 0;
   isLoading = false;
-  selectedPayment: 'pix' | 'visa' | 'mastercard' | null = null;
+  selectedPayment: 'pix' | 'visa' | 'mastercard' | null = 'pix';
 
   // User Data for Address Form
   userName = '';
@@ -45,7 +46,8 @@ export class CartComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private router: Router,
     private toastService: ToastService,
-    private authService: AuthService
+    private authService: AuthService,
+    private orderService: OrderService
   ) {}
 
   ngOnInit() {
@@ -101,8 +103,21 @@ export class CartComponent implements OnInit, OnDestroy {
       this.showEmptyCartMessage();
       return;
     }
+    if (!this.validateOrderData()) {
+      this.toastService.error(
+        'Por favor, preencha todos os campos de endereço e selecione um método de pagamento.'
+      );
+      return;
+    }
 
-    this.showCheckoutComingSoon();
+    const orderData = this.buildOrderData();
+    this.orderService.createOrder(orderData).subscribe((order) => {
+      this.toastService.success('Pedido realizado com sucesso!');
+      this.cartService.clearCart();
+      this.router.navigate(['/order-confirmation'], {
+        queryParams: { orderId: order.id },
+      });
+    });
   }
 
   selectPaymentMethod(method: 'pix' | 'visa' | 'mastercard') {
@@ -161,7 +176,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private updateTotals() {
     const subtotal = this.cartService.getCartTotal();
-    
+
     if (this.discountApplied) {
       this.discountAmount = subtotal * 0.25;
       this.cartTotal = subtotal - this.discountAmount;
@@ -188,6 +203,34 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private showCheckoutComingSoon(): void {
     console.log('Proceeding to checkout with items:', this.cartItems);
-    this.toastService.info('Funcionalidade de checkout será implementada em breve!');
+    this.toastService.info(
+      'Funcionalidade de checkout será implementada em breve!'
+    );
+  }
+
+  private validateOrderData(): boolean {
+    return (
+      this.userName.trim() !== '' &&
+      this.userZip.trim() !== '' &&
+      this.userAddress.trim() !== '' &&
+      this.userCountry.trim() !== '' &&
+      this.userCity.trim() !== '' &&
+      this.selectedPayment !== null
+    );
+  }
+
+  private buildOrderData(): OrderData {
+    return {
+      items: this.cartItems,
+      total: this.cartTotal,
+      paymentMethod: this.selectedPayment!,
+      shippingAddress: {
+        name: this.userName,
+        zip: this.userZip,
+        address: this.userAddress,
+        country: this.userCountry,
+        city: this.userCity,
+      },
+    };
   }
 }
