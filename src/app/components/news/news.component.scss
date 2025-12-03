@@ -123,11 +123,12 @@
   }
 
   .news__grid {
-display: flex;
+    display: flex;
     flex-direction: column;
     gap: 1.5rem;
     width: 100%;
     justify-items: center;
+    align-items: center;
   }
 
   .news__item {
@@ -156,7 +157,6 @@ display: flex;
   left: 20px;
   top: -10%;
 }
-
 
 .news__foot {
   position: absolute;
