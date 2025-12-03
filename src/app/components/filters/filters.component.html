@@ -47,7 +47,7 @@
           max="1000" 
           step="10" 
           [(ngModel)]="priceRange.min"
-          (input)="applyFilters()">
+          (input)="applyFilters(false)">
         
         <label for="maxPrice">Max: R$ {{ priceRange.max }}</label>
         <input 
@@ -57,7 +57,7 @@
           max="1000" 
           step="10" 
           [(ngModel)]="priceRange.max"
-          (input)="applyFilters()">
+          (input)="applyFilters(false)">
       </div>
     </div>
 

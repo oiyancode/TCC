@@ -5,7 +5,12 @@
     <!-- Header -->
     <div class="products-header">
       <h1 class="products-title">NOSSOS PRODUTOS</h1>
-      <p class="products-subtitle">{{ (products$ | async)?.length }} itens</p>
+      <div class="header-actions">
+        <p class="products-subtitle">{{ (products$ | async)?.length }} itens</p>
+        <button class="wishlist-nav-btn" routerLink="/wishlist" aria-label="Ver lista de desejos">
+          <img src="/assets/btn_assets/Btn_wishlist.svg" alt="Wishlist">
+        </button>
+      </div>
     </div>
 
     <!-- Filter Component -->

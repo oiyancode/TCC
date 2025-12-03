@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import {
   ProductsService,
   Product,
@@ -17,7 +17,7 @@ import { WishlistService } from '../../services/wishlist.service';
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, LoadingComponent, FiltersComponent], // Adiciona o FiltersComponent
+  imports: [CommonModule, NavbarComponent, LoadingComponent, FiltersComponent, RouterModule], // Adiciona o FiltersComponent
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
@@ -86,16 +86,6 @@ export class ProductsComponent implements OnInit {
 
   navigateToProduct(id: number) {
     this.router.navigate(['/product', id]);
-  }
-
-  getFilterLabel(): string {
-    const labels = {
-      all: 'Todos os Produtos',
-      tenis: 'Tênis',
-      skate: 'Skate',
-      basket: 'Basquete',
-    };
-    return labels[this.selectedFilter];
   }
 
   toggleWishlist(productId: number, event: Event) {

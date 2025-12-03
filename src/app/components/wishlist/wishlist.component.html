@@ -1,0 +1,59 @@
+<app-navbar></app-navbar>
+
+<div class="wishlist-page">
+  <div class="wishlist-container">
+    <div class="wishlist-header">
+      <h1>Minha Lista de Desejos</h1>
+      <p>Produtos que você salvou para depois</p>
+    </div>
+
+    <app-loading *ngIf="isLoading"></app-loading>
+
+    <div *ngIf="!isLoading && wishlistProducts.length > 0" class="wishlist-content">
+      <div class="wishlist-actions">
+        <button class="btn-primary" (click)="addAllToCart()">
+          Adicionar Todos ao Carrinho
+        </button>
+      </div>
+
+      <div class="products-grid">
+        <div *ngFor="let product of wishlistProducts" class="product-card">
+          <button class="remove-btn" (click)="removeFromWishlist(product.id)" aria-label="Remover da lista">
+            <img src="/assets/icons/trash.png" alt="Remover">
+          </button>
+          
+          <div class="product-image" (click)="goToProduct(product.id)">
+            <img [src]="product.imageSrc" [alt]="product.name" loading="lazy">
+          </div>
+          
+          <div class="product-info">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-price">{{ product.price }}</p>
+            
+            <div class="product-actions">
+              <button class="btn-secondary" (click)="goToProduct(product.id)">
+                Ver Detalhes
+              </button>
+              <button class="btn-primary" (click)="addToCart(product)">
+                Adicionar ao Carrinho
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && wishlistProducts.length === 0" class="empty-wishlist">
+      <div class="empty-icon">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+          <path d="M60 15C75.464 8.335 88 14 92 18C96 14 108.536 8.335 124 15C132 20 129 35 120 44C115.803 48.1957 107.937 56.0627 103.109 59.2136C102.455 59.7105 101.561 59.6883 100.923 59.1727C96.33 55.0799 88.165 47.1649 84 44C75 35 72 20 60 15Z" fill="#e74c3c" opacity="0.3"/>
+        </svg>
+      </div>
+      <h2>Sua lista de desejos está vazia</h2>
+      <p>Adicione produtos que você gostou para salvá-los aqui!</p>
+      <button class="btn-primary" (click)="continueShopping()">
+        Explorar Produtos
+      </button>
+    </div>
+  </div>
+</div>

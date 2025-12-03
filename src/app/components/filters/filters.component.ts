@@ -39,14 +39,16 @@ export class FiltersComponent implements OnInit {
     this.showFilterMenu = !this.showFilterMenu;
   }
 
-  applyFilters() {
+  applyFilters(closeMenu: boolean = true) {
     const filters: FilterOptions = {
       priceRange: this.priceRange,
       sizes: this.selectedSizes,
       rating: this.selectedRating > 0 ? this.selectedRating : undefined,
     };
     this.filtersChange.emit(filters);
-    this.showFilterMenu = false; // Fecha o menu após aplicar
+    if (closeMenu) {
+      this.showFilterMenu = false;
+    }
   }
 
   clearFilters() {

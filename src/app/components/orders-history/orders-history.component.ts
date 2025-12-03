@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Order, OrderService } from '../../services/order.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoadingComponent } from '../loading/loading.component';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-orders-history',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, LoadingComponent],
+  imports: [CommonModule, NavbarComponent, LoadingComponent, RouterModule],
   templateUrl: './orders-history.component.html',
   styleUrls: ['./orders-history.component.scss']
 })
