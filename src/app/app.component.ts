@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
           root.style.setProperty(`--${k}`, String(v));
         });
       }
-    } catch {}
+    } catch (error) {
+      console.error('Failed to load design tokens:', error);
+    }
   }
 }

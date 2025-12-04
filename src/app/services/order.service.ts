@@ -69,6 +69,7 @@ export class OrderService {
         this.nextOrderId = parseInt(storedNextId, 10);
       }
     } catch (error) {
+      console.error('[OrderService] Error loading orders from localStorage:', error);
       this.orders = [];
       this.nextOrderId = 1;
     }
@@ -96,7 +97,7 @@ export class OrderService {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(cleanOrders));
       localStorage.setItem(this.NEXT_ID_KEY, this.nextOrderId.toString());
     } catch (error) {
-      // Silent error handling for storage operations
+      console.error('[OrderService] Error saving orders to localStorage:', error);
     }
   }
 
