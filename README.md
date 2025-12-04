@@ -181,7 +181,7 @@ Este projeto é desenvolvido como **TCC (Trabalho de Conclusão de Curso)** e es
 
 ## 👨‍💻 Desenvolvido por
 
-**Seu Nome** - Desenvolvimento Completo  
+**oiyancode** - Desenvolvimento Completo  
 🔗 [LinkedIn](https://linkedin.com/in/jadsonyan/)
 
 ---
