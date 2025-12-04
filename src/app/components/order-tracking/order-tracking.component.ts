@@ -17,18 +17,18 @@ import { LoadingComponent } from '../loading/loading.component';
 export class OrderTrackingComponent implements OnInit {
   order$: Observable<Order | undefined> | undefined;
   allStatuses: OrderStatus[] = [
-    'pending',
+    'pendente',
     'processing',
     'shipped',
     'delivered',
   ];
 
   statusLabels: { [key in OrderStatus]: string } = {
-    'pending': 'Pendente',
-    'processing': 'Processando',
-    'shipped': 'Enviado',
-    'delivered': 'Entregue',
-    'cancelled': 'Cancelado'
+    pendente: 'Pendente',
+    processing: 'Processando',
+    shipped: 'Enviado',
+    delivered: 'Entregue',
+    cancelled: 'Cancelado',
   };
 
   constructor(

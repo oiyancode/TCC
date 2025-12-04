@@ -129,7 +129,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.isLoggedIn) {
       this.router.navigate(['/profile']);
     } else {
-      this.router.navigate(['/login']);
+      // Adicionar parâmetro para indicar redirecionamento após login
+      this.router.navigate(['/login'], {
+        queryParams: { redirectTo: this.router.url },
+      });
     }
   }
 

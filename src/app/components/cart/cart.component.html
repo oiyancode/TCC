@@ -12,16 +12,21 @@
 
       <div *ngIf="!isLoading && isCartEmpty()" class="empty-cart-state">
         <div class="empty-cart-illustration">
-          <img width="200" height="200" src="/assets/icons/rec-carrinho-de-compras.webp" alt="Carrinho vazio" />
+          <img
+            width="200"
+            height="200"
+            src="/assets/icons/rec-carrinho-de-compras.webp"
+            alt="Carrinho vazio"
+          />
         </div>
-        <h3 class="empty-cart-title">Seu carrinho está vazio</h3>
+        <h3 class="empty-cart-title">Seu carrinho está vazio 😢</h3>
         <p class="empty-cart-message">
-          Parece que você ainda não adicionou nenhum produto ao carrinho.<br>
-          Explore nossa coleção e encontre algo incrível!
+          Ainda não há produtos no seu carrinho. Navegue por nossos produtos e
+          descubra novidades!
         </p>
         <div class="empty-cart-actions">
           <button class="btn-primary" (click)="continueShopping()">
-            Explorar Produtos
+            Continuar Comprando
           </button>
         </div>
       </div>
@@ -65,34 +70,59 @@
 
     <!-- SEÇÃO 2: ENDEREÇO DE ENTREGA (VERDE) -->
     <div class="cart-section address-section">
-      <h2>ENDEREÇO DE ENTREGA</h2>
+      <h2>Informações de Entrega</h2>
       <form class="address-form">
         <div class="form-group">
-          <label>NOME</label>
-          <input type="text" placeholder="João Santos" [(ngModel)]="userName" name="userName" />
+          <label>Nome Completo</label>
+          <input
+            type="text"
+            placeholder="João Santos"
+            [(ngModel)]="userName"
+            name="userName"
+          />
         </div>
         <div class="form-group">
           <label>CEP</label>
-          <input type="text" placeholder="12345-00" [(ngModel)]="userZip" name="userZip" />
+          <input
+            type="text"
+            placeholder="12345-00"
+            [(ngModel)]="userZip"
+            name="userZip"
+          />
         </div>
         <div class="form-group">
-          <label>ENDEREÇO DA ENTREGA</label>
-          <input type="text" placeholder="Rua do exemplo" [(ngModel)]="userAddress" name="userAddress" />
+          <label>Endereço de Entrega</label>
+          <input
+            type="text"
+            placeholder="Rua do exemplo"
+            [(ngModel)]="userAddress"
+            name="userAddress"
+          />
         </div>
         <div class="form-group">
-          <label>PAÍS</label>
-          <input type="text" placeholder="Brasil" [(ngModel)]="userCountry" name="userCountry" />
+          <label>País</label>
+          <input
+            type="text"
+            placeholder="Brasil"
+            [(ngModel)]="userCountry"
+            name="userCountry"
+          />
         </div>
         <div class="form-group">
-          <label>CIDADE</label>
-          <input type="text" placeholder="Salvador" [(ngModel)]="userCity" name="userCity" />
+          <label>Cidade</label>
+          <input
+            type="text"
+            placeholder="Salvador"
+            [(ngModel)]="userCity"
+            name="userCity"
+          />
         </div>
       </form>
     </div>
 
     <!-- SEÇÃO 3: PAGAMENTO (AMARELA) -->
     <div class="cart-section payment-section">
-      <h2>PAGAMENTO</h2>
+      <h2>Método de Pagamento</h2>
 
       <div class="payment-methods">
         <button
@@ -121,21 +151,36 @@
       <div class="card-details" *ngIf="selectedPayment !== 'pix'">
         <div class="form-group">
           <label>Selecione o Cartão</label>
-          <select class="card-select" [(ngModel)]="selectedCard" name="selectedCard">
+          <select
+            class="card-select"
+            [(ngModel)]="selectedCard"
+            name="selectedCard"
+          >
             <option value="" disabled selected>Selecione um cartão</option>
             <option *ngFor="let card of savedCards" [value]="card.number">
-              {{ card.name }} - Final {{ card.number | slice:-4 }}
+              {{ card.name }} - Final {{ card.number | slice : -4 }}
             </option>
           </select>
         </div>
-        <button class="add-card-btn" (click)="navigateToAddCard()">+ ADICIONAR NOVO</button>
+        <button class="add-card-btn" (click)="navigateToAddCard()">
+          + ADICIONAR NOVO
+        </button>
       </div>
 
       <div class="discount-section">
-        <label>DADOS DE DESCONTO</label>
+        <label>Cupom de Desconto</label>
         <div class="discount-input-group">
-          <input type="text" placeholder="Código de desconto" [(ngModel)]="discountCode" name="discountCode" />
-          <button class="apply-btn" (click)="applyDiscount()" title="Aplicar Desconto">
+          <input
+            type="text"
+            placeholder="Código de desconto"
+            [(ngModel)]="discountCode"
+            name="discountCode"
+          />
+          <button
+            class="apply-btn"
+            (click)="applyDiscount()"
+            title="Aplicar Desconto"
+          >
             <img src="assets/Section_Cart/Arrow_Right.png" alt="Aplicar" />
           </button>
         </div>
@@ -144,7 +189,9 @@
       <div class="total-section">
         <div class="discount-info" *ngIf="discountApplied">
           <span>Desconto (25%):</span>
-          <span class="discount-value">- {{ discountAmount | currency:'BRL' }}</span>
+          <span class="discount-value"
+            >- {{ discountAmount | currency : "BRL" }}</span
+          >
         </div>
         <div class="total-row">
           <div class="total-label">TOTAL</div>
@@ -157,12 +204,12 @@
         (click)="proceedToCheckout()"
         [disabled]="isCartEmpty()"
       >
-        CONFIRMAR E PAGAR
+        Finalizar Compra
       </button>
 
       <div class="secure-purchase">
         <img src="assets/Section_Cart/Padlock.svg" alt="Seguro" />
-        COMPRA SEGURA
+        <span>Compra 100% Segura 🔒</span>
       </div>
     </div>
   </div>

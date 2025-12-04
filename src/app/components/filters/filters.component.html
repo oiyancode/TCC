@@ -1,6 +1,6 @@
 <div class="filter-bar">
   <button class="filter-btn" (click)="toggleFilterMenu()">
-    <img src="/assets/icons/menu_filtro.png" alt="Filtrar">
+    <img src="/assets/icons/menu_filtro.png" alt="Filtrar" />
     <span>FILTRAR E ORGANIZAR</span>
   </button>
 
@@ -9,28 +9,32 @@
     <div class="filter-section">
       <h3>Ordenar por</h3>
       <div class="sort-options">
-        <button 
-          class="sort-option" 
+        <button
+          class="sort-option"
           [class.active]="currentSort.sortBy === 'popularity'"
-          (click)="setSort('popularity')">
+          (click)="setSort('popularity')"
+        >
           Popularidade
         </button>
-        <button 
-          class="sort-option" 
+        <button
+          class="sort-option"
           [class.active]="currentSort.sortBy === 'price'"
-          (click)="setSort('price')">
+          (click)="setSort('price')"
+        >
           Preço
         </button>
-        <button 
-          class="sort-option" 
+        <button
+          class="sort-option"
           [class.active]="currentSort.sortBy === 'rating'"
-          (click)="setSort('rating')">
+          (click)="setSort('rating')"
+        >
           Avaliação
         </button>
-        <button 
-          class="sort-option" 
+        <button
+          class="sort-option"
           [class.active]="currentSort.sortBy === 'newest'"
-          (click)="setSort('newest')">
+          (click)="setSort('newest')"
+        >
           Mais Novo
         </button>
       </div>
@@ -40,35 +44,38 @@
       <h3>Faixa de Preço</h3>
       <div class="price-range">
         <label for="minPrice">Min: R$ {{ priceRange.min }}</label>
-        <input 
-          type="range" 
-          id="minPrice" 
-          min="0" 
-          max="1000" 
-          step="10" 
+        <input
+          type="range"
+          id="minPrice"
+          min="0"
+          max="1000"
+          step="10"
           [(ngModel)]="priceRange.min"
-          (input)="applyFilters(false)">
-        
+          (input)="applyFilters(false)"
+        />
+
         <label for="maxPrice">Max: R$ {{ priceRange.max }}</label>
-        <input 
-          type="range" 
-          id="maxPrice" 
-          min="0" 
-          max="1000" 
-          step="10" 
+        <input
+          type="range"
+          id="maxPrice"
+          min="0"
+          max="1000"
+          step="10"
           [(ngModel)]="priceRange.max"
-          (input)="applyFilters(false)">
+          (input)="applyFilters(false)"
+        />
       </div>
     </div>
 
     <div class="filter-section">
       <h3>Tamanho</h3>
       <div class="size-options">
-        <button 
-          *ngFor="let size of availableSizes" 
-          class="size-option" 
+        <button
+          *ngFor="let size of availableSizes"
+          class="size-option"
           [class.selected]="selectedSizes.includes(size)"
-          (click)="toggleSize(size)">
+          (click)="toggleSize(size)"
+        >
           {{ size }}
         </button>
       </div>
@@ -77,19 +84,24 @@
     <div class="filter-section">
       <h3>Avaliação</h3>
       <div class="rating-options">
-        <button 
-          *ngFor="let rating of [5, 4, 3, 2, 1]" 
-          class="rating-option" 
+        <button
+          *ngFor="let rating of [5, 4, 3, 2, 1]"
+          class="rating-option"
           [class.selected]="selectedRating === rating"
-          (click)="setRating(rating)">
-          {{ rating }} ★ & up
+          (click)="setRating(rating)"
+        >
+          {{ rating }} ★
         </button>
       </div>
     </div>
 
     <div class="filter-actions">
-      <button class="apply-filters-btn" (click)="applyFilters()">Aplicar Filtros</button>
-      <button class="clear-filters-btn" (click)="clearFilters()">Limpar Tudo</button>
+      <button class="apply-filters-btn" (click)="applyFilters()">
+        Aplicar Filtros
+      </button>
+      <button class="clear-filters-btn" (click)="clearFilters()">
+        Limpar Tudo
+      </button>
     </div>
   </div>
 </div>

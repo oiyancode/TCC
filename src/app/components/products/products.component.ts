@@ -17,7 +17,13 @@ import { WishlistService } from '../../services/wishlist.service';
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, LoadingComponent, FiltersComponent, RouterModule], // Adiciona o FiltersComponent
+  imports: [
+    CommonModule,
+    NavbarComponent,
+    LoadingComponent,
+    FiltersComponent,
+    RouterModule,
+  ], // Adiciona o FiltersComponent
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
@@ -44,20 +50,20 @@ export class ProductsComponent implements OnInit {
 
   private setupProductsSubscription(): void {
     this.products$ = this.productsService.filteredProducts$;
-    
+
     // Subscribe to both initial load and subsequent changes
     this.productsService.getProducts().subscribe(() => this.animateItems());
     this.products$.subscribe(() => this.animateItems());
   }
 
   private setupWishlistSubscription(): void {
-    this.wishlistService.getWishlist().subscribe(wishlist => {
+    this.wishlistService.getWishlist().subscribe((wishlist) => {
       this.wishlist = new Set(wishlist);
     });
   }
 
   private setupRouteParams(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       const category = params['category'];
       if (category && this.isValidCategory(category)) {
         this.initialFilterCategory = category;
@@ -65,12 +71,18 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  private isValidCategory(category: string): category is 'tenis' | 'skate' | 'basket' {
+  private isValidCategory(
+    category: string
+  ): category is 'tenis' | 'skate' | 'basket' {
     return ['tenis', 'skate', 'basket'].includes(category);
   }
 
   onFiltersChange(filters: FilterOptions): void {
     this.productsService.setFilters(filters);
+  }
+
+  clearFilters(): void {
+    this.productsService.setFilters({});
   }
 
   onSortChange(sort: SortOptions): void {

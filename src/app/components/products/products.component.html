@@ -7,37 +7,74 @@
     <div class="products-header">
       <h1 class="products-title">NOSSOS PRODUTOS</h1>
       <div class="header-actions">
-        <p class="products-subtitle">{{ (products$ | async)?.length }} itens</p>
-        <button class="wishlist-nav-btn" routerLink="/wishlist" aria-label="Ver lista de desejos">
-          <img src="/assets/btn_assets/Btn_wishlist.svg" alt="Wishlist">
+        <p class="products-subtitle">
+          {{ (products$ | async)?.length ?? 0 }} itens
+        </p>
+        <button
+          class="wishlist-nav-btn"
+          routerLink="/wishlist"
+          aria-label="Ver lista de desejos"
+        >
+          <img src="/assets/btn_assets/Btn_wishlist.svg" alt="Wishlist" />
         </button>
       </div>
     </div>
 
     <!-- Filter Component -->
-    <app-filters 
+    <app-filters
       [initialCategory]="initialFilterCategory"
-      (filtersChange)="onFiltersChange($event)" 
-      (sortChange)="onSortChange($event)">
+      (filtersChange)="onFiltersChange($event)"
+      (sortChange)="onSortChange($event)"
+    >
     </app-filters>
 
     <!-- Products Grid -->
-    <app-loading *ngIf="loading$ | async" message="Carregando produtos..."></app-loading>
-    <div class="products-grid" *ngIf="!(loading$ | async)">
-      <div 
-        class="product-card" 
-        *ngFor="let product of (products$ | async)"
-        (click)="navigateToProduct(product.id)">
-        <button 
-          class="wishlist-btn" 
+    <app-loading
+      *ngIf="loading$ | async"
+      message="Carregando produtos..."
+    ></app-loading>
+    <div
+      *ngIf="!(loading$ | async) && ((products$ | async)?.length ?? 0) === 0"
+      class="no-products-found"
+    >
+      <img src="/assets/icons/empty-box.svg" alt="Nenhum produto encontrado" />
+      <h2>Nenhum produto encontrado 😢</h2>
+      <p>Não encontramos produtos com os filtros selecionados.</p>
+      <button class="btn-primary" (click)="clearFilters()">
+        Limpar Filtros
+      </button>
+    </div>
+    <div
+      class="products-grid"
+      *ngIf="!(loading$ | async) && ((products$ | async)?.length ?? 0) > 0"
+    >
+      <div
+        class="product-card"
+        *ngFor="let product of products$ | async"
+        (click)="navigateToProduct(product.id)"
+      >
+        <button
+          class="wishlist-btn"
           [class.in-wishlist]="isInWishlist(product.id)"
-          (click)="toggleWishlist(product.id, $event)">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="wishlist-icon">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          (click)="toggleWishlist(product.id, $event)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="wishlist-icon"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
           </svg>
         </button>
         <div class="product-image-wrapper">
-          <img [src]="product.imageSrc" [alt]="product.name" class="product-image">
+          <img
+            [src]="product.imageSrc"
+            [alt]="product.name"
+            class="product-image"
+          />
         </div>
         <div class="product-info">
           <h3 class="product-name">{{ product.name }}</h3>

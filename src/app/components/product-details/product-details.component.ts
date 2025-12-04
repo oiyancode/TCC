@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductsService, Product, Review } from '../../services/products.service';
+import {
+  ProductsService,
+  Product,
+  Review,
+} from '../../services/products.service';
 import { CartService } from '../../services/cart.service';
 import { NavbarComponent } from '../navbar/navbar.component'; // Import NavbarComponent
 import { LoadingComponent } from '../loading/loading.component';
@@ -79,7 +83,9 @@ export class ProductDetailsComponent implements OnInit {
       // Use product-specific shoe sizes if available, otherwise use default
       this.shoeSizes = this.product.shoeSizes || [37, 38, 39, 40, 41, 42];
       // Set default selected size to first available or 39
-      this.selectedShoeSize = this.shoeSizes.includes(39) ? 39 : this.shoeSizes[0];
+      this.selectedShoeSize = this.shoeSizes.includes(39)
+        ? 39
+        : this.shoeSizes[0];
     } else {
       this.availableSizes = ['ÚNICO'];
       this.shoeSizes = [];
@@ -100,20 +106,20 @@ export class ProductDetailsComponent implements OnInit {
       this.productScale = 1;
       return;
     }
-    
+
     // Calculate scale based on shoe size
     // Smallest size = 0.85, largest size = 1.15
     const minSize = Math.min(...this.shoeSizes);
     const maxSize = Math.max(...this.shoeSizes);
     const sizeRange = maxSize - minSize;
-    
+
     if (sizeRange === 0) {
       this.productScale = 1;
       return;
     }
-    
+
     const normalizedSize = (this.selectedShoeSize - minSize) / sizeRange;
-    this.productScale = 0.85 + (normalizedSize * 0.3); // Range: 0.85 to 1.15
+    this.productScale = 0.85 + normalizedSize * 0.3; // Range: 0.85 to 1.15
   }
 
   getStarArray(rating: number): number[] {
@@ -152,7 +158,9 @@ export class ProductDetailsComponent implements OnInit {
     let numericPrice: number;
     if (typeof this.product.price === 'string') {
       // Remove currency symbol and convert comma to dot
-      numericPrice = parseFloat(this.product.price.replace(/[^0-9,]/g, '').replace(',', '.'));
+      numericPrice = parseFloat(
+        this.product.price.replace(/[^0-9,]/g, '').replace(',', '.')
+      );
     } else {
       numericPrice = this.product.price;
     }
@@ -183,8 +191,11 @@ export class ProductDetailsComponent implements OnInit {
       cartItem.price
     );
 
-    // Show success feedback (could be improved with a toast notification)
-    this.toastService.success(`Produto "${cartItem.name}" adicionado ao carrinho!`);
+    // Show success feedback with improved message
+    this.toastService.success(`🎉 ${cartItem.name} adicionado ao carrinho!`);
+
+    // Salvar última página visitada antes de ir para o carrinho
+    localStorage.setItem('lastVisitedPage', this.router.url);
 
     // Navigate to cart page
     this.router.navigate(['/cart']);

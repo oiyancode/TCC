@@ -95,7 +95,13 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   continueShopping() {
-    this.router.navigate(['/products']);
+    // Melhorar navegação: voltar para última página visitada ou produtos
+    const lastPage = localStorage.getItem('lastVisitedPage');
+    if (lastPage && lastPage !== '/cart') {
+      this.router.navigate([lastPage]);
+    } else {
+      this.router.navigate(['/products']);
+    }
   }
 
   proceedToCheckout() {
@@ -105,7 +111,7 @@ export class CartComponent implements OnInit, OnDestroy {
     }
     if (!this.validateOrderData()) {
       this.toastService.error(
-        'Por favor, preencha todos os campos de endereço e selecione um método de pagamento.'
+        'Preencha todos os campos obrigatórios para continuar.'
       );
       return;
     }
@@ -162,11 +168,11 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.discountCode.toUpperCase() === 'FORD25') {
       this.discountApplied = true;
       this.updateTotals();
-      this.toastService.success('Desconto de 25% aplicado com sucesso!');
+      this.toastService.success('🎉 25% de desconto aplicado! Parabéns!');
     } else {
       this.discountApplied = false;
       this.updateTotals();
-      this.toastService.error('Cupom inválido.');
+      this.toastService.error('😕 Cupom inválido. Tente "FORD25"!');
     }
   }
 
@@ -197,7 +203,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private showEmptyCartMessage(): void {
     this.toastService.info(
-      'Seu carrinho está vazio. Adicione produtos antes de prosseguir para o checkout.'
+      'Seu carrinho está vazio. Adicione produtos antes de continuar.'
     );
   }
 

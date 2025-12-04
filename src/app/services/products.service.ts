@@ -94,9 +94,13 @@ export class ProductsService {
         }
 
         if (filters.rating) {
-          filtered = filtered.filter(
-            (p) => p.rating && p.rating >= filters.rating!
-          );
+          filtered = filtered.filter((p) => {
+            if (!p.reviews || p.reviews.length === 0) return false;
+            // Verificar se o produto tem pelo menos um comentário com a avaliação selecionada
+            return p.reviews.some(
+              (review) => review.rating === filters.rating!
+            );
+          });
         }
 
         // A lógica de disponibilidade será adicionada se houver um campo correspondente nos dados
@@ -140,8 +144,10 @@ export class ProductsService {
           ...p,
           rating:
             p.reviews && p.reviews.length > 0
-              ? p.reviews.reduce((acc, review) => acc + review.rating, 0) /
-                p.reviews.length
+              ? Math.round(
+                  p.reviews.reduce((acc, review) => acc + review.rating, 0) /
+                    p.reviews.length
+                )
               : 0,
         }));
         this.productsCache$.next(productsWithRating);

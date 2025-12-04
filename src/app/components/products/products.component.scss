@@ -217,6 +217,56 @@
   }
 }
 
+.no-products-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  max-width: 600px;
+  margin: 0 auto;
+
+  img {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  h2 {
+    font-family: var(--font-headline);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  p {
+    font-family: var(--font-secondary);
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+    max-width: 400px;
+  }
+
+  button {
+    padding: 0.875rem 2rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    background: var(--brand-red);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+
+    &:hover {
+      background: #ff3333;
+      transform: translateY(-2px);
+    }
+  }
+}
+
 .product-card {
   background: linear-gradient(
     135deg,
