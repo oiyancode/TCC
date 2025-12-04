@@ -30,15 +30,17 @@ export class WishlistComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.setupWishlistSubscription();
+  }
+
+  private setupWishlistSubscription(): void {
     combineLatest([
       this.wishlistService.getWishlist(),
       this.productsService.getProducts()
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([wishlistIds, allProducts]) => {
-        this.wishlistProducts = allProducts.filter(product =>
-          wishlistIds.includes(product.id)
-        );
+        this.wishlistProducts = allProducts.filter(product => wishlistIds.includes(product.id));
         this.isLoading = false;
       });
   }
@@ -54,18 +56,38 @@ export class WishlistComponent implements OnInit, OnDestroy {
   }
 
   addToCart(product: Product): void {
-    this.cartService.addItem(product);
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      imageSrc: product.imageSrc
+    } as any; // Type assertion to resolve price type mismatch
+    this.cartService.addItem(cartItem);
     this.toastService.success('Produto adicionado ao carrinho!');
   }
 
   addAllToCart(): void {
-    if (this.wishlistProducts.length === 0) {
+    if (this.isWishlistEmpty()) {
       this.toastService.info('Sua lista de desejos está vazia.');
       return;
     }
 
+    this.addAllProductsToCart();
+  }
+
+  private isWishlistEmpty(): boolean {
+    return this.wishlistProducts.length === 0;
+  }
+
+  private addAllProductsToCart(): void {
     this.wishlistProducts.forEach(product => {
-      this.cartService.addItem(product);
+      const cartItem = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        imageSrc: product.imageSrc
+      } as any;
+      this.cartService.addItem(cartItem);
     });
     this.toastService.success(`${this.wishlistProducts.length} produtos adicionados ao carrinho!`);
   }

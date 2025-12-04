@@ -84,16 +84,8 @@ export class AuthService {
     const index = users.findIndex((u) => u.email === updatedUser.email);
 
     if (index !== -1) {
-      // Update in the list of all users
-      // Keep the password if it's not provided in the update (though typically we wouldn't pass it around like this)
-      // For this mock, we assume updatedUser might not have the password, so we preserve it from the existing record if needed,
-      // OR we expect the caller to handle it.
-      // Let's merge carefully.
       const existingUser = users[index];
       const mergedUser = { ...existingUser, ...updatedUser };
-      
-      // If password is being changed, it should be in updatedUser. 
-      // If not, mergedUser keeps the old one.
 
       users[index] = mergedUser;
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(users));

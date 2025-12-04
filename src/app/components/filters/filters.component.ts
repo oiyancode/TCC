@@ -29,10 +29,7 @@ export class FiltersComponent implements OnInit {
   availableSizes = [37, 38, 39, 40, 41, 42];
 
   ngOnInit(): void {
-    if (this.initialCategory) {
-      // A lógica para lidar com a categoria inicial será implementada aqui
-      // Por exemplo, pode-se mapear a categoria para um filtro específico
-    }
+    // Future implementation for handling initial category filters
   }
 
   toggleFilterMenu() {

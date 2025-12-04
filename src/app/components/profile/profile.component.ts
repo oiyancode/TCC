@@ -39,7 +39,18 @@ export class ProfileComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder
   ) {
-    this.personalForm = this.fb.group({
+    this.personalForm = this.createPersonalForm();
+    this.passwordForm = this.createPasswordForm();
+    this.cardForm = this.createCardForm();
+  }
+
+  ngOnInit() {
+    this.setupInitialTab();
+    this.setupUserSubscription();
+  }
+
+  private createPersonalForm(): FormGroup {
+    return this.fb.group({
       name: ['', Validators.required],
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       phone: ['', Validators.required],
@@ -53,24 +64,18 @@ export class ProfileComponent implements OnInit {
         country: ['Brasil', Validators.required],
       }),
     });
+  }
 
-    this.passwordForm = this.fb.group(
-      {
-        currentPassword: ['', Validators.required],
-        newPassword: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(8),
-            this.passwordComplexityValidator,
-          ],
-        ],
-        confirmPassword: ['', Validators.required],
-      },
-      { validators: this.passwordMatchValidator }
-    );
+  private createPasswordForm(): FormGroup {
+    return this.fb.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(8), this.passwordComplexityValidator]],
+      confirmPassword: ['', Validators.required],
+    }, { validators: this.passwordMatchValidator });
+  }
 
-    this.cardForm = this.fb.group({
+  private createCardForm(): FormGroup {
+    return this.fb.group({
       number: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
       name: ['', Validators.required],
       expiry: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
@@ -78,72 +83,49 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  private setupInitialTab(): void {
     this.route.queryParams.subscribe(params => {
       if (params['tab'] === 'security') {
         this.activeTab = 'security';
       }
     });
+  }
 
-    this.authService.currentUser$.subscribe((user) => {
+  private setupUserSubscription(): void {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.currentUser = user;
         this.savedCards = user.savedCards || [];
         this.profileImage = (user as any).photoUrl || '/assets/icons/perfil_guest.svg';
-        this.patchPersonalForm(user);
+        this.personalForm.patchValue(user);
       }
     });
   }
 
-  onPhotoSelected(event: any) {
+  onPhotoSelected(event: any): void {
     const file = event.target.files[0];
-    if (file) {
+    if (file && this.currentUser) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.profileImage = e.target.result;
-        if (this.currentUser) {
-            const updatedUser = { ...this.currentUser, photoUrl: this.profileImage };
-            this.authService.updateProfile(updatedUser).subscribe();
-        }
+        const updatedUser = { ...this.currentUser, photoUrl: e.target.result };
+        // Type assertion para evitar erro de tipo
+        this.authService.updateProfile(updatedUser as User).subscribe();
       };
       reader.readAsDataURL(file);
     }
   }
 
-  patchPersonalForm(user: User) {
-    this.personalForm.patchValue({
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      cpf: user.cpf,
-      birthDate: user.birthDate,
-      address: user.address || {
-        street: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: 'Brasil',
-      },
-    });
-  }
-
-  setActiveTab(tab: 'personal' | 'security') {
+  setActiveTab(tab: 'personal' | 'security'): void {
     this.activeTab = tab;
   }
 
-  onSavePersonal() {
+  onSavePersonal(): void {
     if (this.personalForm.valid && this.currentUser) {
-      const updatedUser: User = {
-        ...this.currentUser,
-        ...this.personalForm.getRawValue(),
-      };
-
-      this.authService.updateProfile(updatedUser).subscribe((success) => {
-        if (success) {
-          this.toastService.success('Dados pessoais atualizados com sucesso!');
-        } else {
-          this.toastService.error('Erro ao atualizar dados.');
-        }
+      const updatedUser: User = { ...this.currentUser, ...this.personalForm.getRawValue() };
+      this.authService.updateProfile(updatedUser).subscribe(success => {
+        this.toastService[success ? 'success' : 'error'](
+          success ? 'Dados pessoais atualizados com sucesso!' : 'Erro ao atualizar dados.'
+        );
       });
     } else {
       this.personalForm.markAllAsTouched();
@@ -151,86 +133,74 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onChangePassword() {
-    if (this.passwordForm.valid && this.currentUser) {
-      const { currentPassword, newPassword } = this.passwordForm.value;
+  onChangePassword(): void {
+    if (!this.validatePasswordChange()) return;
 
-      if (currentPassword !== this.currentUser.password) {
-        this.toastService.error('Senha atual incorreta.');
-        return;
+    const { currentPassword, newPassword } = this.passwordForm.value;
+    if (currentPassword !== this.currentUser?.password) {
+      this.toastService.error('Senha atual incorreta.');
+      return;
+    }
+
+    const updatedUser: User = { ...this.currentUser!, password: newPassword };
+    this.authService.updateProfile(updatedUser).subscribe(success => {
+      if (success) {
+        this.toastService.success('Senha alterada com sucesso!');
+        this.passwordForm.reset();
       }
-
-      const updatedUser: User = {
-        ...this.currentUser,
-        password: newPassword,
-      };
-
-      this.authService.updateProfile(updatedUser).subscribe((success) => {
-        if (success) {
-          this.toastService.success('Senha alterada com sucesso!');
-          this.passwordForm.reset();
-        }
-      });
-    } else {
-        this.passwordForm.markAllAsTouched();
-    }
+    });
   }
 
-  toggleTwoFactor() {
-    if (this.currentUser) {
-      const updatedUser: User = {
-        ...this.currentUser,
-        twoFactorEnabled: !this.currentUser.twoFactorEnabled,
-      };
-      this.authService.updateProfile(updatedUser).subscribe(() => {
-        this.toastService.success(
-          `Autenticação de dois fatores ${
-            updatedUser.twoFactorEnabled ? 'ativada' : 'desativada'
-          }`
-        );
-      });
+  private validatePasswordChange(): boolean {
+    if (!this.passwordForm.valid || !this.currentUser) {
+      this.passwordForm.markAllAsTouched();
+      return false;
     }
+    return true;
   }
 
-  onAddCard() {
-    if (this.cardForm.valid && this.currentUser) {
-      const newCard: CreditCard = this.cardForm.value;
-      const updatedCards = [...this.savedCards, newCard];
-      
-      const updatedUser: User = {
-        ...this.currentUser,
-        savedCards: updatedCards,
-      };
-
-      this.authService.updateProfile(updatedUser).subscribe((success) => {
-        if (success) {
-          this.toastService.success('Cartão adicionado com sucesso!');
-          this.showCardForm = false;
-          this.cardForm.reset();
-        }
-      });
-    } else {
-        this.cardForm.markAllAsTouched();
-    }
+  toggleTwoFactor(): void {
+    if (!this.currentUser) return;
+    
+    const updatedUser: User = { ...this.currentUser, twoFactorEnabled: !this.currentUser.twoFactorEnabled };
+    this.authService.updateProfile(updatedUser).subscribe(() => {
+      this.toastService.success(`Autenticação de dois fatores ${updatedUser.twoFactorEnabled ? 'ativada' : 'desativada'}`);
+    });
   }
 
-  removeCard(index: number) {
-    if (confirm('Tem certeza que deseja remover este cartão?') && this.currentUser) {
-      const updatedCards = this.savedCards.filter((_, i) => i !== index);
-      const updatedUser: User = {
-        ...this.currentUser,
-        savedCards: updatedCards,
-      };
-
-      this.authService.updateProfile(updatedUser).subscribe((success) => {
-        if (success) {
-          this.toastService.success('Cartão removido.');
-        }
-      });
+  onAddCard(): void {
+    if (!this.cardForm.valid || !this.currentUser) {
+      this.cardForm.markAllAsTouched();
+      return;
     }
+
+    const newCard: CreditCard = this.cardForm.value;
+    const updatedCards = [...this.savedCards, newCard];
+    const updatedUser: User = { ...this.currentUser, savedCards: updatedCards };
+
+    this.authService.updateProfile(updatedUser).subscribe(success => {
+      if (success) {
+        this.toastService.success('Cartão adicionado com sucesso!');
+        this.showCardForm = false;
+        this.cardForm.reset();
+      }
+    });
   }
 
-  logout() {
+  removeCard(index: number): void {
+    if (!confirm('Tem certeza que deseja remover este cartão?') || !this.currentUser) return;
+
+    const updatedCards = this.savedCards.filter((_, i) => i !== index);
+    const updatedUser: User = { ...this.currentUser, savedCards: updatedCards };
+
+    this.authService.updateProfile(updatedUser).subscribe(success => {
+      if (success) {
+        this.toastService.success('Cartão removido.');
+      }
+    });
+  }
+
+  logout(): void {
     if (confirm('Tem certeza que deseja sair?')) {
       this.authService.logout();
       this.toastService.success('Logout realizado com sucesso!');
@@ -238,11 +208,8 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  // Validators
   passwordMatchValidator(g: AbstractControl): ValidationErrors | null {
-    return g.get('newPassword')?.value === g.get('confirmPassword')?.value
-      ? null
-      : { mismatch: true };
+    return g.get('newPassword')?.value === g.get('confirmPassword')?.value ? null : { mismatch: true };
   }
 
   passwordComplexityValidator(control: AbstractControl): ValidationErrors | null {
@@ -253,7 +220,6 @@ export class ProfileComponent implements OnInit {
     const hasLower = /[a-z]/.test(value);
     const hasNumeric = /[0-9]/.test(value);
 
-    const valid = hasUpper && hasLower && hasNumeric;
-    return valid ? null : { complexity: true };
+    return (hasUpper && hasLower && hasNumeric) ? null : { complexity: true };
   }
 }

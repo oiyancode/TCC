@@ -30,6 +30,12 @@
         </button>
 
         <button 
+          class="order-tracking-btn"
+          routerLink="/order-tracking">
+          Rastreamento de Pedidos
+        </button>
+
+        <button 
           [class.active]="activeTab === 'security'" 
           (click)="setActiveTab('security')">
           Login e Segurança

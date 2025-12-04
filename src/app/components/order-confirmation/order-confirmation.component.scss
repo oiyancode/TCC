@@ -3,7 +3,9 @@
 .confirmation-page {
   padding: 120px 2rem 2rem;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1c 0%, #2d1b1f 50%, #1a1a1c 100%);
+  background: url('/assets/scroll_trigger_assets/sessao_skate/Bg_Section_skate.webp') center/cover no-repeat;
+  background-color: #CC0000;
+  background-attachment: scroll;
   color: var(--color-text);
   display: flex;
   align-items: center;
@@ -234,6 +236,15 @@
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1rem;
+  }
+
+  button {
+    font-family: var(--font-headline);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: white;
   }
 }
 

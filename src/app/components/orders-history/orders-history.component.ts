@@ -26,10 +26,8 @@ export class OrdersHistoryComponent implements OnInit {
   }
 
   viewOrderDetails(orderId: number): void {
-    // For now, let's just log it. We can create a dedicated order details page later.
-    console.log('Navigating to order details for:', orderId);
-    // Example of navigation:
-    // this.router.navigate(['/order-details', orderId]);
+    // TODO: Implement dedicated order details page
+    console.log('Order details for:', orderId);
   }
 
   trackOrder(orderId: number): void {

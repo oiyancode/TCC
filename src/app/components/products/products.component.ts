@@ -37,37 +37,47 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setupProductsSubscription();
+    this.setupWishlistSubscription();
+    this.setupRouteParams();
+  }
+
+  private setupProductsSubscription(): void {
     this.products$ = this.productsService.filteredProducts$;
-    this.productsService.getProducts().subscribe(() => {
-      this.animateItems();
-    });
+    
+    // Subscribe to both initial load and subsequent changes
+    this.productsService.getProducts().subscribe(() => this.animateItems());
+    this.products$.subscribe(() => this.animateItems());
+  }
 
-    this.products$.subscribe(() => {
-      this.animateItems();
-    });
-
-    this.route.queryParams.subscribe((params) => {
-      const category = params['category'];
-      if (category && ['tenis', 'skate', 'basket'].includes(category)) {
-        // Lógica para aplicar filtro inicial via categoria será movida para o filters.component
-        this.initialFilterCategory = category;
-      }
-    });
-
-    this.wishlistService.getWishlist().subscribe((wishlist) => {
+  private setupWishlistSubscription(): void {
+    this.wishlistService.getWishlist().subscribe(wishlist => {
       this.wishlist = new Set(wishlist);
     });
   }
 
-  onFiltersChange(filters: FilterOptions) {
+  private setupRouteParams(): void {
+    this.route.queryParams.subscribe(params => {
+      const category = params['category'];
+      if (category && this.isValidCategory(category)) {
+        this.initialFilterCategory = category;
+      }
+    });
+  }
+
+  private isValidCategory(category: string): category is 'tenis' | 'skate' | 'basket' {
+    return ['tenis', 'skate', 'basket'].includes(category);
+  }
+
+  onFiltersChange(filters: FilterOptions): void {
     this.productsService.setFilters(filters);
   }
 
-  onSortChange(sort: SortOptions) {
+  onSortChange(sort: SortOptions): void {
     this.productsService.setSort(sort);
   }
 
-  private animateItems() {
+  private animateItems(): void {
     setTimeout(() => {
       gsap.fromTo(
         '.product-card',
@@ -81,14 +91,14 @@ export class ProductsComponent implements OnInit {
           clearProps: 'all',
         }
       );
-    }, 100); // Wait for DOM update
+    }, 100);
   }
 
-  navigateToProduct(id: number) {
+  navigateToProduct(id: number): void {
     this.router.navigate(['/product', id]);
   }
 
-  toggleWishlist(productId: number, event: Event) {
+  toggleWishlist(productId: number, event: Event): void {
     event.stopPropagation();
     this.wishlistService.toggleWishlist(productId).subscribe();
   }

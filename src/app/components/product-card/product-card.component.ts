@@ -33,7 +33,7 @@ export class ProductCardComponent {
     private toastService: ToastService
   ) {}
 
-  handleAddToCart(event: Event) {
+  handleAddToCart(event: Event): void {
     this.isAddedToCart = true;
     this.goToCart(event);
     setTimeout(() => {
@@ -41,21 +41,30 @@ export class ProductCardComponent {
     }, 300);
   }
 
-  goToCart(event: Event) {
+  goToCart(event: Event): void {
     event.stopPropagation();
     
-    const productData = this.getProductData();
-    if (!this.isValidProduct(productData)) {
+    if (!this.isValidProduct()) {
       console.warn('Cannot add item to cart: missing required data');
       return;
     }
 
-    this.cartService.addItem(productData);
+    // Convert price to number for CartItem
+    const cartItem = {
+      id: this.productId,
+      name: this.name,
+      price: this.parsePrice(this.price),
+      imageSrc: this.imageSrc,
+      variant: this.variant,
+      cssClass: this.cssClass
+    };
+
+    this.cartService.addItem(cartItem);
     this.toastService.success('Produto adicionado ao carrinho!');
-    this.addToCart.emit(productData as Product);
+    this.addToCart.emit(this.getProductData() as Product);
   }
 
-  goToDetails(event: Event) {
+  goToDetails(event: Event): void {
     event.stopPropagation();
     
     if (this.productId) {
@@ -64,7 +73,7 @@ export class ProductCardComponent {
     }
   }
 
-  quickView(event: Event) {
+  quickView(event: Event): void {
     event.stopPropagation();
     if (this.enableQuickView) {
       console.log('Quick view for product:', this.productId);
@@ -82,7 +91,13 @@ export class ProductCardComponent {
     };
   }
 
-  private isValidProduct(product: Partial<Product>): boolean {
-    return !!(product.id && product.name && product.price);
+  private isValidProduct(): boolean {
+    return !!(this.productId && this.name && this.price);
+  }
+
+  private parsePrice(priceString: string): number {
+    // Remove currency symbol and convert comma to dot
+    const cleanPrice = priceString.replace(/[^0-9,]/g, '').replace(',', '.');
+    return parseFloat(cleanPrice) || 0;
   }
 }

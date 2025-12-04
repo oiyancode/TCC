@@ -148,11 +148,20 @@ export class ProductDetailsComponent implements OnInit {
       return;
     }
 
+    // Ensure price is a number - convert if it's a formatted string
+    let numericPrice: number;
+    if (typeof this.product.price === 'string') {
+      // Remove currency symbol and convert comma to dot
+      numericPrice = parseFloat(this.product.price.replace(/[^0-9,]/g, '').replace(',', '.'));
+    } else {
+      numericPrice = this.product.price;
+    }
+
     // Create cart item with all necessary data
     const cartItem = {
       id: this.product.id,
       name: this.product.name,
-      price: this.product.price,
+      price: numericPrice, // Always a number now
       imageSrc: this.product.imageSrc,
       variant: this.product.variant,
       cssClass: this.product.cssClass,

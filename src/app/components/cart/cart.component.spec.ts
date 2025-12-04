@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 import { CartComponent } from './cart.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
-import { RouterTestingModule } from '@angular/router/testing';
 import { CartService } from '../../services/cart.service';
 import { of } from 'rxjs';
 
@@ -24,10 +25,13 @@ describe('CartComponent', () => {
       imports: [
         CartComponent,
         CommonModule,
-        RouterTestingModule,
         NavbarComponent,
       ],
-      providers: [{ provide: CartService, useClass: MockCartService }],
+      providers: [
+        { provide: CartService, useClass: MockCartService },
+        provideHttpClient(),
+        provideRouter([])
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CartComponent);

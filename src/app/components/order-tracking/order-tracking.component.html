@@ -17,7 +17,7 @@
             [class.completed]="getStatusIndex(order.status) >= i">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <h4>{{ status | titlecase }}</h4>
+              <h4>{{ statusLabels[status] }}</h4>
               <p *ngIf="status === 'pending'">Pedido recebido</p>
               <p *ngIf="status === 'processing'">Em processamento</p>
               <p *ngIf="status === 'shipped'">Enviado</p>
@@ -46,6 +46,11 @@
         <p>{{ order.shippingAddress.city }}, {{ order.shippingAddress.zip }}</p>
         <p>{{ order.shippingAddress.country }}</p>
       </div>
+
+      <div class="tracking-actions">
+        <button (click)="navigateToProducts()" class="btn-secondary">Continuar Comprando</button>
+        <button (click)="navigateToHome()" class="btn-primary">Ir para a Home</button>
+      </div>
     </div>
   </ng-container>
 
@@ -57,6 +62,7 @@
     <div class="not-found">
       <h2>Pedido não encontrado</h2>
       <p>O ID do pedido não foi encontrado ou é inválido.</p>
+      <button (click)="navigateToHome()" class="btn-primary">Voltar para a Home</button>
     </div>
   </ng-template>
 </div>

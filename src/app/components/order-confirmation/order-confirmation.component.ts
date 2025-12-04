@@ -47,4 +47,10 @@ export class OrderConfirmationComponent implements OnInit {
   navigateToProducts(): void {
     this.router.navigate(['/products']);
   }
+
+  navigateToTracking(): void {
+    if (this.order) {
+      this.router.navigate(['/order-tracking'], { queryParams: { orderId: this.order.id } });
+    }
+  }
 }

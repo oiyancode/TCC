@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export interface CartItem {
   id: number;
   name: string;
-  price: string;
+  price: number; // Changed from string to number
   quantity: number;
   size?: string;
   shoeSize?: number;
@@ -156,7 +156,7 @@ export class CartService {
     return {
       id: product.id!,
       name: product.name!,
-      price: product.price || 'R$0,00',
+      price: product.price || 0,
       quantity,
       size: product.size,
       shoeSize: product.shoeSize,
@@ -181,7 +181,7 @@ export class CartService {
   getCartTotal(): number {
     const items = this.cartItemsSource.value;
     return items.reduce((total, item) => {
-      const price = this.parsePrice(item.price);
+      const price = typeof item.price === 'number' ? item.price : 0;
       const quantity = this.validateQuantity(item.quantity) ? item.quantity : 0;
       return total + (price * quantity);
     }, 0);
