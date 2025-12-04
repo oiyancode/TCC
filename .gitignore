@@ -37,6 +37,22 @@ yarn-error.log
 testem.log
 /typings
 
+# AI Development Files
+.trae/
+.clinerules
+
+# Development Documentation
+documentos/
+memory-bank/
+
+# Build Troubleshooting
+Fix*.md
+
+# Generated Documentation
+PROJECT_DOCUMENTATION.md
+QUICK_REFERENCE.md
+README_DOCUMENTATION.md
+
 # System files
 .DS_Store
 Thumbs.db
