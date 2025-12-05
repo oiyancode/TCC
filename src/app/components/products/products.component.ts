@@ -43,6 +43,9 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Clear cache to ensure fresh data
+    this.productsService.clearCache();
+    
     this.setupProductsSubscription();
     this.setupWishlistSubscription();
     this.setupRouteParams();

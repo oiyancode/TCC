@@ -1,13 +1,457 @@
 [
   {
+    "id": 22,
+    "name": "Street Glide Pro",
+    "price": "R$259,90",
+    "imageSrc": "/assets/produtos_geral/skates/skate_v01.webp",
+    "variant": "skate",
+    "cssClass": "product-street-glide-pro",
+    "description": "O Street Glide Pro é projetado para skatistas urbanos que exigem durabilidade máxima. Com reforço triplo nas áreas de alto impacto e sola vulcanizada de grip superior, oferece proteção e controle excepcionais para manobras técnicas nas ruas.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Matheus Oliveira",
+        "rating": 5,
+        "comment": "Durabilidade incrível! Aguenta muito bem as manobras.",
+        "date": "2025-11-17"
+      },
+      {
+        "id": 2,
+        "userName": "Jessica Alves",
+        "rating": 5,
+        "comment": "Perfeito para street! Muito resistente.",
+        "date": "2025-11-25"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Training Essential",
+    "price": "R$199,90",
+    "imageSrc": "/assets/produtos_geral/basket_balls/Bola-Basquete-Variação-6.webp",
+    "variant": "basket",
+    "cssClass": "product-training-essential",
+    "description": "Desenvolvida especificamente para treinos intensivos, a Training Essential mantém suas características mesmo após uso prolongado. Seu design ergonômico facilita o desenvolvimento de técnicas de drible e controle de bola.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Gustavo Pires",
+        "rating": 5,
+        "comment": "Excelente para treinos diários. Muito resistente!",
+        "date": "2025-11-21"
+      },
+      {
+        "id": 2,
+        "userName": "Tatiana Alves",
+        "rating": 4,
+        "comment": "Boa bola de treino. Recomendo!",
+        "date": "2025-11-29"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Urban Runner Pro",
+    "price": "R$499,90",
+    "imageSrc": "/assets/produtos_geral/Skate_V2.webp",
+    "variant": "skate",
+    "cssClass": "product-urban-runner-pro",
+    "description": "O Urban Runner Pro eleva o conceito de skate shoe a um novo patamar. Combinando tecnologia de amortecimento premium com design urbano sofisticado, oferece proteção máxima e conforto incomparável. Ideal para skatistas profissionais e entusiastas sérios.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Diego Mendes",
+        "rating": 5,
+        "comment": "Top demais! Vale muito a pena o investimento.",
+        "date": "2025-11-19"
+      },
+      {
+        "id": 2,
+        "userName": "Amanda Silva",
+        "rating": 4,
+        "comment": "Muito bom, mas o preço é um pouco salgado.",
+        "date": "2025-11-26"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Classic Sport",
+    "price": "R$219,90",
+    "imageSrc": "/assets/produtos_geral/tenis/tenis_v05.webp",
+    "variant": "tenis",
+    "cssClass": "product-classic-sport",
+    "description": "O Classic Sport traz o melhor do design clássico com tecnologia moderna. Seu visual atemporal combina com qualquer look, enquanto o conforto e durabilidade atendem às demandas do dia a dia. Perfeito para quem valoriza estilo e funcionalidade.",
+    "shoeSizes": [
+      38,
+      39,
+      40,
+      41,
+      42
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Fabio Gomes",
+        "rating": 4,
+        "comment": "Design clássico e muito confortável!",
+        "date": "2025-11-20"
+      },
+      {
+        "id": 2,
+        "userName": "Monica Silva",
+        "rating": 5,
+        "comment": "Adorei! Combina com tudo.",
+        "date": "2025-11-28"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Park Master Elite",
+    "price": "R$329,90",
+    "imageSrc": "/assets/produtos_geral/skates/skate_v02.webp",
+    "variant": "skate",
+    "cssClass": "product-park-master-elite",
+    "description": "Desenvolvido especificamente para skate parks, o Park Master Elite combina flexibilidade e suporte. Seu sistema de amortecimento absorve impactos de grandes alturas, enquanto o design de baixo perfil oferece máximo controle do shape.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Igor Fernandes",
+        "rating": 5,
+        "comment": "Melhor skate shoe para park! Amortecimento top.",
+        "date": "2025-11-18"
+      },
+      {
+        "id": 2,
+        "userName": "Bianca Santos",
+        "rating": 4,
+        "comment": "Muito bom para rampas. Recomendo!",
+        "date": "2025-11-26"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Youth Starter",
+    "price": "R$129,90",
+    "imageSrc": "/assets/produtos_geral/basket_balls/Bola-Basquete-Variação-4.webp",
+    "variant": "basket",
+    "cssClass": "product-youth-starter",
+    "description": "Perfeita para iniciantes e jovens jogadores, a Youth Starter oferece excelente custo-benefício sem comprometer a qualidade. Seu tamanho e peso são ideais para desenvolvimento de habilidades fundamentais do basquete.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Marcos Vinicius",
+        "rating": 4,
+        "comment": "Ótima para quem está começando. Preço justo!",
+        "date": "2025-11-15"
+      },
+      {
+        "id": 2,
+        "userName": "Carla Souza",
+        "rating": 5,
+        "comment": "Comprei para meu filho e ele adorou!",
+        "date": "2025-11-26"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Court Master",
+    "price": "R$159,90",
+    "imageSrc": "/assets/produtos_geral/Basketball_V2.webp",
+    "variant": "basket",
+    "cssClass": "product-court-master",
+    "description": "O Court Master é ideal para jogadores que buscam performance sem comprometer o orçamento. Com design ergonômico e materiais resistentes, oferece excelente suporte lateral e estabilidade. Perfeito para treinos intensos e jogos competitivos.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Rafael Souza",
+        "rating": 4,
+        "comment": "Bom custo-benefício. Atende bem para treinos.",
+        "date": "2025-11-14"
+      },
+      {
+        "id": 2,
+        "userName": "Camila Oliveira",
+        "rating": 5,
+        "comment": "Adorei! Muito confortável e bonito.",
+        "date": "2025-11-21"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Championship Pro",
+    "price": "R$329,90",
+    "imageSrc": "/assets/produtos_geral/basket_balls/Bola-Basquete-Variação-3.webp",
+    "variant": "basket",
+    "cssClass": "product-championship-pro",
+    "description": "A Championship Pro é a escolha oficial para competições de alto nível. Com tecnologia de balanceamento perfeito e revestimento de couro genuíno, oferece precisão incomparável em arremessos e passes. Certificada para uso profissional.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Ricardo Moura",
+        "rating": 5,
+        "comment": "Bola de altíssima qualidade! Sensação profissional.",
+        "date": "2025-11-22"
+      },
+      {
+        "id": 2,
+        "userName": "Isabela Rodrigues",
+        "rating": 5,
+        "comment": "Perfeita para campeonatos. Recomendo muito!",
+        "date": "2025-11-30"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Elite Bounce",
+    "price": "R$219,90",
+    "imageSrc": "/assets/produtos_geral/Basketball_V3.webp",
+    "variant": "basket",
+    "cssClass": "product-elite-bounce",
+    "description": "O Elite Bounce foi desenvolvido para jogadores que buscam explosividade e agilidade. Seu sistema de amortecimento responsivo maximiza o retorno de energia, enquanto o design leve permite movimentos rápidos e precisos. Perfeito para guards e jogadores versáteis.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "João Pedro",
+        "rating": 5,
+        "comment": "Incrível para jogos rápidos! Muito responsivo.",
+        "date": "2025-11-11"
+      },
+      {
+        "id": 2,
+        "userName": "Patricia Almeida",
+        "rating": 4,
+        "comment": "Muito bom, mas poderia ter mais cores disponíveis.",
+        "date": "2025-11-29"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Tech Grip Pro",
+    "price": "R$379,90",
+    "imageSrc": "/assets/produtos_geral/skates/skate_v04.webp",
+    "variant": "skate",
+    "cssClass": "product-tech-grip-pro",
+    "description": "O Tech Grip Pro incorpora tecnologia de grip avançada com padrão hexagonal na sola. Oferece aderência superior ao lixa sem comprometer a mobilidade. Ideal para skatistas técnicos que executam tricks complexos.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Henrique Dias",
+        "rating": 5,
+        "comment": "Grip sensacional! Perfeito para flip tricks.",
+        "date": "2025-11-20"
+      },
+      {
+        "id": 2,
+        "userName": "Natalia Souza",
+        "rating": 5,
+        "comment": "Tecnologia de grip realmente funciona. Top!",
+        "date": "2025-11-28"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Street Ball Master",
+    "price": "R$169,90",
+    "imageSrc": "/assets/produtos_geral/basket_balls/Bola-Basquete-Variação-2.webp",
+    "variant": "basket",
+    "cssClass": "product-street-ball-master",
+    "description": "Desenvolvida especialmente para jogos de rua, a Street Ball Master possui revestimento extra resistente que suporta superfícies ásperas. Seu design vibrante e grip superior garantem performance consistente em qualquer condição.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "André Luiz",
+        "rating": 4,
+        "comment": "Ótima para jogar na rua. Muito resistente!",
+        "date": "2025-11-18"
+      },
+      {
+        "id": 2,
+        "userName": "Larissa Mendes",
+        "rating": 5,
+        "comment": "Adorei! Perfeita para rachão no fim de semana.",
+        "date": "2025-11-28"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Pro Hoops Elite",
+    "price": "R$279,90",
+    "imageSrc": "/assets/produtos_geral/basket_balls/Bola-Basquete-Variação-1.webp",
+    "variant": "basket",
+    "cssClass": "product-pro-hoops-elite",
+    "description": "A Pro Hoops Elite é uma bola de basquete profissional com tecnologia de grip avançada. Seu revestimento em couro sintético premium oferece controle excepcional e durabilidade superior. Ideal para jogos competitivos e treinos intensos em quadras indoor.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Felipe Augusto",
+        "rating": 5,
+        "comment": "Melhor bola que já usei! Controle perfeito e muito durável.",
+        "date": "2025-11-20"
+      },
+      {
+        "id": 2,
+        "userName": "Renata Costa",
+        "rating": 5,
+        "comment": "Excelente para jogos profissionais. Vale cada centavo!",
+        "date": "2025-11-25"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Impact Shield",
+    "price": "R$419,90",
+    "imageSrc": "/assets/produtos_geral/skates/skate_v06.webp",
+    "variant": "skate",
+    "cssClass": "product-impact-shield",
+    "description": "Com tecnologia de proteção contra impactos de última geração, o Impact Shield oferece segurança máxima sem sacrificar a performance. Seu sistema de absorção de choque multicamadas protege pés e tornozelos durante quedas e aterrissagens pesadas.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Vitor Hugo",
+        "rating": 5,
+        "comment": "Proteção excelente! Me sinto seguro para tentar tricks novos.",
+        "date": "2025-11-22"
+      },
+      {
+        "id": 2,
+        "userName": "Leticia Rocha",
+        "rating": 5,
+        "comment": "Melhor proteção que já vi em skate shoe. Vale muito!",
+        "date": "2025-11-30"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Classic Vulc",
+    "price": "R$229,90",
+    "imageSrc": "/assets/produtos_geral/skates/skate_v05.webp",
+    "variant": "skate",
+    "cssClass": "product-classic-vulc",
+    "description": "O Classic Vulc traz de volta o estilo clássico do skate com construção vulcanizada tradicional. Seu design atemporal e durabilidade comprovada fazem dele uma escolha confiável para skatistas de todas as gerações.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Alexandre Lima",
+        "rating": 5,
+        "comment": "Clássico e durável. Não tem erro!",
+        "date": "2025-11-21"
+      },
+      {
+        "id": 2,
+        "userName": "Carolina Mendes",
+        "rating": 4,
+        "comment": "Ótimo skate shoe. Estilo clássico que funciona.",
+        "date": "2025-11-29"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Urban Flex Pro",
+    "price": "R$289,90",
+    "imageSrc": "/assets/produtos_geral/tenis/tenis_v01.webp",
+    "variant": "tenis",
+    "cssClass": "product-urban-flex-pro",
+    "description": "O Urban Flex Pro combina flexibilidade excepcional com suporte estruturado. Seu sistema de amortecimento adaptativo responde ao seu tipo de pisada, oferecendo conforto personalizado. Ideal para uso urbano e atividades físicas leves.",
+    "shoeSizes": [
+      38,
+      39,
+      40,
+      41,
+      42
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Leonardo Santos",
+        "rating": 5,
+        "comment": "Muito confortável! Uso todos os dias.",
+        "date": "2025-11-16"
+      },
+      {
+        "id": 2,
+        "userName": "Vanessa Lima",
+        "rating": 5,
+        "comment": "Adorei a flexibilidade. Perfeito para caminhadas!",
+        "date": "2025-11-24"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Urban Shredder",
+    "price": "R$299,90",
+    "imageSrc": "/assets/produtos_geral/Skate_V3.webp",
+    "variant": "skate",
+    "cssClass": "product-urban-shredder",
+    "description": "O Urban Shredder é a escolha perfeita para skatistas urbanos. Com reforço extra nas laterais e lingueta acolchoada, proporciona proteção e conforto durante longas sessões. Seu design moderno e cores vibrantes fazem você se destacar nas ruas.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Vinicius Prado",
+        "rating": 4,
+        "comment": "Bom produto, mas esperava um pouco mais de durabilidade.",
+        "date": "2025-11-13"
+      },
+      {
+        "id": 2,
+        "userName": "Beatriz Lima",
+        "rating": 5,
+        "comment": "Adorei o design! Muito confortável.",
+        "date": "2025-11-27"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Slam Dunk Pro",
+    "price": "R$189,90",
+    "imageSrc": "/assets/produtos_geral/Basketball_V1.webp",
+    "variant": "basket",
+    "cssClass": "product-slam-dunk-pro",
+    "description": "Desenvolvido especificamente para jogadores de basquete, o Slam Dunk Pro oferece suporte superior ao tornozelo e tração excepcional. Sua sola de borracha de alta densidade garante aderência máxima na quadra, enquanto o sistema de amortecimento protege suas articulações durante saltos intensos.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Marcus Jordan",
+        "rating": 5,
+        "comment": "Perfeito para jogar basquete! Ótima aderência e conforto.",
+        "date": "2025-11-10"
+      },
+      {
+        "id": 2,
+        "userName": "Juliana Santos",
+        "rating": 4,
+        "comment": "Muito bom, mas o preço poderia ser melhor.",
+        "date": "2025-11-18"
+      }
+    ]
+  },
+  {
     "id": 1,
     "name": "Street King Pro",
     "price": "R$249,90",
-    "imageSrc": "/assets/produtos_geral/Tenis_V1.svg",
+    "imageSrc": "/assets/produtos_geral/Tenis_V1.webp",
     "variant": "tenis",
     "cssClass": "product-street-king-pro",
     "description": "O Street King Pro combina estilo urbano com performance excepcional. Desenvolvido com tecnologia de amortecimento avançado e cabedal respirável, oferece conforto durante todo o dia. Perfeito para quem busca um tênis versátil que se adapta tanto ao uso casual quanto a atividades mais intensas.",
-    "shoeSizes": [37, 38, 39, 40],
+    "shoeSizes": [
+      37,
+      38,
+      39,
+      40
+    ],
     "reviews": [
       {
         "id": 1,
@@ -33,27 +477,141 @@
     ]
   },
   {
-    "id": 2,
-    "name": "Slam Dunk Pro",
-    "price": "R$189,90",
-    "imageSrc": "/assets/produtos_geral/Basketball_V1.svg",
+    "id": 14,
+    "name": "All-Court Performer",
+    "price": "R$239,90",
+    "imageSrc": "/assets/produtos_geral/basket_balls/Bola-Basquete-Variação-5.webp",
     "variant": "basket",
-    "cssClass": "product-slam-dunk-pro",
-    "description": "Desenvolvido especificamente para jogadores de basquete, o Slam Dunk Pro oferece suporte superior ao tornozelo e tração excepcional. Sua sola de borracha de alta densidade garante aderência máxima na quadra, enquanto o sistema de amortecimento protege suas articulações durante saltos intensos.",
+    "cssClass": "product-all-court-performer",
+    "description": "Versátil e confiável, a All-Court Performer se adapta perfeitamente a qualquer tipo de quadra. Seu revestimento híbrido combina durabilidade para uso externo com o toque suave necessário para jogos indoor.",
     "reviews": [
       {
         "id": 1,
-        "userName": "Marcus Jordan",
+        "userName": "Paulo Henrique",
         "rating": 5,
-        "comment": "Perfeito para jogar basquete! Ótima aderência e conforto.",
-        "date": "2025-11-10"
+        "comment": "Uso tanto na quadra coberta quanto na rua. Perfeita!",
+        "date": "2025-11-19"
       },
       {
         "id": 2,
-        "userName": "Juliana Santos",
+        "userName": "Juliana Freitas",
         "rating": 4,
-        "comment": "Muito bom, mas o preço poderia ser melhor.",
-        "date": "2025-11-18"
+        "comment": "Muito boa! Versátil mesmo.",
+        "date": "2025-11-27"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Night Cruiser",
+    "price": "R$199,90",
+    "imageSrc": "/assets/produtos_geral/Skate_V1.webp",
+    "variant": "skate",
+    "cssClass": "product-night-cruiser",
+    "description": "O Night Cruiser foi projetado para skatistas que valorizam estilo e funcionalidade. Com sola vulcanizada que oferece aderência superior ao shape e proteção reforçada nas áreas de maior desgaste, é perfeito para manobras técnicas e sessões prolongadas.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Bruno Alves",
+        "rating": 5,
+        "comment": "Melhor skate que já usei! Durabilidade incrível.",
+        "date": "2025-11-16"
+      },
+      {
+        "id": 2,
+        "userName": "Thiago Rocha",
+        "rating": 4,
+        "comment": "Muito bom, mas poderia ter mais ventilação.",
+        "date": "2025-11-23"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Performance Max",
+    "price": "R$469,90",
+    "imageSrc": "/assets/produtos_geral/tenis/tenis_v06.webp",
+    "variant": "tenis",
+    "cssClass": "product-performance-max",
+    "description": "Testado por atletas profissionais, o Performance Max oferece o máximo em tecnologia de performance. Seu sistema de estabilização dinâmica e retorno de energia proporciona vantagem competitiva em treinos e competições de alto nível.",
+    "shoeSizes": [
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Daniel Rocha",
+        "rating": 5,
+        "comment": "Testado e aprovado! Excelente para treinos intensos.",
+        "date": "2025-11-21"
+      },
+      {
+        "id": 2,
+        "userName": "Aline Cardoso",
+        "rating": 5,
+        "comment": "Performance incrível! Recomendo para atletas.",
+        "date": "2025-11-29"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Dynamic Motion",
+    "price": "R$399,90",
+    "imageSrc": "/assets/produtos_geral/tenis/tenis_v02.webp",
+    "variant": "tenis",
+    "cssClass": "product-dynamic-motion",
+    "description": "Com tecnologia de propulsão dinâmica, o Dynamic Motion maximiza a eficiência de cada movimento. Seu design aerodinâmico e materiais ultralight proporcionam uma experiência de corrida incomparável, ideal para atletas de alto desempenho.",
+    "shoeSizes": [
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Rodrigo Almeida",
+        "rating": 5,
+        "comment": "Sensacional para corridas longas! Muito leve.",
+        "date": "2025-11-17"
+      },
+      {
+        "id": 2,
+        "userName": "Priscila Martins",
+        "rating": 5,
+        "comment": "Melhor tênis de corrida que já tive!",
+        "date": "2025-11-25"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Minimal Skate",
+    "price": "R$189,90",
+    "imageSrc": "/assets/produtos_geral/skates/skate_v03.webp",
+    "variant": "skate",
+    "cssClass": "product-minimal-skate",
+    "description": "Com design minimalista e construção leve, o Minimal Skate oferece sensibilidade máxima ao shape. Perfeito para skatistas que preferem sentir cada movimento da prancha, mantendo proteção essencial nas áreas críticas.",
+    "reviews": [
+      {
+        "id": 1,
+        "userName": "Lucas Pereira",
+        "rating": 4,
+        "comment": "Leve e confortável. Ótimo board feel!",
+        "date": "2025-11-19"
+      },
+      {
+        "id": 2,
+        "userName": "Rafaela Costa",
+        "rating": 5,
+        "comment": "Adorei o design minimalista. Muito bom!",
+        "date": "2025-11-27"
       }
     ]
   },
@@ -61,11 +619,16 @@
     "id": 3,
     "name": "Air Max Court",
     "price": "R$449,90",
-    "imageSrc": "/assets/produtos_geral/Tenis_V2.svg",
+    "imageSrc": "/assets/produtos_geral/Tenis_V2.webp",
     "variant": "tenis",
     "cssClass": "product-air-max-court",
     "description": "O Air Max Court representa o ápice da tecnologia em calçados esportivos. Com sistema de amortecimento a ar visível, proporciona máximo conforto e absorção de impacto. Seu design premium e materiais de alta qualidade garantem durabilidade excepcional e estilo incomparável.",
-    "shoeSizes": [39, 40, 41, 42],
+    "shoeSizes": [
+      39,
+      40,
+      41,
+      42
+    ],
     "reviews": [
       {
         "id": 1,
@@ -91,52 +654,67 @@
     ]
   },
   {
-    "id": 4,
-    "name": "Court Master",
-    "price": "R$159,90",
-    "imageSrc": "/assets/produtos_geral/Basketball_V2.svg",
-    "variant": "basket",
-    "cssClass": "product-court-master",
-    "description": "O Court Master é ideal para jogadores que buscam performance sem comprometer o orçamento. Com design ergonômico e materiais resistentes, oferece excelente suporte lateral e estabilidade. Perfeito para treinos intensos e jogos competitivos.",
+    "id": 18,
+    "name": "Comfort Walk Elite",
+    "price": "R$319,90",
+    "imageSrc": "/assets/produtos_geral/tenis/tenis_v03.webp",
+    "variant": "tenis",
+    "cssClass": "product-comfort-walk-elite",
+    "description": "Projetado para longas caminhadas, o Comfort Walk Elite oferece suporte anatômico e amortecimento premium. Sua palmilha ortopédica e sistema de ventilação avançado garantem conforto durante todo o dia, mesmo em caminhadas extensas.",
+    "shoeSizes": [
+      37,
+      38,
+      39,
+      40,
+      41
+    ],
     "reviews": [
       {
         "id": 1,
-        "userName": "Rafael Souza",
-        "rating": 4,
-        "comment": "Bom custo-benefício. Atende bem para treinos.",
-        "date": "2025-11-14"
+        "userName": "Antônio Carlos",
+        "rating": 5,
+        "comment": "Perfeito para caminhadas! Muito confortável.",
+        "date": "2025-11-18"
       },
       {
         "id": 2,
-        "userName": "Camila Oliveira",
-        "rating": 5,
-        "comment": "Adorei! Muito confortável e bonito.",
-        "date": "2025-11-21"
+        "userName": "Sandra Oliveira",
+        "rating": 4,
+        "comment": "Excelente conforto. Vale o investimento!",
+        "date": "2025-11-26"
       }
     ]
   },
   {
-    "id": 5,
-    "name": "Night Cruiser",
-    "price": "R$199,90",
-    "imageSrc": "/assets/produtos_geral/Skate_V1.svg",
-    "variant": "skate",
-    "cssClass": "product-night-cruiser",
-    "description": "O Night Cruiser foi projetado para skatistas que valorizam estilo e funcionalidade. Com sola vulcanizada que oferece aderência superior ao shape e proteção reforçada nas áreas de maior desgaste, é perfeito para manobras técnicas e sessões prolongadas.",
+    "id": 19,
+    "name": "Tech Runner X1",
+    "price": "R$529,90",
+    "imageSrc": "/assets/produtos_geral/tenis/tenis_v04.webp",
+    "variant": "tenis",
+    "cssClass": "product-tech-runner-x1",
+    "description": "O Tech Runner X1 representa a vanguarda da tecnologia em calçados esportivos. Com impressão 3D personalizada e sistema de feedback háptico, oferece uma experiência única de corrida. Seu design futurista incorpora os mais avançados materiais de performance.",
+    "shoeSizes": [
+      39,
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
     "reviews": [
       {
         "id": 1,
-        "userName": "Bruno Alves",
+        "userName": "Eduardo Ferreira",
         "rating": 5,
-        "comment": "Melhor skate que já usei! Durabilidade incrível.",
-        "date": "2025-11-16"
+        "comment": "Tecnologia impressionante! Vale cada centavo.",
+        "date": "2025-11-19"
       },
       {
         "id": 2,
-        "userName": "Thiago Rocha",
-        "rating": 4,
-        "comment": "Muito bom, mas poderia ter mais ventilação.",
-        "date": "2025-11-23"
+        "userName": "Camila Ribeiro",
+        "rating": 5,
+        "comment": "Inovador e super confortável. Adorei!",
+        "date": "2025-11-27"
       }
     ]
   },
@@ -144,11 +722,16 @@
     "id": 6,
     "name": "Speed Runner",
     "price": "R$349,90",
-    "imageSrc": "/assets/produtos_geral/Tenis_V3.svg",
+    "imageSrc": "/assets/produtos_geral/Tenis_V3.webp",
     "variant": "tenis",
     "cssClass": "product-speed-runner",
     "description": "Projetado para corredores exigentes, o Speed Runner oferece leveza extrema sem sacrificar o suporte. Sua entressola responsiva proporciona retorno de energia a cada passada, enquanto o cabedal em mesh técnico garante máxima respirabilidade.",
-    "shoeSizes": [38, 39, 40, 41],
+    "shoeSizes": [
+      38,
+      39,
+      40,
+      41
+    ],
     "reviews": [
       {
         "id": 1,
@@ -163,81 +746,6 @@
         "rating": 5,
         "comment": "Excelente para treinos de velocidade. Recomendo!",
         "date": "2025-11-24"
-      }
-    ]
-  },
-  {
-    "id": 7,
-    "name": "Urban Runner Pro",
-    "price": "R$499,90",
-    "imageSrc": "/assets/produtos_geral/Skate_V2.svg",
-    "variant": "skate",
-    "cssClass": "product-urban-runner-pro",
-    "description": "O Urban Runner Pro eleva o conceito de skate shoe a um novo patamar. Combinando tecnologia de amortecimento premium com design urbano sofisticado, oferece proteção máxima e conforto incomparável. Ideal para skatistas profissionais e entusiastas sérios.",
-    "reviews": [
-      {
-        "id": 1,
-        "userName": "Diego Mendes",
-        "rating": 5,
-        "comment": "Top demais! Vale muito a pena o investimento.",
-        "date": "2025-11-19"
-      },
-      {
-        "id": 2,
-        "userName": "Amanda Silva",
-        "rating": 4,
-        "comment": "Muito bom, mas o preço é um pouco salgado.",
-        "date": "2025-11-26"
-      }
-    ]
-  },
-  {
-    "id": 8,
-    "name": "Urban Shredder",
-    "price": "R$299,90",
-    "imageSrc": "/assets/produtos_geral/Skate_V3.svg",
-    "variant": "skate",
-    "cssClass": "product-urban-shredder",
-    "description": "O Urban Shredder é a escolha perfeita para skatistas urbanos. Com reforço extra nas laterais e lingueta acolchoada, proporciona proteção e conforto durante longas sessões. Seu design moderno e cores vibrantes fazem você se destacar nas ruas.",
-    "reviews": [
-      {
-        "id": 1,
-        "userName": "Vinicius Prado",
-        "rating": 4,
-        "comment": "Bom produto, mas esperava um pouco mais de durabilidade.",
-        "date": "2025-11-13"
-      },
-      {
-        "id": 2,
-        "userName": "Beatriz Lima",
-        "rating": 5,
-        "comment": "Adorei o design! Muito confortável.",
-        "date": "2025-11-27"
-      }
-    ]
-  },
-  {
-    "id": 9,
-    "name": "Elite Bounce",
-    "price": "R$219,90",
-    "imageSrc": "/assets/produtos_geral/Basketball_V3.svg",
-    "variant": "basket",
-    "cssClass": "product-elite-bounce",
-    "description": "O Elite Bounce foi desenvolvido para jogadores que buscam explosividade e agilidade. Seu sistema de amortecimento responsivo maximiza o retorno de energia, enquanto o design leve permite movimentos rápidos e precisos. Perfeito para guards e jogadores versáteis.",
-    "reviews": [
-      {
-        "id": 1,
-        "userName": "João Pedro",
-        "rating": 5,
-        "comment": "Incrível para jogos rápidos! Muito responsivo.",
-        "date": "2025-11-11"
-      },
-      {
-        "id": 2,
-        "userName": "Patricia Almeida",
-        "rating": 4,
-        "comment": "Muito bom, mas poderia ter mais cores disponíveis.",
-        "date": "2025-11-29"
       }
     ]
   }

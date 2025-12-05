@@ -26,8 +26,25 @@ export class NewsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.productsService.getProducts().subscribe((products: Product[]) => {
-      this.products = products;
+      // Limit to 4 products of each type (12 total)
+      const basketProducts = products.filter(p => p.variant === 'basket').slice(0, 4);
+      const tenisProducts = products.filter(p => p.variant === 'tenis').slice(0, 4);
+      const skateProducts = products.filter(p => p.variant === 'skate').slice(0, 4);
+      
+      // Combine and shuffle to mix categories
+      const allProducts = [...basketProducts, ...tenisProducts, ...skateProducts];
+      this.products = this.shuffleArray(allProducts);
     });
+  }
+
+  // Fisher-Yates shuffle algorithm
+  private shuffleArray<T>(array: T[]): T[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 
   @ViewChild('popularSwiperRef', { static: true })

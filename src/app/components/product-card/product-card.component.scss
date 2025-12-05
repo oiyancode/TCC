@@ -132,6 +132,66 @@
   left: 25px;
 }
 
+/* New Basketball Products */
+.product-pro-hoops-elite {
+  width: min(70%, 300px);
+}
+.product-street-ball-master {
+  width: min(70%, 300px);
+}
+.product-championship-pro {
+  width: min(70%, 300px);
+}
+.product-youth-starter {
+  width: min(70%, 300px);
+}
+.product-all-court-performer {
+  width: min(70%, 300px);
+}
+.product-training-essential {
+  width: min(70%, 300px);
+}
+
+/* New Tennis Products */
+.product-urban-flex-pro {
+  width: min(75%, 300px);
+}
+.product-dynamic-motion {
+  width: min(75%, 300px);
+}
+.product-comfort-walk-elite {
+  width: min(75%, 300px);
+}
+.product-tech-runner-x1 {
+  width: min(75%, 300px);
+}
+.product-classic-sport {
+  width: min(75%, 300px);
+}
+.product-performance-max {
+  width: min(75%, 300px);
+}
+
+/* New Skate Products */
+.product-street-glide-pro {
+  width: min(90%, 300px);
+}
+.product-park-master-elite {
+  width: min(85%, 300px);
+}
+.product-minimal-skate {
+  width: min(75%, 300px);
+}
+.product-tech-grip-pro {
+  width: min(85%, 300px);
+}
+.product-classic-vulc {
+  width: min(65%, 300px);
+}
+.product-impact-shield {
+  width: min(65%, 300px);
+}
+
 .news__foot {
   position: absolute;
   left: 48%;
@@ -218,6 +278,66 @@
   }
   .product-green-drop {
     width: min(66%, 260px);
+  }
+
+  /* New Basketball Products - Responsive */
+  .product-pro-hoops-elite {
+    width: min(65%, 280px);
+  }
+  .product-street-ball-master {
+    width: min(65%, 280px);
+  }
+  .product-championship-pro {
+    width: min(65%, 280px);
+  }
+  .product-youth-starter {
+    width: min(65%, 280px);
+  }
+  .product-all-court-performer {
+    width: min(65%, 280px);
+  }
+  .product-training-essential {
+    width: min(65%, 280px);
+  }
+
+  /* New Tennis Products - Responsive */
+  .product-urban-flex-pro {
+    width: min(68%, 300px);
+  }
+  .product-dynamic-motion {
+    width: min(68%, 300px);
+  }
+  .product-comfort-walk-elite {
+    width: min(68%, 300px);
+  }
+  .product-tech-runner-x1 {
+    width: min(68%, 300px);
+  }
+  .product-classic-sport {
+    width: min(68%, 300px);
+  }
+  .product-performance-max {
+    width: min(68%, 300px);
+  }
+
+  /* New Skate Products - Responsive */
+  .product-street-glide-pro {
+    width: min(60%, 270px);
+  }
+  .product-park-master-elite {
+    width: min(60%, 270px);
+  }
+  .product-minimal-skate {
+    width: min(60%, 270px);
+  }
+  .product-tech-grip-pro {
+    width: min(60%, 270px);
+  }
+  .product-classic-vulc {
+    width: min(60%, 270px);
+  }
+  .product-impact-shield {
+    width: min(60%, 270px);
   }
 }
 @media (max-width: 768px) {

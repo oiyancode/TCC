@@ -20,7 +20,7 @@
 .hero__stadium {
   position: absolute;
   inset: 0;
-  background: url("../../../assets/BG.png") center/cover no-repeat;
+  background: url("../../../assets/BG.webp") center/cover no-repeat;
   filter: saturate(105%) contrast(105%);
   width: 100%; // Ensure it doesn't exceed container
   max-width: 100%; // Prevent overflow

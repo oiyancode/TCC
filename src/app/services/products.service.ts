@@ -53,13 +53,12 @@ export interface SortOptions {
 export class ProductsService {
   private productsCache$ = new BehaviorSubject<Product[]>([]);
   private productsCacheTime?: number;
-  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private readonly CACHE_DURATION = 10 * 1000; // 10 seconds for development
   private isLoading$ = new BehaviorSubject<boolean>(false);
 
   private filterOptions$ = new BehaviorSubject<FilterOptions>({});
   private sortOptions$ = new BehaviorSubject<SortOptions>({
-    sortBy: 'popularity',
-    order: 'desc',
+    // No default sort - preserve JSON order (which is randomized)
   });
 
   public filteredProducts$: Observable<Product[]>;
@@ -138,7 +137,9 @@ export class ProductsService {
     }
 
     this.isLoading$.next(true);
-    return this.http.get<Product[]>('/assets/products.json').pipe(
+    // Add timestamp to prevent caching
+    const timestamp = new Date().getTime();
+    return this.http.get<Product[]>(`/assets/products.json?t=${timestamp}`).pipe(
       tap((products) => {
         const productsWithRating = products.map((p) => ({
           ...p,
