@@ -1,7 +1,7 @@
 <header
   class="navbar"
   [class.navbar--cart-page]="isCartPage"
-  [class.navbar--product-details]="isProductDetailsPage"
+  [class.navbar--product-details]="isProductDetailsPage || isProfilePage"
   [class.navbar--products-page]="isProductsPage"
 >
   <div class="navbar__left">

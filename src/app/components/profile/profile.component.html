@@ -40,7 +40,7 @@
           (click)="setActiveTab('security')">
           Login e Segurança
         </button>
-        <button class="logout-btn" (click)="logout()">
+        <button class="logout-btn" (click)="openLogoutModal()">
           Sair
         </button>
       </nav>
@@ -215,5 +215,18 @@
         </div>
       </section>
     </main>
+  </div>
+</div>
+
+<!-- Logout Modal -->
+<div class="modal-overlay" *ngIf="showLogoutModal" (click)="closeLogoutModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <img src="/assets/icons/alert_icon.webp" alt="Alert" class="modal-icon">
+    <h2 class="modal-title">Confirmar Logout</h2>
+    <p class="modal-message">Tem certeza que deseja sair da sua conta?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeLogoutModal()">Cancelar</button>
+      <button class="btn-confirm" (click)="confirmLogout()">Sim, Sair</button>
+    </div>
   </div>
 </div>

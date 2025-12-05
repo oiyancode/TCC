@@ -160,6 +160,35 @@ npm test -- --code-coverage
 npm run test:watch
 ```
 
+## 💾 Gerenciamento de Cache
+
+O projeto implementa um **sistema de versionamento de cache** para garantir compatibilidade de dados armazenados no `localStorage`.
+
+### Como Funciona
+
+- Cada estrutura de dados tem uma versão (`CURRENT_VERSION`)
+- Ao carregar dados, verifica compatibilidade de versão
+- Cache incompatível é **automaticamente limpo**
+- Previne erros de dados antigos/corrompidos
+
+### Atualizar Versão de Cache
+
+Quando modificar interfaces de dados (ex: `Order`, `User`), incremente a versão:
+
+```typescript
+// order.service.ts
+private readonly CURRENT_VERSION = '3.0'; // Era 2.0
+```
+
+O cache antigo será limpo automaticamente na próxima visita do usuário.
+
+### Serviços com Cache Versionado
+
+- ✅ `OrderService` - Pedidos (v2.0)
+- ✅ `AuthService` - Autenticação
+- ✅ `CartService` - Carrinho
+- ✅ `WishlistService` - Lista de desejos
+
 ## 📚 Documentação
 
 Para documentação técnica completa, consulte:

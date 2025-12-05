@@ -46,6 +46,8 @@ export class OrderService {
   private nextOrderId = 1;
   private readonly STORAGE_KEY = 'ford_orders';
   private readonly NEXT_ID_KEY = 'ford_next_order_id';
+  private readonly VERSION_KEY = 'ford_orders_version';
+  private readonly CURRENT_VERSION = '2.0'; // Increment this when Order structure changes
 
   constructor() {
     this.loadOrdersFromStorage();
@@ -53,6 +55,17 @@ export class OrderService {
 
   private loadOrdersFromStorage(): void {
     try {
+      // Check version first
+      const storedVersion = localStorage.getItem(this.VERSION_KEY);
+      
+      if (storedVersion !== this.CURRENT_VERSION) {
+        console.log(
+          `[OrderService] Cache version mismatch (stored: ${storedVersion}, current: ${this.CURRENT_VERSION}). Clearing old data.`
+        );
+        this.clearCache();
+        return;
+      }
+
       const storedOrders = localStorage.getItem(this.STORAGE_KEY);
       const storedNextId = localStorage.getItem(this.NEXT_ID_KEY);
 
@@ -80,9 +93,16 @@ export class OrderService {
         '[OrderService] Error loading orders from localStorage:',
         error
       );
-      this.orders = [];
-      this.nextOrderId = 1;
+      this.clearCache();
     }
+  }
+
+  private clearCache(): void {
+    localStorage.removeItem(this.STORAGE_KEY);
+    localStorage.removeItem(this.NEXT_ID_KEY);
+    localStorage.setItem(this.VERSION_KEY, this.CURRENT_VERSION);
+    this.orders = [];
+    this.nextOrderId = 1;
   }
 
   private saveOrdersToStorage(): void {
@@ -109,6 +129,7 @@ export class OrderService {
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(cleanOrders));
       localStorage.setItem(this.NEXT_ID_KEY, this.nextOrderId.toString());
+      localStorage.setItem(this.VERSION_KEY, this.CURRENT_VERSION);
     } catch (error) {
       console.error(
         '[OrderService] Error saving orders to localStorage:',

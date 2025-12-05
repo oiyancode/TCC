@@ -118,6 +118,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   get isProductDetailsPage(): boolean {
     return this.router.url.includes('/product/');
   }
+  get isProfilePage(): boolean {
+    return this.router.url.includes('/profile');
+  }
 
   // Search methods
   onSearchInput(event: Event) {

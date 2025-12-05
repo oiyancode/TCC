@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
 
   showCardForm = false;
   savedCards: CreditCard[] = [];
+  showLogoutModal = false;
 
   constructor(
     private authService: AuthService,
@@ -200,12 +201,19 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  logout(): void {
-    if (confirm('Tem certeza que deseja sair?')) {
-      this.authService.logout();
-      this.toastService.success('Logout realizado com sucesso!');
-      this.router.navigate(['/']);
-    }
+  openLogoutModal(): void {
+    this.showLogoutModal = true;
+  }
+
+  closeLogoutModal(): void {
+    this.showLogoutModal = false;
+  }
+
+  confirmLogout(): void {
+    this.authService.logout();
+    this.toastService.success('Logout realizado com sucesso!');
+    this.router.navigate(['/']);
+    this.showLogoutModal = false;
   }
 
   passwordMatchValidator(g: AbstractControl): ValidationErrors | null {
