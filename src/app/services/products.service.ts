@@ -40,6 +40,7 @@ export interface FilterOptions {
   sizes?: number[];
   rating?: number;
   availability?: boolean;
+  categories?: ('tenis' | 'skate' | 'basket')[];
 }
 
 export interface SortOptions {
@@ -100,6 +101,10 @@ export class ProductsService {
               (review) => review.rating === filters.rating!
             );
           });
+        }
+
+        if (filters.categories && filters.categories.length > 0) {
+          filtered = filtered.filter((p) => filters.categories!.includes(p.variant));
         }
 
         // A lógica de disponibilidade será adicionada se houver um campo correspondente nos dados
@@ -195,14 +200,28 @@ export class ProductsService {
     limit = 2
   ): Observable<Product[]> {
     return this.getProductsByVariant(variant).pipe(
-      map(
-        (products) =>
-          products
-            .filter((p) => p.id !== currentProductId) // Exclui o produto atual
-            .slice(0, limit) // Limita a 2 recomendações
-      ),
+      map((products) => {
+        // Filter out current product
+        const filtered = products.filter((p) => p.id !== currentProductId);
+        
+        // Shuffle array to get random products
+        const shuffled = this.shuffleArray(filtered);
+        
+        // Return limited number of random products
+        return shuffled.slice(0, limit);
+      }),
       catchError(() => of([]))
     );
+  }
+
+  // Fisher-Yates shuffle algorithm
+  private shuffleArray<T>(array: T[]): T[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 
   addReview(

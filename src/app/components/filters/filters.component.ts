@@ -21,12 +21,18 @@ export class FiltersComponent implements OnInit {
   priceRange = { min: 0, max: 1000 };
   selectedSizes: number[] = [];
   selectedRating = 0;
+  selectedCategories: ('tenis' | 'skate' | 'basket')[] = [];
 
   // Sort state
   currentSort: SortOptions = { sortBy: 'popularity', order: 'desc' };
 
   // Available options
-  availableSizes = [37, 38, 39, 40, 41, 42];
+  availableSizes = [37, 38, 39, 40, 41, 42, 43, 44, 45];
+  availableCategories = [
+    { value: 'tenis' as const, label: 'Tênis' },
+    { value: 'basket' as const, label: 'Basketball' },
+    { value: 'skate' as const, label: 'Skate' }
+  ];
 
   ngOnInit(): void {
     // Future implementation for handling initial category filters
@@ -41,6 +47,7 @@ export class FiltersComponent implements OnInit {
       priceRange: this.priceRange,
       sizes: this.selectedSizes,
       rating: this.selectedRating > 0 ? this.selectedRating : undefined,
+      categories: this.selectedCategories.length > 0 ? this.selectedCategories : undefined,
     };
     this.filtersChange.emit(filters);
     if (closeMenu) {
@@ -52,6 +59,7 @@ export class FiltersComponent implements OnInit {
     this.priceRange = { min: 0, max: 1000 };
     this.selectedSizes = [];
     this.selectedRating = 0;
+    this.selectedCategories = [];
     this.applyFilters();
   }
 
@@ -61,6 +69,15 @@ export class FiltersComponent implements OnInit {
       this.selectedSizes.splice(index, 1);
     } else {
       this.selectedSizes.push(size);
+    }
+  }
+
+  toggleCategory(category: 'tenis' | 'skate' | 'basket') {
+    const index = this.selectedCategories.indexOf(category);
+    if (index > -1) {
+      this.selectedCategories.splice(index, 1);
+    } else {
+      this.selectedCategories.push(category);
     }
   }
 

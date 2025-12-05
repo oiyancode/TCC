@@ -87,7 +87,10 @@
       39,
       40,
       41,
-      42
+      42,
+      43,
+      44,
+      45
     ],
     "reviews": [
       {
@@ -365,11 +368,14 @@
     "cssClass": "product-urban-flex-pro",
     "description": "O Urban Flex Pro combina flexibilidade excepcional com suporte estruturado. Seu sistema de amortecimento adaptativo responde ao seu tipo de pisada, oferecendo conforto personalizado. Ideal para uso urbano e atividades físicas leves.",
     "shoeSizes": [
+      37,
       38,
       39,
       40,
       41,
-      42
+      42,
+      43,
+      44
     ],
     "reviews": [
       {
@@ -447,10 +453,14 @@
     "cssClass": "product-street-king-pro",
     "description": "O Street King Pro combina estilo urbano com performance excepcional. Desenvolvido com tecnologia de amortecimento avançado e cabedal respirável, oferece conforto durante todo o dia. Perfeito para quem busca um tênis versátil que se adapta tanto ao uso casual quanto a atividades mais intensas.",
     "shoeSizes": [
-      37,
       38,
       39,
-      40
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
     ],
     "reviews": [
       {
@@ -535,6 +545,8 @@
     "cssClass": "product-performance-max",
     "description": "Testado por atletas profissionais, o Performance Max oferece o máximo em tecnologia de performance. Seu sistema de estabilização dinâmica e retorno de energia proporciona vantagem competitiva em treinos e competições de alto nível.",
     "shoeSizes": [
+      37,
+      38,
       39,
       40,
       41,
@@ -567,6 +579,7 @@
     "cssClass": "product-dynamic-motion",
     "description": "Com tecnologia de propulsão dinâmica, o Dynamic Motion maximiza a eficiência de cada movimento. Seu design aerodinâmico e materiais ultralight proporcionam uma experiência de corrida incomparável, ideal para atletas de alto desempenho.",
     "shoeSizes": [
+      38,
       39,
       40,
       41,
@@ -624,10 +637,14 @@
     "cssClass": "product-air-max-court",
     "description": "O Air Max Court representa o ápice da tecnologia em calçados esportivos. Com sistema de amortecimento a ar visível, proporciona máximo conforto e absorção de impacto. Seu design premium e materiais de alta qualidade garantem durabilidade excepcional e estilo incomparável.",
     "shoeSizes": [
+      38,
       39,
       40,
       41,
-      42
+      42,
+      43,
+      44,
+      45
     ],
     "reviews": [
       {
@@ -662,11 +679,12 @@
     "cssClass": "product-comfort-walk-elite",
     "description": "Projetado para longas caminhadas, o Comfort Walk Elite oferece suporte anatômico e amortecimento premium. Sua palmilha ortopédica e sistema de ventilação avançado garantem conforto durante todo o dia, mesmo em caminhadas extensas.",
     "shoeSizes": [
-      37,
       38,
       39,
       40,
-      41
+      41,
+      42,
+      43
     ],
     "reviews": [
       {
@@ -694,12 +712,12 @@
     "cssClass": "product-tech-runner-x1",
     "description": "O Tech Runner X1 representa a vanguarda da tecnologia em calçados esportivos. Com impressão 3D personalizada e sistema de feedback háptico, oferece uma experiência única de corrida. Seu design futurista incorpora os mais avançados materiais de performance.",
     "shoeSizes": [
-      39,
       40,
       41,
       42,
       43,
-      44
+      44,
+      45
     ],
     "reviews": [
       {
@@ -730,7 +748,9 @@
       38,
       39,
       40,
-      41
+      41,
+      42,
+      43
     ],
     "reviews": [
       {

@@ -82,6 +82,20 @@
     </div>
 
     <div class="filter-section">
+      <h3>Categoria</h3>
+      <div class="category-options">
+        <button
+          *ngFor="let category of availableCategories"
+          class="category-option"
+          [class.selected]="selectedCategories.includes(category.value)"
+          (click)="toggleCategory(category.value)"
+        >
+          {{ category.label }}
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-section">
       <h3>Avaliação</h3>
       <div class="rating-options">
         <button
