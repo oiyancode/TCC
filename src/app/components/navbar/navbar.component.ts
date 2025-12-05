@@ -197,6 +197,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   selectRecentSearch(query: string) {
     this.searchQuery = query;
     this.searchSubject.next(query);
+    // Don't close results, let them show for the selected query
+    this.showRecentSearches = false;
+    // Trigger search results display
+    setTimeout(() => {
+      this.showSearchResults = true;
+    }, 100);
   }
 
   onSearchFocus() {
@@ -209,7 +215,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   onSearchBlur() {
     // Delay para permitir clique nos resultados
     setTimeout(() => {
-      this.closeSearchResults();
+      this.showSearchResults = false;
+      this.showRecentSearches = false;
     }, 200);
   }
 
@@ -223,20 +230,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   closeSearchResults() {
     this.showSearchResults = false;
     this.showRecentSearches = false;
-    this.searchQuery = '';
-    // Limpar os inputs
-    const desktopInput = document.querySelector(
-      '.navbar__search--desktop input'
-    ) as HTMLInputElement;
-    const mobileInput = document.querySelector(
-      '.navbar__search-popup-content input'
-    ) as HTMLInputElement;
-    if (desktopInput) desktopInput.value = '';
-    if (mobileInput) mobileInput.value = '';
+    // Don't clear searchQuery here - let it persist
   }
 
   closeSearchPopup() {
     this.isSearchPopupOpen = false;
-    this.closeSearchResults();
+    this.showSearchResults = false;
+    this.showRecentSearches = false;
+    this.searchQuery = '';
   }
 }
