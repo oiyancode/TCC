@@ -10,11 +10,13 @@ import { OrderService, OrderData } from '../../services/order.service';
 
 import { FormsModule } from '@angular/forms';
 import { AuthService, CreditCard } from '../../services/auth.service';
+import { TextOnlyDirective } from '../../directives/text-only.directive';
+import { CepMaskDirective } from '../../directives/cep-mask.directive';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule],
+  imports: [NavbarComponent, CommonModule, FormsModule, TextOnlyDirective, CepMaskDirective],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })

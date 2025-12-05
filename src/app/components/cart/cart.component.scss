@@ -49,6 +49,24 @@
   left: 0;
   z-index: 1;
 
+  .address-note {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+    text-align: center;
+    opacity: 0.9;
+
+    .edit-profile-link {
+      color: #ffd900;
+      text-decoration: underline;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
   .form-group {
     margin-bottom: 20px;
 
@@ -77,6 +95,13 @@
         outline: none;
         border-color: white;
         background: rgba(255, 255, 255, 0.3);
+      }
+
+      &.readonly-input {
+        background: rgba(255, 255, 255, 0.1);
+        cursor: not-allowed;
+        opacity: 0.8;
+        border-color: rgba(255, 255, 255, 0.2);
       }
     }
   }

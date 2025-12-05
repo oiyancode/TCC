@@ -12,11 +12,30 @@ import {
 import { AuthService, User, CreditCard } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { CpfMaskDirective } from '../../directives/cpf-mask.directive';
+import { PhoneMaskDirective } from '../../directives/phone-mask.directive';
+import { CepMaskDirective } from '../../directives/cep-mask.directive';
+import { TextOnlyDirective } from '../../directives/text-only.directive';
+import { CardNumberMaskDirective } from '../../directives/card-number-mask.directive';
+import { CardExpiryMaskDirective } from '../../directives/card-expiry-mask.directive';
+import { cpfValidator } from '../../validators/cpf.validator';
+import { BRAZILIAN_STATES, COUNTRIES, BrazilianState } from '../../data/locations.data';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    NavbarComponent,
+    ReactiveFormsModule,
+    RouterModule,
+    CpfMaskDirective,
+    PhoneMaskDirective,
+    CepMaskDirective,
+    TextOnlyDirective,
+    CardNumberMaskDirective,
+    CardExpiryMaskDirective
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -32,6 +51,11 @@ export class ProfileComponent implements OnInit {
   showCardForm = false;
   savedCards: CreditCard[] = [];
   showLogoutModal = false;
+
+  // Location data
+  states = BRAZILIAN_STATES;
+  countries = COUNTRIES;
+  availableCities: string[] = [];
 
   constructor(
     private authService: AuthService,
@@ -55,13 +79,13 @@ export class ProfileComponent implements OnInit {
       name: ['', Validators.required],
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       phone: ['', Validators.required],
-      cpf: ['', Validators.required],
+      cpf: ['', Validators.required], // Apenas máscara, sem validação de CPF real
       birthDate: ['', Validators.required],
       address: this.fb.group({
         street: ['', Validators.required],
         city: ['', Validators.required],
         state: ['', Validators.required],
-        zip: ['', Validators.required],
+        zip: ['', Validators.required], // Apenas máscara, sem validação de CEP real
         country: ['Brasil', Validators.required],
       }),
     });
@@ -99,6 +123,10 @@ export class ProfileComponent implements OnInit {
         this.savedCards = user.savedCards || [];
         this.profileImage = (user as any).photoUrl || '/assets/icons/perfil_guest.svg';
         this.personalForm.patchValue(user);
+        // Load cities for current state
+        if (user.address?.state) {
+          this.onStateChange(user.address.state);
+        }
       }
     });
   }
@@ -118,6 +146,17 @@ export class ProfileComponent implements OnInit {
 
   setActiveTab(tab: 'personal' | 'security'): void {
     this.activeTab = tab;
+  }
+
+  onStateChange(stateUf: string): void {
+    const selectedState = this.states.find(s => s.uf === stateUf);
+    this.availableCities = selectedState ? selectedState.cities : [];
+    
+    // Reset city if it's not in the new state's cities
+    const currentCity = this.personalForm.get('address.city')?.value;
+    if (currentCity && !this.availableCities.includes(currentCity)) {
+      this.personalForm.get('address.city')?.setValue('');
+    }
   }
 
   onSavePersonal(): void {
