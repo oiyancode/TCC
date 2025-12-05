@@ -94,18 +94,21 @@ export class ProductsComponent implements OnInit {
 
   private animateItems(): void {
     setTimeout(() => {
-      gsap.fromTo(
-        '.product-card',
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.1,
-          ease: 'power2.out',
-          clearProps: 'all',
-        }
-      );
+      const elements = document.querySelectorAll('.product-card');
+      if (elements.length > 0) {
+        gsap.fromTo(
+          '.product-card',
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            stagger: 0.1,
+            ease: 'power2.out',
+            clearProps: 'all',
+          }
+        );
+      }
     }, 100);
   }
 

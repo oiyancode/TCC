@@ -13,13 +13,16 @@ import gsap from 'gsap';
 export class HeroComponent implements AfterViewInit {
   
   ngAfterViewInit() {
-    gsap.from('.hero__headline', {
-      duration: 1,
-      x: 0,
-      scale: 0.2,
-      autoAlpha: 0,
-      ease: "back.out(1.7)",
-      delay: 0.5 // Pequeno delay para garantir que a página carregou
-    });
+    const headline = document.querySelector('.hero__headline');
+    if (headline) {
+      gsap.from('.hero__headline', {
+        duration: 1,
+        x: 0,
+        scale: 0.2,
+        autoAlpha: 0,
+        ease: "back.out(1.7)",
+        delay: 0.5 // Pequeno delay para garantir que a página carregou
+      });
+    }
   }
 }
