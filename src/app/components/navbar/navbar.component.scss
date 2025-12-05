@@ -412,9 +412,17 @@
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   transition: background 0.2s ease;
+  position: relative;
 
   &:hover {
     background: rgba(255, 217, 0, 0.1);
+  }
+
+  &.active {
+    background: rgba(255, 217, 0, 0.2);
+    color: #ffd900;
+    border-left: 4px solid #ffd900;
+    font-weight: 700;
   }
 }
 
@@ -560,8 +568,12 @@
     display: none !important; // Hide desktop buttons on products page
   }
 
+  .navbar__cart--desktop {
+    display: none !important; // Hide desktop cart on products page
+  }
+
   .navbar__cart-mobile {
-    display: flex !important; // Show mobile cart icon on products page
+    display: flex !important; // Show cart icon on products page
   }
 
   .navbar__profile-mobile {
@@ -570,6 +582,41 @@
 
   .navbar__search-btn {
     display: flex !important; // Show search icon on products page
+  }
+}
+
+// Wishlist and Order-History Pages - Hamburger Menu Only
+.navbar--wishlist-page,
+.navbar--order-history-page {
+  .navbar__hamburger {
+    display: flex !important;
+  }
+
+  .navbar__links {
+    display: none !important;
+  }
+
+  // Hide desktop search
+  .navbar__search--desktop {
+    display: none !important;
+  }
+
+  // Hide desktop buttons (login/profile)
+  .navbar__btn--desktop {
+    display: none !important;
+  }
+
+  // Show mobile icons
+  .navbar__cart-mobile {
+    display: flex !important;
+  }
+
+  .navbar__profile-mobile {
+    display: flex !important;
+  }
+
+  .navbar__search-btn {
+    display: flex !important;
   }
 }
 

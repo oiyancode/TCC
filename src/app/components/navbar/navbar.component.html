@@ -3,6 +3,8 @@
   [class.navbar--cart-page]="isCartPage"
   [class.navbar--product-details]="isProductDetailsPage || isProfilePage"
   [class.navbar--products-page]="isProductsPage"
+  [class.navbar--wishlist-page]="isWishlistPage"
+  [class.navbar--order-history-page]="isOrderHistoryPage"
 >
   <div class="navbar__left">
     <a href="#hero" aria-label="Hero" class="navbar__logo-link">
@@ -18,8 +20,8 @@
       <img src="/assets/icons/menu_navbar.png" alt="Menu" />
     </button>
 
-    <!-- Desktop Navigation Links (hidden on cart page and products page) -->
-    <nav class="navbar__links" *ngIf="!isCartPage && !isProductsPage">
+    <!-- Desktop Navigation Links (hidden on cart page, products page, wishlist, and order-history) -->
+    <nav class="navbar__links" *ngIf="!isCartPage && !isProductsPage && !isWishlistPage && !isOrderHistoryPage">
       <a routerLink="/">Home</a>
       <a routerLink="/products">Produtos</a>
       <a href="#footer">Sobre</a>
@@ -118,7 +120,7 @@
       class="navbar__cart-mobile"
       (click)="goToCart()"
       aria-label="Carrinho"
-      *ngIf="!isCartPage && !isProductsPage"
+      *ngIf="!isCartPage"
     >
       <img src="/assets/icons/cart_mobile_icon.webp" alt="Carrinho" />
       <span class="navbar__cart-count">{{ cartItemCount }}</span>
@@ -131,10 +133,11 @@
     [class.navbar__mobile-menu--open]="isMobileMenuOpen"
   >
     <nav class="navbar__mobile-nav">
-      <a routerLink="/" (click)="closeMobileMenu()">Home</a>
-      <a routerLink="/products" (click)="closeMobileMenu()">Produtos</a>
-      <a routerLink="/wishlist" (click)="closeMobileMenu()">Wishlist</a>
-      <a routerLink="/order-tracking" (click)="closeMobileMenu()">Rastreamento</a>
+      <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">Produtos</a>
+      <a routerLink="/wishlist" (click)="closeMobileMenu()" routerLinkActive="active">Wishlist</a>
+      <a routerLink="/order-tracking" (click)="closeMobileMenu()" routerLinkActive="active">Rastreamento</a>
+      <a routerLink="/orders-history" (click)="closeMobileMenu()" routerLinkActive="active">Histórico de Pedidos</a>
       <a href="#footer" (click)="closeMobileMenu()">Sobre</a>
     </nav>
   </div>

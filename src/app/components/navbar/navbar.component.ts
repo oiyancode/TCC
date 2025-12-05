@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -18,7 +18,7 @@ import { ToastService } from '../../services/toast.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
@@ -120,6 +120,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
   get isProfilePage(): boolean {
     return this.router.url.includes('/profile');
+  }
+  get isWishlistPage(): boolean {
+    return this.router.url.includes('/wishlist');
+  }
+  get isOrderHistoryPage(): boolean {
+    return this.router.url.includes('/orders-history');
   }
 
   // Search methods
