@@ -54,6 +54,17 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
       '.section-basket .section-title'
     ) as HTMLElement;
 
+    // Botões de Comprar
+    const tenisButton = wrapper.querySelector(
+      '.section-tenis .btn-comprar'
+    ) as HTMLElement;
+    const skateButton = wrapper.querySelector(
+      '.section-skate .btn-comprar'
+    ) as HTMLElement;
+    const basketButton = wrapper.querySelector(
+      '.section-basket .btn-comprar'
+    ) as HTMLElement;
+
     document.fonts.ready.then(() => {
       this.mm = gsap.matchMedia();
 
@@ -71,6 +82,11 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
         gsap.set([skateSection, basketSection], {
           xPercent: 100,
           autoAlpha: 1,
+        });
+
+        // Garantir que os botões estejam visíveis inicialmente
+        gsap.set([tenisButton, skateButton, basketButton], {
+          clearProps: 'all',
         });
 
         const getScrollDistance = () => window.innerHeight * 8; // Scroll mais longo para acomodar pausas
@@ -108,6 +124,18 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
             ease: 'power2.out',
           },
           0.2
+        )
+        .from(
+          tenisButton,
+          {
+            y: 80,
+            opacity: 0,
+            duration: 0.6,
+            ease: 'back.out(1.2)',
+            force3D: true,
+            clearProps: 'transform,opacity',
+          },
+          0.5 // Inicia pouco depois do texto começar
         );
 
         // TRANSIÇÃO E ANIMAÇÕES DA SEÇÃO SKATE (Inicia em t=2)
@@ -135,6 +163,19 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
               ease: 'power2.out',
             },
             3.4 // Inicia 0.2s após o título
+          )
+          .from(
+            skateButton,
+            {
+              x: -100,
+              rotation: -15,
+              opacity: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+              force3D: true,
+              clearProps: 'transform,opacity',
+            },
+            3.6 // Inicia pouco depois do texto
           );
 
         // TRANSIÇÃO E ANIMAÇÕES DA SEÇÃO BASKET (Inicia em t=5)
@@ -160,6 +201,18 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
               ease: 'power2.out',
             },
             6.4 // Inicia 0.2s após o título
+          )
+          .from(
+            basketButton,
+            {
+              y: -120,
+              opacity: 0,
+              duration: 0.8,
+              ease: 'bounce.out',
+              force3D: true,
+              clearProps: 'transform,opacity',
+            },
+            6.6 // Inicia pouco depois do texto
           );
 
         ScrollTrigger.refresh();
@@ -185,6 +238,10 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
           y: 0,
         });
         gsap.set([tenisTitle, skateTitle, basketTitle], {
+          autoAlpha: 1,
+          clearProps: 'all',
+        });
+        gsap.set([tenisButton, skateButton, basketButton], {
           autoAlpha: 1,
           clearProps: 'all',
         });

@@ -97,7 +97,7 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  will-change: transform, opacity;
   
   img {
     height: 50px;
@@ -144,7 +144,7 @@
   height: auto;
   object-fit: contain;
   position: relative;
-  z-index: 2;
+  z-index: 1;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
   
   // Optimize image rendering
@@ -154,10 +154,24 @@
 
 .object-image {
     position: absolute;
-    bottom: -50px;
-    left: 50%;
+    top: -42px;
+    left: 102px;
     transform: translateX(-50%) translateZ(0);
-    width: 550px;
+    width: 128px;
+    height: auto;
+    object-fit: contain;
+    z-index: 1;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.4));
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.object-image-skate {
+    position: absolute;
+    top: -35px;
+    left: 25%;
+    transform: translateX(-50%) translateZ(0);
+    width: 546px;
     height: auto;
     object-fit: contain;
     z-index: 1;
@@ -281,6 +295,8 @@
   }
 
   .object-image {
-    max-width: 100%;
+    max-width: 37%;
+    left: 5px;
+    top: -32px;
   }
 }
