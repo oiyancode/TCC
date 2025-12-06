@@ -70,6 +70,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private lastFrameTime = 0;
   private targetFPS = 30;
   private frameInterval = 1000 / 30;
+  private isInitialized = false;
 
   // Store bound event handlers for proper cleanup
   private boundResizeHandler?: () => void;
@@ -84,7 +85,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    setTimeout(() => this.initializeViewer(), 0);
+    // Initialize immediately, but animation will be controlled by visibility
+    this.setupIntersectionObserver();
+    this.initializeViewer();
   }
 
   private async initializeViewer() {
@@ -99,7 +102,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       this.loadModel();
       this.addEvents();
       this.onResize();
-      this.animate();
+      this.animate(); // Start animation after initialization
     } catch (error) {
       this.handleInitializationError(error);
     }
@@ -593,6 +596,24 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.setupIntersectionObserver();
   }
 
+  private updateAnimationState() {
+    const shouldAnimate = 
+      this.isElementVisible && 
+      this.isPageVisible && 
+      !this.glContextLost && 
+      this.isInitialized;
+
+    if (shouldAnimate && !this.isAnimating) {
+      this.animate();
+    } else if (!shouldAnimate && this.isAnimating) {
+      if (this.frameId !== null) {
+        cancelAnimationFrame(this.frameId);
+        this.frameId = null;
+      }
+      this.isAnimating = false;
+    }
+  }
+
   private setupIntersectionObserver() {
     if (typeof IntersectionObserver === 'undefined') {
       this.isElementVisible = true;
@@ -602,25 +623,15 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          this.isElementVisible = entry.isIntersecting && entry.intersectionRatio > 0;
-
-          if (!this.isElementVisible && this.isAnimating) {
-            if (this.frameId !== null) {
-              cancelAnimationFrame(this.frameId);
-              this.frameId = null;
-            }
-            this.isAnimating = false;
-          } else if (
-            this.isElementVisible &&
-            !this.isAnimating &&
-            !this.glContextLost &&
-            this.isPageVisible
-          ) {
-            this.animate();
+          const isVisible = entry.isIntersecting && entry.intersectionRatio > 0.01;
+          
+          if (this.isElementVisible !== isVisible) {
+            this.isElementVisible = isVisible;
+            this.updateAnimationState();
           }
         });
       },
-      { threshold: 0.1, rootMargin: '50px' }
+      { threshold: 0.01, rootMargin: '100px' }
     );
 
     this.intersectionObserver.observe(this.containerRef.nativeElement);
@@ -628,16 +639,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private onVisibilityChange() {
     this.isPageVisible = !document.hidden;
-
-    if (!this.isPageVisible) {
-      if (this.frameId !== null) {
-        cancelAnimationFrame(this.frameId);
-        this.frameId = null;
-      }
-      this.isAnimating = false;
-    } else if (!this.isAnimating && !this.glContextLost && this.isElementVisible) {
-      this.animate();
-    }
+    this.updateAnimationState();
   }
 
   private onPointerDown(e: PointerEvent) {
