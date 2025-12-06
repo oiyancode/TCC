@@ -65,6 +65,25 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
       '.section-basket .btn-comprar'
     ) as HTMLElement;
 
+    // Imagens
+    const tenisImg = wrapper.querySelector(
+      '.section-tenis .person-image'
+    ) as HTMLElement;
+
+    const skatistaImg = wrapper.querySelector(
+      '.section-skate .person-image'
+    ) as HTMLElement;
+    const skateObjectImg = wrapper.querySelector(
+      '.section-skate .object-image-skate'
+    ) as HTMLElement;
+
+    const basketPlayerImg = wrapper.querySelector(
+      '.section-basket .person-image'
+    ) as HTMLElement;
+    const basketBallImg = wrapper.querySelector(
+      '.section-basket .object-image'
+    ) as HTMLElement;
+
     document.fonts.ready.then(() => {
       this.mm = gsap.matchMedia();
 
@@ -84,10 +103,22 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
           autoAlpha: 1,
         });
 
-        // Garantir que os botões estejam visíveis inicialmente
-        gsap.set([tenisButton, skateButton, basketButton], {
-          clearProps: 'all',
-        });
+        // Garantir que os botões e imagens estejam visíveis inicialmente (reset para animação)
+        gsap.set(
+          [
+            tenisButton,
+            skateButton,
+            basketButton,
+            tenisImg,
+            skatistaImg,
+            skateObjectImg,
+            basketPlayerImg,
+            basketBallImg,
+          ],
+          {
+            clearProps: 'all',
+          }
+        );
 
         const getScrollDistance = () => window.innerHeight * 8; // Scroll mais longo para acomodar pausas
 
@@ -105,41 +136,72 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
 
         // ANIMAÇÕES DA SEÇÃO TÊNIS (t=0 a t=1)
         tl.from(
-          splitTenisTitle.chars,
+          tenisImg,
           {
-            rotation: -180,
-            scale: 0.3,
-            opacity: 0,
-            stagger: 0.03,
-            duration: 1,
+            y: -750,
+            rotation: 40,
+            duration: 1.2,
+            ease: 'easeOut',
           },
           0
-        ).from(
-          splitTenis.words,
-          {
-            y: 100,
-            autoAlpha: 0,
-            stagger: 0.05,
-            duration: 0.8,
-            ease: 'power2.out',
-          },
-          0.2
         )
-        .from(
-          tenisButton,
-          {
-            y: 80,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'back.out(1.2)',
-            force3D: true,
-            clearProps: 'transform,opacity',
-          },
-          0.5 // Inicia pouco depois do texto começar
-        );
+          .from(
+            splitTenisTitle.chars,
+            {
+              rotation: -180,
+              scale: 0.3,
+              opacity: 0,
+              stagger: 0.03,
+              duration: 1,
+            },
+            0
+          )
+          .from(
+            splitTenis.words,
+            {
+              y: 100,
+              autoAlpha: 0,
+              stagger: 0.05,
+              duration: 0.8,
+              ease: 'power2.out',
+            },
+            0.2
+          )
+          .from(
+            tenisButton,
+            {
+              y: 80,
+              opacity: 0,
+              duration: 0.6,
+              ease: 'back.out(1.2)',
+              force3D: true,
+              clearProps: 'transform,opacity',
+            },
+            0.5 // Inicia pouco depois do texto começar
+          );
 
         // TRANSIÇÃO E ANIMAÇÕES DA SEÇÃO SKATE (Inicia em t=2)
         tl.to(skateSection, { xPercent: 0, ease: 'none', duration: 1 }, 2) // Pausa de 1s, transição de t=2 a t=3
+          .from(
+            skatistaImg,
+            {
+              x: -800,
+              scale: 0.8,
+              duration: 1,
+              ease: 'power2.out',
+            },
+            2.2 // Antecipado: Inicia durante a transição
+          )
+          .from(
+            skateObjectImg,
+            {
+              x: -600, // Mais longe para parallax
+              scale: 0.5,
+              duration: 1.2,
+              ease: 'power2.out',
+            },
+            2.2 // Antecipado: Inicia durante a transição
+          )
           .from(
             splitSkateTitle.chars,
             {
@@ -167,7 +229,7 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
           .from(
             skateButton,
             {
-              x: -100,
+              x: -300,
               rotation: -15,
               opacity: 0,
               duration: 0.7,
@@ -180,6 +242,24 @@ export class HorizontalScrollComponent implements AfterViewInit, OnDestroy {
 
         // TRANSIÇÃO E ANIMAÇÕES DA SEÇÃO BASKET (Inicia em t=5)
         tl.to(basketSection, { xPercent: 0, ease: 'none', duration: 1 }, 5) // Pausa de 1s, transição de t=5 a t=6
+          .from(
+            basketPlayerImg,
+            {
+              y: 800,
+              duration: 1.8,
+              ease: 'back.out(1.2)',
+            },
+            5.2 // Antecipado: Inicia durante a transição
+          )
+          .from(
+            basketBallImg,
+            {
+              y: -400,
+              duration: 1.8,
+              ease: 'power2.out',
+            },
+            5.2 // Antecipado: Inicia durante a transição
+          )
           .from(
             splitBasketTitle.chars,
             {
