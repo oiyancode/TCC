@@ -1,0 +1,132 @@
+<div class="contact-container">
+  <div class="background-image"></div>
+  <img
+    #backgroundSkatista
+    src="assets/icons/skatista-pulando-no-ar.webp"
+    alt="Skatista pulando no ar"
+    class="background-skatista"
+  />
+
+  <div class="form-wrapper">
+    <div class="success-message" *ngIf="submissionSuccess">
+      <div class="success-icon">✓</div>
+      <h2>Mensagem Enviada!</h2>
+      <p>Obrigado por entrar em contato. Nossa equipe responderá em breve.</p>
+    </div>
+
+    <ng-container *ngIf="!submissionSuccess">
+      <h1 class="title">Fale Conosco</h1>
+      <p class="subtitle">
+        Tem alguma dúvida, sugestão ou problema? Preencha o formulário abaixo e
+        nossa equipe entrará em contato.
+      </p>
+
+      <form
+        class="contact-form"
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="form-field">
+          <label for="name" class="sr-only">Nome</label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Seu nome completo"
+            aria-label="Nome Completo"
+            aria-required="true"
+            (input)="onNameInput($event)"
+          />
+          <div
+            *ngIf="
+              contactForm.get('name')?.invalid &&
+              (contactForm.get('name')?.dirty || contactForm.get('name')?.touched)
+            "
+            class="error-message"
+          >
+            O nome é obrigatório.
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="email" class="sr-only">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="seu@email.com"
+            aria-label="Endereço de Email"
+            aria-required="true"
+          />
+          <div
+            *ngIf="
+              contactForm.get('email')?.invalid &&
+              (contactForm.get('email')?.dirty ||
+                contactForm.get('email')?.touched)
+            "
+            class="error-message"
+          >
+            <span *ngIf="contactForm.get('email')?.errors?.['required']"
+              >O email é obrigatório.</span
+            >
+            <span *ngIf="contactForm.get('email')?.errors?.['email']"
+              >Por favor, insira um email válido.</span
+            >
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="subject" class="sr-only">Assunto</label>
+          <select id="subject" formControlName="subject" aria-label="Assunto">
+            <option value="" disabled selected>Selecione um assunto</option>
+            <option value="duvidas">Dúvidas Gerais</option>
+            <option value="pedidos">Problemas com um Pedido</option>
+            <option value="sugestoes">Sugestões</option>
+            <option value="outros">Outros</option>
+          </select>
+          <div
+            *ngIf="
+              contactForm.get('subject')?.invalid &&
+              (contactForm.get('subject')?.dirty ||
+                contactForm.get('subject')?.touched)
+            "
+            class="error-message"
+          >
+            Selecione um assunto.
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="message" class="sr-only">Mensagem</label>
+          <textarea
+            id="message"
+            formControlName="message"
+            rows="6"
+            placeholder="Digite sua mensagem aqui..."
+            aria-label="Sua Mensagem"
+            aria-required="true"
+          ></textarea>
+          <div
+            *ngIf="
+              contactForm.get('message')?.invalid &&
+              (contactForm.get('message')?.dirty ||
+                contactForm.get('message')?.touched)
+            "
+            class="error-message"
+          >
+            A mensagem é obrigatória.
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="contactForm.invalid"
+          aria-label="Enviar Mensagem"
+        >
+          Enviar Mensagem
+        </button>
+      </form>
+    </ng-container>
+  </div>
+</div>

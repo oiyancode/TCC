@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -9,6 +9,7 @@ import {
   distinctUntilChanged,
   switchMap,
   of,
+  filter,
 } from 'rxjs';
 import { CartService } from '../../services/cart.service';
 import { ProductsService, Product } from '../../services/products.service';
@@ -26,7 +27,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount = '[00]';
   isMobileMenuOpen = false;
   isSearchPopupOpen = false;
-  isCartPage = false; // Detect if on cart page
+  isCartPage = false;
+  isProductsPage = false;
+  isProductDetailsPage = false;
+  isProfilePage = false;
+  isWishlistPage = false;
+  isOrderHistoryPage = false;
+  isHomePage = false;
+  isContactPage = false;
+  isLoginPage = false;
   isLoggedIn = false;
   buttonText = 'Entrar';
 
@@ -52,7 +61,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.setupCartSubscription();
-    this.checkIfCartPage();
+    this.setupRouterSubscription(); // Setup router subscription immediately
+    this.checkCurrentRoute(); // Initial check
     this.setupSearch();
     this.loadRecentSearches();
     this.setupAuthSubscription();
@@ -108,30 +118,36 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  private checkIfCartPage() {
-    this.isCartPage = this.router.url.includes('/cart');
+  private setupRouterSubscription() {
+    this.subscription.add(
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.checkCurrentRoute();
+        })
+    );
   }
 
-  get isProductsPage(): boolean {
-    return this.router.url.includes('/products');
-  }
-  get isProductDetailsPage(): boolean {
-    return this.router.url.includes('/product/');
-  }
-  get isProfilePage(): boolean {
-    return this.router.url.includes('/profile');
-  }
-  get isWishlistPage(): boolean {
-    return this.router.url.includes('/wishlist');
-  }
-  get isOrderHistoryPage(): boolean {
-    return this.router.url.includes('/orders-history');
+  private checkCurrentRoute() {
+    const url = this.router.url;
+    this.isCartPage = url.includes('/cart');
+    this.isProductsPage = url.includes('/products');
+    this.isProductDetailsPage = url.includes('/product/');
+    this.isProfilePage = url.includes('/profile');
+    this.isWishlistPage = url.includes('/wishlist');
+    this.isOrderHistoryPage = url.includes('/orders-history');
+    
+    // Normalize URL to check for home page (ignore query params and fragments)
+    const urlPath = url.split('?')[0].split('#')[0];
+    this.isHomePage = urlPath === '/';
+    
+    this.isContactPage = url.includes('/contact');
+    this.isLoginPage = url.includes('/login');
   }
 
   // Search methods
-  onSearchInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.updateSearchQuery(input.value);
+  onSearchChange(value: string) {
+    this.searchSubject.next(value);
   }
 
   navigateToLoginOrProfile() {
@@ -143,11 +159,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         queryParams: { redirectTo: this.router.url },
       });
     }
-  }
-
-  onSearchInputMobile(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.updateSearchQuery(input.value);
   }
 
   private setupSearch() {

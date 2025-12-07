@@ -65,11 +65,21 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'contact',
+    loadComponent: () =>
+      import('./contact/contact.component').then((c) => c.ContactComponent),
+  },
+  {
     path: 'order-tracking',
     loadComponent: () =>
       import('./components/order-tracking/order-tracking.component').then(
         (c) => c.OrderTrackingComponent
       ),
     canActivate: [authGuard],
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./contact/contact.component').then((c) => c.ContactComponent),
   },
 ];

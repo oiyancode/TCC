@@ -71,7 +71,7 @@
     <!-- SEÇÃO 2: ENDEREÇO DE ENTREGA (VERDE) -->
     <div class="cart-section address-section">
       <h2>Informações de Entrega</h2>
-      <p class="address-note">Os dados abaixo são carregados do seu perfil. <br> <a routerLink="/profile" class="edit-profile-link">Editar no perfil</a></p>
+      <p class="address-note">Os dados abaixo são carregados do seu perfil. <br> <a (click)="editProfile()" class="edit-profile-link" style="cursor: pointer;">Editar no perfil</a></p>
       <form class="address-form">
         <div class="form-group">
           <label>Nome Completo</label>

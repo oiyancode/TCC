@@ -6,9 +6,9 @@
   align-items: center;
   justify-content: center;
   background-color: var(--color-bg);
-  padding: 2rem;
   position: relative;
   overflow: hidden;
+  padding: 0 2rem;
 
   // Background gradient mesh effect
   &::before {
@@ -57,7 +57,7 @@
 }
 
 .form-column {
-  padding: 4rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -76,7 +76,7 @@
   .brand-logo {
     font-family: var(--font-headline);
     font-size: 1.5rem;
-    color: var(--color-text);
+    color: var(--brand-yellow);
     margin: 0;
   }
 

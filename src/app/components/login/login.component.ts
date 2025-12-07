@@ -18,11 +18,12 @@ gsap.registerPlugin(Draggable);
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements AfterViewInit {
-  isSignUp = false;
+  isSignUp = true;
 
   // Form Data
   email = '';
   password = '';
+  name = '';
 
   // LGPD Modal
   showLgpdModal = true;
@@ -47,7 +48,7 @@ export class LoginComponent implements AfterViewInit {
   }
 
   onSubmit() {
-    if (!this.email || !this.password) {
+    if (!this.email || !this.password || (this.isSignUp && !this.name)) {
       this.toastService.error('Por favor, preencha todos os campos.');
       return;
     }
@@ -58,8 +59,15 @@ export class LoginComponent implements AfterViewInit {
     }
 
     if (this.isSignUp) {
+      if (!this.isValidPassword(this.password)) {
+        this.toastService.error(
+          'A senha deve ter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula e um número.'
+        );
+        return;
+      }
+
       this.authService
-        .register({ email: this.email, password: this.password })
+        .register({ email: this.email, password: this.password, name: this.name })
         .subscribe((success) => {
           if (success) {
             this.toastService.success(
@@ -89,6 +97,15 @@ export class LoginComponent implements AfterViewInit {
     return re.test(value);
   }
 
+  private isValidPassword(value: string): boolean {
+    const hasMinLength = value.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    
+    return hasMinLength && hasUpperCase && hasLowerCase && hasNumber;
+  }
+
   acceptLgpd() {
     if (this.lgpdRequiredChecked) {
       localStorage.setItem('lgpd_accepted', 'true');
@@ -100,7 +117,7 @@ export class LoginComponent implements AfterViewInit {
     Draggable.create('.floating-item', {
       type: 'x,y',
       edgeResistance: 0.65,
-      bounds: '.visual-content',
+      bounds: '.visual-column',
       inertia: true,
       throwProps: true,
       onDragStart: function () {

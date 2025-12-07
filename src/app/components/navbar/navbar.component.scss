@@ -89,7 +89,6 @@
 
 .navbar__search input::placeholder {
   color: #ffffff;
-  opacity: 1;
 }
 
 // Ajuste para páginas com fundo amarelo (product-details)
@@ -101,7 +100,6 @@
 
   &::placeholder {
     color: #666666 !important; // Placeholder mais escuro para visibilidade
-    opacity: 1;
   }
 
   &:focus {
@@ -617,6 +615,37 @@
 
   .navbar__search-btn {
     display: flex !important;
+  }
+  .navbar__search-btn {
+    display: flex !important;
+  }
+}
+
+// Contact Page - White Navigation Links
+.navbar--contact-page {
+  .navbar__links a {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5); // Add shadow for better readability
+    
+    &:hover {
+      color: #ffd900 !important;
+    }
+  }
+}
+
+// Home Page - White Navigation Links
+.navbar--home-page {
+  .navbar__links a {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    
+    &:hover {
+      color: #ffd900 !important;
+    }
+  }
+
+  .navbar__hamburger img {
+    filter: brightness(0) invert(1); // Make hamburger white
   }
 }
 

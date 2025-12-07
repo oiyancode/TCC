@@ -178,6 +178,14 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
+  editProfile() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/profile']);
+    } else {
+      this.router.navigate(['/login'], { queryParams: { redirectTo: '/cart' } });
+    }
+  }
+
   navigateToAddCard() {
     this.router.navigate(['/profile'], { queryParams: { tab: 'security' } });
   }

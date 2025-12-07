@@ -5,6 +5,9 @@
   [class.navbar--products-page]="isProductsPage"
   [class.navbar--wishlist-page]="isWishlistPage"
   [class.navbar--order-history-page]="isOrderHistoryPage"
+  [class.navbar--contact-page]="isContactPage"
+  [class.navbar--home-page]="isHomePage"
+  *ngIf="!isLoginPage"
 >
   <div class="navbar__left">
     <a href="#hero" aria-label="Hero" class="navbar__logo-link">
@@ -21,24 +24,35 @@
     </button>
 
     <!-- Desktop Navigation Links (hidden on cart page, products page, wishlist, and order-history) -->
-    <nav class="navbar__links" *ngIf="!isCartPage && !isProductsPage && !isWishlistPage && !isOrderHistoryPage">
+    <nav
+      class="navbar__links"
+      *ngIf="
+        !isCartPage && !isProductsPage && !isWishlistPage && !isOrderHistoryPage
+      "
+    >
       <a routerLink="/">Home</a>
       <a routerLink="/products">Produtos</a>
-      <a href="#footer">Sobre</a>
+      <a routerLink="/contact">Contato</a>
+      <a href="#footer" *ngIf="isHomePage">Sobre</a>
     </nav>
   </div>
 
   <div class="navbar__right">
     <!-- Desktop Search Bar (hidden on cart page and products page) -->
-    <div class="navbar__search navbar__search--desktop" *ngIf="!isCartPage && !isProductsPage">
+    <div
+      class="navbar__search navbar__search--desktop"
+      *ngIf="!isCartPage && !isProductsPage"
+    >
       <input
         type="text"
         placeholder="Buscar"
         [(ngModel)]="searchQuery"
-        (input)="onSearchInput($event)"
+        (ngModelChange)="onSearchChange($event)"
         (focus)="onSearchFocus()"
         (blur)="onSearchBlur()"
       />
+
+
       <!-- Search Results Dropdown -->
       <div
         class="navbar__search-results"
@@ -68,16 +82,20 @@
         <p>Nenhum produto encontrado</p>
       </div>
       <!-- Recent Searches -->
-      <div class="navbar__search-results navbar__recent-searches" *ngIf="showRecentSearches && recentSearches.length > 0">
+      <div
+        class="navbar__search-results navbar__recent-searches"
+        *ngIf="showRecentSearches && recentSearches.length > 0"
+      >
         <div class="recent-searches-header">
           <span>Buscas Recentes</span>
           <button (click)="clearRecentSearches()">Limpar</button>
         </div>
-        <div 
-          class="navbar__search-result-item recent-search-item" 
+        <div
+          class="navbar__search-result-item recent-search-item"
           *ngFor="let term of recentSearches"
-          (click)="selectRecentSearch(term)">
-          <img src="/assets/lupa_busca.png" alt="Search" class="recent-icon">
+          (click)="selectRecentSearch(term)"
+        >
+          <img src="/assets/lupa_busca.png" alt="Search" class="recent-icon" />
           <span>{{ term }}</span>
         </div>
       </div>
@@ -98,13 +116,25 @@
       (click)="navigateToLoginOrProfile()"
       aria-label="Perfil"
     >
-      <img [src]="isLoggedIn ? (userPhotoUrl || '/assets/icons/perfil_guest.svg') : '/assets/icons/perfil_guest_sem_login.svg'" alt="Perfil" class="profile-icon" />
+      <img
+        [src]="
+          isLoggedIn
+            ? userPhotoUrl || '/assets/icons/perfil_guest.svg'
+            : '/assets/icons/perfil_guest_sem_login.svg'
+        "
+        alt="Perfil"
+        class="profile-icon"
+      />
     </button>
 
-    <button class="navbar__btn navbar__btn--outline navbar__btn--desktop" *ngIf="!isCartPage && !isProductsPage" (click)="navigateToLoginOrProfile()">
+    <button
+      class="navbar__btn navbar__btn--outline navbar__btn--desktop"
+      *ngIf="!isCartPage && !isProductsPage"
+      (click)="navigateToLoginOrProfile()"
+    >
       {{ buttonText }}
     </button>
-    
+
     <!-- Desktop Cart Button -->
     <button
       class="navbar__btn navbar__btn--cart navbar__btn--desktop"
@@ -133,12 +163,43 @@
     [class.navbar__mobile-menu--open]="isMobileMenuOpen"
   >
     <nav class="navbar__mobile-nav">
-      <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-      <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">Produtos</a>
-      <a routerLink="/wishlist" (click)="closeMobileMenu()" routerLinkActive="active">Wishlist</a>
-      <a routerLink="/order-tracking" (click)="closeMobileMenu()" routerLinkActive="active">Rastreamento</a>
-      <a routerLink="/orders-history" (click)="closeMobileMenu()" routerLinkActive="active">Histórico de Pedidos</a>
-      <a href="#footer" (click)="closeMobileMenu()">Sobre</a>
+      <a
+        routerLink="/"
+        (click)="closeMobileMenu()"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Home</a
+      >
+      <a
+        routerLink="/products"
+        (click)="closeMobileMenu()"
+        routerLinkActive="active"
+        >Produtos</a
+      >
+      <a
+        routerLink="/wishlist"
+        (click)="closeMobileMenu()"
+        routerLinkActive="active"
+        >Wishlist</a
+      >
+      <a
+        routerLink="/order-tracking"
+        (click)="closeMobileMenu()"
+        routerLinkActive="active"
+        >Rastreamento</a
+      >
+      <a
+        routerLink="/orders-history"
+        (click)="closeMobileMenu()"
+        routerLinkActive="active"
+        >Histórico de Pedidos</a
+      >
+      <a
+        routerLink="/contact"
+        (click)="closeMobileMenu()"
+        routerLinkActive="active"
+        >Contato</a
+      >
     </nav>
   </div>
 
@@ -159,7 +220,7 @@
         type="text"
         placeholder="Buscar produtos..."
         [(ngModel)]="searchQuery"
-        (input)="onSearchInputMobile($event)"
+        (ngModelChange)="onSearchChange($event)"
         (focus)="
           showSearchResults =
             searchResults.length > 0 && searchQuery.trim().length >= 2
@@ -197,16 +258,20 @@
         <p>Nenhum produto encontrado</p>
       </div>
       <!-- Recent Searches (Mobile) -->
-      <div class="navbar__search-results navbar__search-results--mobile navbar__recent-searches" *ngIf="showRecentSearches && recentSearches.length > 0">
+      <div
+        class="navbar__search-results navbar__search-results--mobile navbar__recent-searches"
+        *ngIf="showRecentSearches && recentSearches.length > 0"
+      >
         <div class="recent-searches-header">
           <span>Buscas Recentes</span>
           <button (click)="clearRecentSearches()">Limpar</button>
         </div>
-        <div 
-          class="navbar__search-result-item recent-search-item" 
+        <div
+          class="navbar__search-result-item recent-search-item"
           *ngFor="let term of recentSearches"
-          (click)="selectRecentSearch(term)">
-          <img src="/assets/lupa_busca.png" alt="Search" class="recent-icon">
+          (click)="selectRecentSearch(term)"
+        >
+          <img src="/assets/lupa_busca.png" alt="Search" class="recent-icon" />
           <span>{{ term }}</span>
         </div>
       </div>

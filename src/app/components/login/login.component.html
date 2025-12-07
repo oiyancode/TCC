@@ -3,7 +3,7 @@
     <!-- Left Column: Form -->
     <div class="form-column">
       <div class="form-header">
-        <h1 class="brand-logo" routerLink="/" style="cursor: pointer;">Loja</h1>
+        <h1 class="brand-logo" routerLink="/" style="cursor: pointer;">Home</h1>
         <nav class="auth-nav">
           <a [class.active]="!isSignUp" (click)="isSignUp = false">Login</a>
           <a [class.active]="isSignUp" (click)="isSignUp = true">Registrar-se</a>
@@ -28,6 +28,11 @@
         </div>
 
         <form (ngSubmit)="onSubmit()">
+          <div class="input-group" *ngIf="isSignUp">
+            <label for="name">Nome Completo</label>
+            <input type="text" id="name" name="name" [(ngModel)]="name" placeholder="Digite seu nome completo" class="form-input" required>
+          </div>
+
           <div class="input-group">
             <label for="email">E-mail ou usuário</label>
             <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="Digite seu e-mail" class="form-input" required>
