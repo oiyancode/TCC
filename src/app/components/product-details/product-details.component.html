@@ -6,7 +6,11 @@
     <img src="/assets/BGs/BG_Yellow.svg" alt="Background" />
   </div>
 
-  <app-loading *ngIf="isLoading" [fullScreen]="true" message="Carregando detalhes..."></app-loading>
+  <app-loading
+    *ngIf="isLoading"
+    [fullScreen]="true"
+    message="Carregando detalhes..."
+  ></app-loading>
 
   <!-- Conteúdo principal -->
   <main class="main-content" *ngIf="product && !isLoading">
@@ -36,7 +40,7 @@
       <div class="product-display">
         <div class="product-bg">
           <img
-            src="/assets/Section_Detalhes_Prod/bg_produto.png"
+            src="/assets/Section_Detalhes_Prod/bg_produto.webp"
             alt="Product Background"
           />
         </div>
@@ -48,7 +52,12 @@
         <!-- Descrição do Produto (agora abaixo do título) -->
         <!-- Descrição removida conforme solicitado -->
         <!-- Imagem do Produto com animação de escala -->
-        <div class="product-image" [style.transform]="'translate(-50%, -50%) scale(' + productScale + ')'">
+        <div
+          class="product-image"
+          [style.transform]="
+            'translate(-50%, -50%) scale(' + productScale + ')'
+          "
+        >
           <img [src]="product.imageSrc" [alt]="product.name" />
         </div>
       </div>
@@ -72,7 +81,9 @@
             >
               <img
                 [src]="
-                  '/assets/Section_Detalhes_Prod/numeros_tenis/' + size + '.webp'
+                  '/assets/Section_Detalhes_Prod/numeros_tenis/' +
+                  size +
+                  '.webp'
                 "
                 [alt]="'Tamanho ' + size"
               />
@@ -110,25 +121,33 @@
     <div class="about-container">
       <h2>Sobre o Produto</h2>
       <p class="about-description">
-        {{ product.description || 'Desenvolvido com tecnologia de ponta e materiais premium, este produto oferece conforto excepcional e design inovador. Perfeito para quem busca performance e estilo em cada passo.' }}
+        {{
+          product.description ||
+            "Desenvolvido com tecnologia de ponta e materiais premium, este produto oferece conforto excepcional e design inovador. Perfeito para quem busca performance e estilo em cada passo."
+        }}
       </p>
     </div>
   </section>
 
   <!-- Nova Seção: Avaliações -->
-  <section class="reviews-section" *ngIf="product && !isLoading && product.reviews && product.reviews.length > 0">
+  <section
+    class="reviews-section"
+    *ngIf="
+      product && !isLoading && product.reviews && product.reviews.length > 0
+    "
+  >
     <div class="reviews-container">
       <h2>Avaliações</h2>
-      
+
       <div class="reviews-grid">
         <div class="review-card" *ngFor="let review of product.reviews">
           <div class="review-header">
             <span class="review-user">{{ review.userName }}</span>
             <div class="review-rating">
-              <img 
-                *ngFor="let star of getStarArray(review.rating)" 
-                src="/assets/icons/star.png" 
-                alt="Star" 
+              <img
+                *ngFor="let star of getStarArray(review.rating)"
+                src="/assets/icons/star.png"
+                alt="Star"
                 class="star-icon"
               />
             </div>

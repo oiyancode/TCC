@@ -43,7 +43,8 @@
 
 // SEÇÃO VERDE - ENDEREÇO
 .address-section {
-  background: url("/assets/Section_Cart/Bg_Endereco.svg") center/100% 100% no-repeat;
+  background: url("/assets/Section_Cart/Bg_Endereco.svg") center/100% 100%
+    no-repeat;
   color: white;
   width: 400px; // Fixed width
   left: 0;
@@ -109,7 +110,8 @@
 
 // SEÇÃO AZUL - PRODUTOS
 .products-section {
-  background: url("/assets/Section_Cart/BG_Produto_cart.svg") center/100% 100% no-repeat;
+  background: url("/assets/Section_Cart/BG_Produto_cart.webp") center/100% 100%
+    no-repeat;
   color: white;
   height: 810px;
   width: 615px; // Fixed width
@@ -206,7 +208,8 @@
   }
 
   @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0px);
     }
     50% {
@@ -364,7 +367,8 @@
 
 // SEÇÃO AMARELA - PAGAMENTO
 .payment-section {
-  background: url("/assets/Section_Cart/Bg_Pagamento.svg") center/100% 100% no-repeat;
+  background: url("/assets/Section_Cart/Bg_Pagamento.svg") center/100% 100%
+    no-repeat;
   color: #333;
   width: 400px; // Fixed width
   right: 0;
@@ -482,7 +486,7 @@
         border: none;
         cursor: pointer;
         padding: 5px;
-        
+
         img {
           width: 48px;
           height: 48px;

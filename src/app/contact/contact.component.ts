@@ -64,18 +64,18 @@ export class ContactComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit(): void {
     const skatista = this.backgroundSkatista.nativeElement;
-    
+
     const startAnimation = () => {
       // 1. Initial State (Hidden & Off-screen) - FORCE IT
       // Using setTimeout to ensure it runs after any initial layout paints
       setTimeout(() => {
-        gsap.set(skatista, { 
-          xPercent: -50, 
+        gsap.set(skatista, {
+          xPercent: -50,
           yPercent: -50,
-          y: -1000, 
+          y: -1000,
           rotation: 0,
           scale: 1,
-          autoAlpha: 0 // Keep hidden
+          autoAlpha: 0, // Keep hidden
         });
 
         // 2. Prepare Float Animation (Paused)
@@ -86,20 +86,20 @@ export class ContactComponent implements OnInit, AfterViewInit {
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
-          paused: true
+          paused: true,
         });
 
         // 3. Start Entrance Animation (Make Visible & Fall)
         // Ensure delay is handled logically
         gsap.to(skatista, {
           duration: 1,
-          y: 150, 
+          y: 150,
           autoAlpha: 1, // Reveal smoothly
           ease: 'ease.out',
           delay: 0.2,
           onComplete: () => {
             floatAnim.play();
-          }
+          },
         });
 
         // 4. Setup Draggable
@@ -109,20 +109,24 @@ export class ContactComponent implements OnInit, AfterViewInit {
           inertia: true,
           onDragStart: function () {
             floatAnim.pause();
-            gsap.to(this['target'], { duration: 0.3, scale: 1, cursor: 'grabbing' });
+            gsap.to(this['target'], {
+              duration: 0.3,
+              scale: 1,
+              cursor: 'grabbing',
+            });
           },
           onDragEnd: function () {
             const target = this['target'];
             gsap.to(target, { duration: 0.3, scale: 1, cursor: 'grab' });
-            
+
             gsap.to(target, {
               duration: 1,
-              y: 150, 
+              y: 150,
               rotation: 0,
               ease: 'ease.out',
               onComplete: () => {
-                 floatAnim.restart();
-              }
+                floatAnim.restart();
+              },
             });
           },
         });
@@ -142,18 +146,17 @@ export class ContactComponent implements OnInit, AfterViewInit {
   onSubmit(): void {
     if (this.contactForm.valid) {
       console.log('Formulário enviado:', this.contactForm.value);
-      
+
       // Simula envio com delay para feedback visual
       setTimeout(() => {
         this.submissionSuccess = true;
         this.contactForm.reset();
-        
+
         // Reseta a mensagem de sucesso após alguns segundos
         setTimeout(() => {
           this.submissionSuccess = false;
         }, 5000);
       }, 500);
-
     } else {
       this.contactForm.markAllAsTouched();
     }
