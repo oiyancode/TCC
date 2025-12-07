@@ -63,6 +63,14 @@
     color: #ffd900;
     transform: scale(1.05);
   }
+
+  &.active-link {
+    text-decoration: underline;
+    text-decoration-color: orangered;
+    text-decoration-style: solid;
+    text-decoration-thickness: 4px;
+    text-underline-offset: 6px;
+  }
 }
 
 .navbar__right {

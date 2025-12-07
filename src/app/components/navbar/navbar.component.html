@@ -30,9 +30,9 @@
         !isCartPage && !isProductsPage && !isWishlistPage && !isOrderHistoryPage
       "
     >
-      <a routerLink="/">Home</a>
-      <a routerLink="/products">Produtos</a>
-      <a routerLink="/contact">Contato</a>
+      <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/products" routerLinkActive="active-link">Produtos</a>
+      <a routerLink="/contact" routerLinkActive="active-link">Contato</a>
       <a href="#footer" *ngIf="isHomePage">Sobre</a>
     </nav>
   </div>

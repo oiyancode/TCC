@@ -42,7 +42,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private scene!: Scene;
   private camera!: PerspectiveCamera;
   private modelGroup!: Group;
-  
+
   // Loaded modules
   private THREE: any;
   private GLTFLoader: any;
@@ -86,7 +86,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     // Initialize immediately, but animation will be controlled by visibility
-    this.setupIntersectionObserver();
+    // Note: setupIntersectionObserver is called in addEvents(), not here to avoid duplicate setup
     this.initializeViewer();
   }
 
@@ -102,6 +102,11 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       this.loadModel();
       this.addEvents();
       this.onResize();
+      this.isInitialized = true; // Mark as initialized so animation can restart after visibility changes
+      console.log(
+        '[ThreeViewer] Initialized - isInitialized:',
+        this.isInitialized
+      );
       this.animate(); // Start animation after initialization
     } catch (error) {
       this.handleInitializationError(error);
@@ -116,7 +121,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
         import('three/examples/jsm/loaders/GLTFLoader.js'),
         import('three/examples/jsm/loaders/DRACOLoader.js'),
         import('three/examples/jsm/loaders/KTX2Loader.js'),
-        import('three/examples/jsm/libs/meshopt_decoder.module.js')
+        import('three/examples/jsm/libs/meshopt_decoder.module.js'),
       ]);
 
       this.THREE = three;
@@ -144,7 +149,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     }
 
     if (this.boundVisibilityChangeHandler) {
-      document.removeEventListener('visibilitychange', this.boundVisibilityChangeHandler);
+      document.removeEventListener(
+        'visibilitychange',
+        this.boundVisibilityChangeHandler
+      );
       this.boundVisibilityChangeHandler = undefined;
     }
 
@@ -155,16 +163,28 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
     const el = this.containerRef?.nativeElement;
     if (el) {
-      if (this.boundPointerMoveHandler) el.removeEventListener('pointermove', this.boundPointerMoveHandler);
-      if (this.boundPointerDownHandler) el.removeEventListener('pointerdown', this.boundPointerDownHandler);
-      if (this.boundPointerUpHandler) el.removeEventListener('pointerup', this.boundPointerUpHandler);
-      if (this.boundWheelHandler) el.removeEventListener('wheel', this.boundWheelHandler);
+      if (this.boundPointerMoveHandler)
+        el.removeEventListener('pointermove', this.boundPointerMoveHandler);
+      if (this.boundPointerDownHandler)
+        el.removeEventListener('pointerdown', this.boundPointerDownHandler);
+      if (this.boundPointerUpHandler)
+        el.removeEventListener('pointerup', this.boundPointerUpHandler);
+      if (this.boundWheelHandler)
+        el.removeEventListener('wheel', this.boundWheelHandler);
     }
 
     if (this.renderer && this.renderer.domElement) {
       const canvas = this.renderer.domElement;
-      if (this.boundContextLostHandler) canvas.removeEventListener('webglcontextlost', this.boundContextLostHandler);
-      if (this.boundContextRestoredHandler) canvas.removeEventListener('webglcontextrestored', this.boundContextRestoredHandler);
+      if (this.boundContextLostHandler)
+        canvas.removeEventListener(
+          'webglcontextlost',
+          this.boundContextLostHandler
+        );
+      if (this.boundContextRestoredHandler)
+        canvas.removeEventListener(
+          'webglcontextrestored',
+          this.boundContextRestoredHandler
+        );
     }
 
     if (this.frameId !== null) {
@@ -202,9 +222,17 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     if (!material) return;
 
     const textureProperties = [
-      'map', 'normalMap', 'roughnessMap', 'metalnessMap',
-      'emissiveMap', 'alphaMap', 'aoMap', 'displacementMap',
-      'specularMap', 'envMap', 'bumpMap',
+      'map',
+      'normalMap',
+      'roughnessMap',
+      'metalnessMap',
+      'emissiveMap',
+      'alphaMap',
+      'aoMap',
+      'displacementMap',
+      'specularMap',
+      'envMap',
+      'bumpMap',
     ];
 
     textureProperties.forEach((prop) => {
@@ -229,7 +257,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
       this.renderer.dispose();
 
       if (this.renderer.domElement && this.renderer.domElement.parentNode) {
-        this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+        this.renderer.domElement.parentNode.removeChild(
+          this.renderer.domElement
+        );
       }
     }
   }
@@ -317,7 +347,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     };
 
     canvas.addEventListener('webglcontextlost', this.boundContextLostHandler);
-    canvas.addEventListener('webglcontextrestored', this.boundContextRestoredHandler);
+    canvas.addEventListener(
+      'webglcontextrestored',
+      this.boundContextRestoredHandler
+    );
   }
 
   private async reinitializeAfterContextLoss() {
@@ -387,7 +420,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     }
     this.frameInterval = 1000 / this.targetFPS;
 
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
+    this.renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, maxPixelRatio)
+    );
     this.renderer.shadowMap.enabled = false;
   }
 
@@ -410,7 +445,11 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     ];
   }
 
-  private createDirectionalLight(color: number, intensity: number, position: number[]) {
+  private createDirectionalLight(
+    color: number,
+    intensity: number,
+    position: number[]
+  ) {
     const light = new this.THREE.DirectionalLight(color, intensity);
     light.position.set(position[0], position[1], position[2]);
     return light;
@@ -425,7 +464,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private isWebGLAvailable(): boolean {
     try {
       const canvas = document.createElement('canvas');
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      const gl =
+        canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       return !!gl;
     } catch (e) {
       return false;
@@ -494,11 +534,17 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
           } else if (effectiveQuality === 'balanced') {
             m.map.minFilter = this.THREE.LinearMipmapLinearFilter;
             m.map.magFilter = this.THREE.LinearFilter;
-            m.map.anisotropy = Math.min(4, this.renderer.capabilities.getMaxAnisotropy());
+            m.map.anisotropy = Math.min(
+              4,
+              this.renderer.capabilities.getMaxAnisotropy()
+            );
           } else {
             m.map.minFilter = this.THREE.LinearMipmapLinearFilter;
             m.map.magFilter = this.THREE.LinearFilter;
-            m.map.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
+            m.map.anisotropy = Math.min(
+              8,
+              this.renderer.capabilities.getMaxAnisotropy()
+            );
           }
         }
 
@@ -508,7 +554,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateMaterialColorSpaces(material: any) {
-    const colorSpaceProps = ['map', 'emissiveMap', 'roughnessMap', 'metalnessMap'];
+    const colorSpaceProps = [
+      'map',
+      'emissiveMap',
+      'roughnessMap',
+      'metalnessMap',
+    ];
     colorSpaceProps.forEach((prop) => {
       if (material[prop]) {
         material[prop].colorSpace = this.THREE.SRGBColorSpace;
@@ -534,7 +585,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   private calculateOptimalZ(size: any, scale: number): number {
     const desiredScale = 1.2;
     const fovRad = (this.fov * Math.PI) / 180;
-    const fitHeightDistance = (size.y * scale * desiredScale) / (2 * Math.tan(fovRad / 2));
+    const fitHeightDistance =
+      (size.y * scale * desiredScale) / (2 * Math.tan(fovRad / 2));
     return Math.min(this.maxZoom, Math.max(this.minZoom, fitHeightDistance));
   }
 
@@ -543,7 +595,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.modelGroup.scale.set(0.01, 0.01, 0.01);
 
     gsap.to(this.modelGroup.scale, {
-      x: 1.2, y: 1.2, z: 1.2,
+      x: 1.2,
+      y: 1.2,
+      z: 1.2,
       duration: 1,
       ease: 'power2.out',
     });
@@ -586,7 +640,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.boundVisibilityChangeHandler = () => this.onVisibilityChange();
 
     window.addEventListener('resize', this.boundResizeHandler);
-    document.addEventListener('visibilitychange', this.boundVisibilityChangeHandler);
+    document.addEventListener(
+      'visibilitychange',
+      this.boundVisibilityChangeHandler
+    );
     const el = this.containerRef.nativeElement;
     el.addEventListener('pointermove', this.boundPointerMoveHandler);
     el.addEventListener('pointerdown', this.boundPointerDownHandler);
@@ -597,10 +654,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateAnimationState() {
-    const shouldAnimate = 
-      this.isElementVisible && 
-      this.isPageVisible && 
-      !this.glContextLost && 
+    const shouldAnimate =
+      this.isElementVisible &&
+      this.isPageVisible &&
+      !this.glContextLost &&
       this.isInitialized;
 
     if (shouldAnimate && !this.isAnimating) {
@@ -623,8 +680,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
     this.intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const isVisible = entry.isIntersecting && entry.intersectionRatio > 0.01;
-          
+          const isVisible =
+            entry.isIntersecting && entry.intersectionRatio > 0.01;
+
           if (this.isElementVisible !== isVisible) {
             this.isElementVisible = isVisible;
             this.updateAnimationState();
@@ -678,13 +736,16 @@ export class ThreeViewerComponent implements AfterViewInit, OnDestroy {
 
   private onWheel(e: WheelEvent) {
     if (!this.enableZoom || !this.camera) return;
-    
+
     // Prevent default scrolling behavior when zooming the model
     e.preventDefault();
 
     const zoomSpeed = 0.001;
     const newZ = this.camera.position.z + e.deltaY * zoomSpeed;
-    this.camera.position.z = Math.max(this.minZoom, Math.min(this.maxZoom, newZ));
+    this.camera.position.z = Math.max(
+      this.minZoom,
+      Math.min(this.maxZoom, newZ)
+    );
   }
 
   private onResize() {

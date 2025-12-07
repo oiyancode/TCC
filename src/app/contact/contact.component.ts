@@ -65,66 +65,75 @@ export class ContactComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const skatista = this.backgroundSkatista.nativeElement;
     
-    // Configuração inicial para garantir que esteja visível e centralizado
-    // Vamos animar PARTINDO de cima (fora da tela)
-    
-    gsap.set(skatista, { xPercent: -50, yPercent: -50 }); // Garante o centro antes de animar
-
-    // Animação de flutuação contínua
-    const floatAnim = gsap.to(skatista, {
-      duration: 3,
-      y: '+=20',
-      rotation: 5,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-      paused: true // Pausado inicialmente para não conflitar com a entrada
-    });
-
-    gsap.fromTo(skatista, 
-      {
-        y: -window.innerHeight - 200, 
-      },
-      {
-        duration: 1.5,
-        y: 200, 
-        rotation: 0,
-        ease: 'ease.out',
-        delay: 0.5,
-        onComplete: () => {
-          floatAnim.play(); // Inicia a flutuação após a entrada
-        }
-      }
-    );
-
-    Draggable.create(skatista, {
-      type: 'x,y',
-      bounds: '.contact-container',
-      inertia: true,
-      onDragStart: function () {
-        floatAnim.pause();
-        gsap.to(this['target'], { duration: 0.3, scale: 1.1, cursor: 'grabbing' });
-      },
-      onDragEnd: function () {
-        const target = this['target'];
-        gsap.to(target, { duration: 0.3, scale: 1, cursor: 'grab' });
-        
-        // Simulação de "Gravidade" / Retorno APENAS VERTICAL
-        // Se o usuário soltar, ele cai para o nível "zero" (centro vertical) mas MANTÉM a posição X
-        
-        gsap.to(target, {
-          duration: 1,
-          y: 200, 
-          // x: 0, // REMOVIDO: Permite que o skatista fique onde foi solto horizontalmente
+    const startAnimation = () => {
+      // 1. Initial State (Hidden & Off-screen) - FORCE IT
+      // Using setTimeout to ensure it runs after any initial layout paints
+      setTimeout(() => {
+        gsap.set(skatista, { 
+          xPercent: -50, 
+          yPercent: -50,
+          y: -1000, 
           rotation: 0,
+          scale: 1,
+          autoAlpha: 0 // Keep hidden
+        });
+
+        // 2. Prepare Float Animation (Paused)
+        const floatAnim = gsap.to(skatista, {
+          duration: 2,
+          y: '+=20',
+          rotation: 5,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          paused: true
+        });
+
+        // 3. Start Entrance Animation (Make Visible & Fall)
+        // Ensure delay is handled logically
+        gsap.to(skatista, {
+          duration: 1,
+          y: 150, 
+          autoAlpha: 1, // Reveal smoothly
           ease: 'ease.out',
+          delay: 0.2,
           onComplete: () => {
-             // Retoma a flutuação sutil onde quer que esteja
-             floatAnim.restart();
+            floatAnim.play();
           }
         });
-      },
-    });
+
+        // 4. Setup Draggable
+        Draggable.create(skatista, {
+          type: 'x,y',
+          bounds: '.contact-container',
+          inertia: true,
+          onDragStart: function () {
+            floatAnim.pause();
+            gsap.to(this['target'], { duration: 0.3, scale: 1, cursor: 'grabbing' });
+          },
+          onDragEnd: function () {
+            const target = this['target'];
+            gsap.to(target, { duration: 0.3, scale: 1, cursor: 'grab' });
+            
+            gsap.to(target, {
+              duration: 1,
+              y: 150, 
+              rotation: 0,
+              ease: 'ease.out',
+              onComplete: () => {
+                 floatAnim.restart();
+              }
+            });
+          },
+        });
+      }, 100); // 100ms delay to ensure DOM readiness
+    };
+
+    if (skatista.complete) {
+      startAnimation();
+    } else {
+      skatista.onload = startAnimation;
+    }
   }
 
   /**

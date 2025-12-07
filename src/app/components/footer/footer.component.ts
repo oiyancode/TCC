@@ -19,6 +19,10 @@ export class FooterComponent {
       this.router.navigate(['/products']);
     }
   }
+
+  navigateToContact() {
+    this.router.navigate(['/contact']);
+  }
 }
 
 
