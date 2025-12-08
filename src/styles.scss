@@ -66,7 +66,59 @@ button {
 
 /* ===== End CSS Reset ===== */
 
-@import url("https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Noto+Serif:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap");
+/* bowlby-one-sc-regular - latin */
+@font-face {
+  font-display: swap; /* Usa uma fonte fallback enquanto a customizada carrega */
+  font-family: 'Bowlby One SC';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/bowlby-one-sc-v20-latin-regular.woff2') format('woff2'); /* Caminho para o arquivo local */
+}
+
+/* dm-mono-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/dm-mono-v11-latin-regular.woff2') format('woff2');
+}
+
+/* dm-mono-500 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../assets/fonts/dm-mono-v11-latin-500.woff2') format('woff2');
+}
+
+/* noto-serif-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/noto-serif-v23-latin-regular.woff2') format('woff2');
+}
+
+/* noto-serif-600 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../assets/fonts/noto-serif-v23-latin-600.woff2') format('woff2');
+}
+
+/* noto-serif-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../assets/fonts/noto-serif-v23-latin-700.woff2') format('woff2');
+}
 
 :root {
   --color-bg: #0b0b0c;

@@ -5,14 +5,16 @@
     <title>E-commerce Sports</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
+
     <!-- Content Security Policy for Angular + Three.js application -->
-    <meta http-equiv="Content-Security-Policy" content="
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
       default-src 'self';
       script-src 'self' 'unsafe-inline' 'unsafe-eval';
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      style-src 'self' 'unsafe-inline';
       img-src 'self' data: blob:;
-      font-src 'self' data: https://fonts.gstatic.com;
+      font-src 'self' data:;
       connect-src 'self' data: blob:;
       media-src 'self' blob: data:;
       worker-src 'self' blob:;
@@ -23,16 +25,17 @@
       form-action 'self';
       frame-ancestors 'none';
       upgrade-insecure-requests;
-    ">
-    
+    "
+    />
+
     <!-- Additional security headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+
     <link rel="icon" type="image/x-icon" href="LOGO_Marca.png" />
-    <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#1a1a1c">
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#1a1a1c" />
   </head>
   <body>
     <app-root></app-root>
