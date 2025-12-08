@@ -645,7 +645,8 @@
 .navbar--home-page {
   .navbar__links a {
     color: #ffffff !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 10px rgb(37 37 37 / 40%), 0 0 20px rgb(102 95 55 / 30%),
+      0 4px 8px rgba(255, 217, 0, 0.3);
 
     &:hover {
       color: #ffd900 !important;
