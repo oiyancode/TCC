@@ -7,7 +7,9 @@
       <div class="news__item-grunge"></div>
       <img
         class="news__product {{ cssClass }}"
-        [src]="imageSrc"
+        [src]="getOptimizedImageUrl()"
+        [srcset]="getResponsiveSrcset()"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         [alt]="name"
         loading="lazy"
         (click)="goToDetails($event)"

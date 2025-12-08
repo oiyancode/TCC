@@ -633,8 +633,8 @@
 .navbar--contact-page {
   .navbar__links a {
     color: #ffffff !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5); // Add shadow for better readability
-    
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); // Add shadow for better readability
+
     &:hover {
       color: #ffd900 !important;
     }
@@ -645,15 +645,11 @@
 .navbar--home-page {
   .navbar__links a {
     color: #ffffff !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+
     &:hover {
       color: #ffd900 !important;
     }
-  }
-
-  .navbar__hamburger img {
-    filter: brightness(0) invert(1); // Make hamburger white
   }
 }
 

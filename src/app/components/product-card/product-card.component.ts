@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../services/products.service';
 import { ToastService } from '../../services/toast.service';
+import { ImageOptimizationService } from '../../core/services/image-optimization.service';
 
 @Component({
   selector: 'app-product-card',
@@ -30,8 +31,27 @@ export class ProductCardComponent {
   constructor(
     private router: Router,
     private cartService: CartService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private imageOpt: ImageOptimizationService
   ) {}
+
+  getOptimizedImageUrl(): string {
+    // Remove a extensão do arquivo, seja ela qual for
+    const basePath = this.imageSrc.replace(/\.[^/.]+$/, '');
+    // Usa 'webp' como fallback, já que todas as nossas imagens têm essa versão
+    return this.imageOpt.getOptimizedImageUrl(basePath, 'webp');
+  }
+
+  getResponsiveSrcset(): string {
+    const basePath = this.imageSrc.replace(/\.[^/.]+$/, '');
+    // A extensão será webp se suportada, ou webp como fallback.
+    const extension = this.imageOpt.supportsWebP() ? 'webp' : 'webp';
+    return `
+      ${basePath}-400w.${extension} 400w,
+      ${basePath}-800w.${extension} 800w,
+      ${basePath}-1200w.${extension} 1200w
+    `;
+  }
 
   handleAddToCart(event: Event): void {
     this.isAddedToCart = true;
@@ -43,7 +63,7 @@ export class ProductCardComponent {
 
   goToCart(event: Event): void {
     event.stopPropagation();
-    
+
     if (!this.isValidProduct()) {
       console.warn('Cannot add item to cart: missing required data');
       return;
@@ -56,7 +76,7 @@ export class ProductCardComponent {
       price: this.parsePrice(this.price),
       imageSrc: this.imageSrc,
       variant: this.variant,
-      cssClass: this.cssClass
+      cssClass: this.cssClass,
     };
 
     this.cartService.addItem(cartItem);
@@ -66,7 +86,7 @@ export class ProductCardComponent {
 
   goToDetails(event: Event): void {
     event.stopPropagation();
-    
+
     if (this.productId) {
       this.router.navigate(['/product', this.productId]);
       this.productClicked.emit(this.getProductData() as Product);
@@ -87,7 +107,7 @@ export class ProductCardComponent {
       price: this.price,
       imageSrc: this.imageSrc,
       variant: this.variant,
-      cssClass: this.cssClass
+      cssClass: this.cssClass,
     };
   }
 

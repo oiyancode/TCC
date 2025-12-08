@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { IconSpriteComponent } from './components/ui/icon-sprite/icon-sprite.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastComponent, NavbarComponent],
+  imports: [RouterOutlet, ToastComponent, NavbarComponent, IconSpriteComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
