@@ -61,8 +61,7 @@
                 "fonts": true
               },
               "sourceMap": false,
-              "namedChunks": false,
-              "vendorChunk": false
+              "namedChunks": false
             },
             "development": {
               "optimization": false,
