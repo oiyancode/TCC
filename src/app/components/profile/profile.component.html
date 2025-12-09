@@ -5,44 +5,58 @@
     <aside class="profile-sidebar">
       <div class="user-summary">
         <div class="avatar-container">
-          <img [src]="profileImage" alt="Foto de Perfil" class="avatar-image">
-          <label for="photo-upload" class="edit-avatar-btn" title="Alterar foto">
-            <img src="/assets/icons/edit_icon.svg" alt="Edit" *ngIf="false"> <!-- Placeholder icon if needed, using emoji for now in CSS or just overlay -->
+          <img [src]="profileImage" alt="Foto de Perfil" class="avatar-image" />
+          <label
+            for="photo-upload"
+            class="edit-avatar-btn"
+            title="Alterar foto"
+          >
+            <img src="/assets/icons/edit_icon.svg" alt="Edit" *ngIf="false" />
+            <!-- Placeholder icon if needed, using emoji for now in CSS or just overlay -->
             <span>📷</span>
           </label>
-          <input type="file" id="photo-upload" (change)="onPhotoSelected($event)" accept="image/*" hidden>
+          <input
+            type="file"
+            id="photo-upload"
+            (change)="onPhotoSelected($event)"
+            accept="image/*"
+            hidden
+          />
         </div>
-        <h3>{{ currentUser?.name || 'Usuário' }}</h3>
+        <h3>{{ currentUser?.name || "Usuário" }}</h3>
         <p>{{ currentUser?.email }}</p>
       </div>
 
       <nav class="profile-nav">
-        <button 
-          [class.active]="activeTab === 'personal'" 
-          (click)="setActiveTab('personal')">
+        <button
+          [class.active]="activeTab === 'personal'"
+          (click)="setActiveTab('personal')"
+        >
           Informações Pessoais
         </button>
 
-        <button 
-          class="orders-history-btn"
-          routerLink="/orders-history">
+        <button class="orders-history-btn" routerLink="/orders-history">
           Histórico de Pedidos
         </button>
 
-        <button 
-          class="order-tracking-btn"
-          routerLink="/order-tracking">
+        <button class="order-tracking-btn" routerLink="/order-tracking">
           Rastreamento de Pedidos
         </button>
 
-        <button 
-          [class.active]="activeTab === 'security'" 
-          (click)="setActiveTab('security')">
+        <button
+          [class.active]="activeTab === 'payments'"
+          (click)="setActiveTab('payments')"
+        >
+          Pagamentos
+        </button>
+
+        <button
+          [class.active]="activeTab === 'security'"
+          (click)="setActiveTab('security')"
+        >
           Login e Segurança
         </button>
-        <button class="logout-btn" (click)="openLogoutModal()">
-          Sair
-        </button>
+        <button class="logout-btn" (click)="openLogoutModal()">Sair</button>
       </nav>
     </aside>
 
@@ -53,74 +67,166 @@
           <h2>Informações Pessoais</h2>
           <p>Gerencie seus dados pessoais e endereço de entrega.</p>
         </header>
-        
+
         <form [formGroup]="personalForm" (ngSubmit)="onSavePersonal()">
           <div class="form-row">
             <div class="form-group">
               <label>Nome Completo</label>
-              <input type="text" formControlName="name" placeholder="Seu nome" appTextOnly>
-              <span class="error" *ngIf="personalForm.get('name')?.touched && personalForm.get('name')?.invalid">Nome é obrigatório</span>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Seu nome"
+                appTextOnly
+              />
+              <span
+                class="error"
+                *ngIf="
+                  personalForm.get('name')?.touched &&
+                  personalForm.get('name')?.invalid
+                "
+                >Nome é obrigatório</span
+              >
             </div>
             <div class="form-group">
               <label>Email</label>
-              <input type="email" formControlName="email">
+              <input type="email" formControlName="email" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>CPF</label>
-              <input type="text" formControlName="cpf" placeholder="000.000.000-00" appCpfMask maxlength="14">
-              <span class="error" *ngIf="personalForm.get('cpf')?.touched && personalForm.get('cpf')?.invalid">CPF é obrigatório</span>
+              <input
+                type="text"
+                formControlName="cpf"
+                placeholder="000.000.000-00"
+                appCpfMask
+                maxlength="14"
+              />
+              <span
+                class="error"
+                *ngIf="
+                  personalForm.get('cpf')?.touched &&
+                  personalForm.get('cpf')?.invalid
+                "
+                >CPF é obrigatório</span
+              >
             </div>
             <div class="form-group">
               <label>Data de Nascimento</label>
-              <input type="date" formControlName="birthDate">
-              <span class="error" *ngIf="personalForm.get('birthDate')?.touched && personalForm.get('birthDate')?.invalid">Data obrigatória</span>
+              <input type="date" formControlName="birthDate" />
+              <span
+                class="error"
+                *ngIf="
+                  personalForm.get('birthDate')?.touched &&
+                  personalForm.get('birthDate')?.invalid
+                "
+                >Data obrigatória</span
+              >
             </div>
           </div>
 
           <div class="form-group">
             <label>Telefone</label>
-            <input type="tel" formControlName="phone" placeholder="(00) 00000-0000" appPhoneMask maxlength="15">
-            <span class="error" *ngIf="personalForm.get('phone')?.touched && personalForm.get('phone')?.invalid">Telefone é obrigatório</span>
+            <input
+              type="tel"
+              formControlName="phone"
+              placeholder="(00) 00000-0000"
+              appPhoneMask
+              maxlength="15"
+            />
+            <span
+              class="error"
+              *ngIf="
+                personalForm.get('phone')?.touched &&
+                personalForm.get('phone')?.invalid
+              "
+              >Telefone é obrigatório</span
+            >
           </div>
 
           <div formGroupName="address" class="address-section">
             <h3>Endereço</h3>
             <div class="form-group">
               <label>Rua</label>
-              <input type="text" formControlName="street" placeholder="Rua, Número">
-              <span class="error" *ngIf="personalForm.get('address.street')?.touched && personalForm.get('address.street')?.invalid">Rua é obrigatória</span>
+              <input
+                type="text"
+                formControlName="street"
+                placeholder="Rua, Número"
+              />
+              <span
+                class="error"
+                *ngIf="
+                  personalForm.get('address.street')?.touched &&
+                  personalForm.get('address.street')?.invalid
+                "
+                >Rua é obrigatória</span
+              >
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label>Cidade</label>
                 <select formControlName="city">
                   <option value="" disabled>Selecione uma cidade</option>
-                  <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
+                  <option *ngFor="let city of availableCities" [value]="city">
+                    {{ city }}
+                  </option>
                 </select>
-                <span class="error" *ngIf="personalForm.get('address.city')?.touched && personalForm.get('address.city')?.invalid">Cidade é obrigatória</span>
+                <span
+                  class="error"
+                  *ngIf="
+                    personalForm.get('address.city')?.touched &&
+                    personalForm.get('address.city')?.invalid
+                  "
+                  >Cidade é obrigatória</span
+                >
               </div>
               <div class="form-group">
                 <label>Estado</label>
-                <select formControlName="state" (change)="onStateChange($any($event.target).value)">
+                <select
+                  formControlName="state"
+                  (change)="onStateChange($any($event.target).value)"
+                >
                   <option value="" disabled>Selecione um estado</option>
-                  <option *ngFor="let state of states" [value]="state.uf">{{ state.name }} ({{ state.uf }})</option>
+                  <option *ngFor="let state of states" [value]="state.uf">
+                    {{ state.name }} ({{ state.uf }})
+                  </option>
                 </select>
-                <span class="error" *ngIf="personalForm.get('address.state')?.touched && personalForm.get('address.state')?.invalid">Estado é obrigatório</span>
+                <span
+                  class="error"
+                  *ngIf="
+                    personalForm.get('address.state')?.touched &&
+                    personalForm.get('address.state')?.invalid
+                  "
+                  >Estado é obrigatório</span
+                >
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label>CEP</label>
-                <input type="text" formControlName="zip" appCepMask maxlength="9" placeholder="00000-000">
-                <span class="error" *ngIf="personalForm.get('address.zip')?.touched && personalForm.get('address.zip')?.invalid">CEP é obrigatório</span>
+                <input
+                  type="text"
+                  formControlName="zip"
+                  appCepMask
+                  maxlength="9"
+                  placeholder="00000-000"
+                />
+                <span
+                  class="error"
+                  *ngIf="
+                    personalForm.get('address.zip')?.touched &&
+                    personalForm.get('address.zip')?.invalid
+                  "
+                  >CEP é obrigatório</span
+                >
               </div>
               <div class="form-group">
                 <label>País</label>
                 <select formControlName="country">
-                  <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+                  <option *ngFor="let country of countries" [value]="country">
+                    {{ country }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -138,27 +244,50 @@
           <h2>Login e Segurança</h2>
           <p>Gerencie sua senha e métodos de autenticação.</p>
         </header>
-        
+
         <div class="security-block">
           <h3>Alterar Senha</h3>
           <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
             <div class="form-group">
               <label>Senha Atual</label>
-              <input type="password" formControlName="currentPassword">
-              <span class="error" *ngIf="passwordForm.get('currentPassword')?.touched && passwordForm.get('currentPassword')?.invalid">Senha atual é obrigatória</span>
+              <input type="password" formControlName="currentPassword" />
+              <span
+                class="error"
+                *ngIf="
+                  passwordForm.get('currentPassword')?.touched &&
+                  passwordForm.get('currentPassword')?.invalid
+                "
+                >Senha atual é obrigatória</span
+              >
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label>Nova Senha</label>
-                <input type="password" formControlName="newPassword">
-                <span class="error" *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.errors?.['required']">Nova senha é obrigatória</span>
-                <span class="error" *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.errors?.['minlength']">Mínimo 8 caracteres</span>
-                <span class="error" *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.errors?.['complexity']">Requer maiúscula, minúscula e número</span>
+                <input type="password" formControlName="newPassword" />
+                <span
+                  class="error"
+                  *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.errors?.['required']"
+                  >Nova senha é obrigatória</span
+                >
+                <span
+                  class="error"
+                  *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.errors?.['minlength']"
+                  >Mínimo 8 caracteres</span
+                >
+                <span
+                  class="error"
+                  *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.errors?.['complexity']"
+                  >Requer maiúscula, minúscula e número</span
+                >
               </div>
               <div class="form-group">
                 <label>Confirmar Nova Senha</label>
-                <input type="password" formControlName="confirmPassword">
-                <span class="error" *ngIf="passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched">Senhas não conferem</span>
+                <input type="password" formControlName="confirmPassword" />
+                <span
+                  class="error"
+                  *ngIf="passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched"
+                  >Senhas não conferem</span
+                >
               </div>
             </div>
             <button type="submit" class="btn-secondary">Atualizar Senha</button>
@@ -170,56 +299,178 @@
           <div class="toggle-row">
             <span>Ativar verificação em duas etapas</span>
             <label class="switch">
-              <input type="checkbox" [checked]="currentUser?.twoFactorEnabled" (change)="toggleTwoFactor()">
+              <input
+                type="checkbox"
+                [checked]="currentUser?.twoFactorEnabled"
+                (change)="toggleTwoFactor()"
+              />
               <span class="slider round"></span>
             </label>
           </div>
+        </div>
+      </section>
+
+      <!-- Payments Section -->
+      <section *ngIf="activeTab === 'payments'" class="content-section">
+        <header class="section-header">
+          <h2>Pagamentos</h2>
+          <p>Gerencie seus métodos de pagamento e veja opções de reembolso.</p>
+        </header>
+
+        <div class="payments-header-image">
+          <img
+            src="/assets/icons/principais-bandeiras-de-cartao.webp"
+            alt="Principais bandeiras de cartão"
+          />
         </div>
 
         <div class="security-block">
           <h3>Cartões Cadastrados</h3>
           <div class="cards-list">
-            <div *ngFor="let card of savedCards; let i = index" class="card-item">
+            <div
+              *ngFor="let card of savedCards; let i = index"
+              class="card-item"
+            >
               <div class="card-info">
-                <span class="card-number">**** **** **** {{ card.number | slice:-4 }}</span>
+                <span class="card-number"
+                  >**** **** **** {{ card.number | slice : -4 }}</span
+                >
                 <span class="card-expiry">{{ card.expiry }}</span>
               </div>
               <button class="btn-icon" (click)="removeCard(i)">🗑️</button>
             </div>
-            <p *ngIf="savedCards.length === 0" class="empty-msg">Nenhum cartão cadastrado.</p>
+            <p *ngIf="savedCards.length === 0" class="empty-msg">
+              Nenhum cartão cadastrado.
+            </p>
           </div>
 
-          <button *ngIf="!showCardForm" class="btn-outline" (click)="showCardForm = true">+ Adicionar Novo Cartão</button>
+          <button
+            *ngIf="!showCardForm"
+            class="btn-outline"
+            (click)="showCardForm = true"
+          >
+            + Adicionar Novo Cartão
+          </button>
 
-          <form *ngIf="showCardForm" [formGroup]="cardForm" (ngSubmit)="onAddCard()" class="card-form">
+          <form
+            *ngIf="showCardForm"
+            [formGroup]="cardForm"
+            (ngSubmit)="onAddCard()"
+            class="card-form"
+          >
             <h4>Novo Cartão</h4>
             <div class="form-group">
               <label>Número do Cartão</label>
-              <input type="text" formControlName="number" placeholder="0000 0000 0000 0000" appCardNumberMask maxlength="19">
-               <span class="error" *ngIf="cardForm.get('number')?.touched && cardForm.get('number')?.invalid">Número inválido (16 dígitos)</span>
+              <input
+                type="text"
+                formControlName="number"
+                placeholder="0000 0000 0000 0000"
+                appCardNumberMask
+                maxlength="19"
+              />
+              <span
+                class="error"
+                *ngIf="
+                  cardForm.get('number')?.touched &&
+                  cardForm.get('number')?.invalid
+                "
+                >Número inválido (16 dígitos)</span
+              >
             </div>
             <div class="form-group">
               <label>Nome no Cartão</label>
-              <input type="text" formControlName="name" placeholder="Como impresso no cartão" appTextOnly>
-               <span class="error" *ngIf="cardForm.get('name')?.touched && cardForm.get('name')?.invalid">Nome obrigatório</span>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Como impresso no cartão"
+                appTextOnly
+              />
+              <span
+                class="error"
+                *ngIf="
+                  cardForm.get('name')?.touched && cardForm.get('name')?.invalid
+                "
+                >Nome obrigatório</span
+              >
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label>Validade</label>
-                <input type="text" formControlName="expiry" placeholder="MM/AA" appCardExpiryMask maxlength="5">
-                 <span class="error" *ngIf="cardForm.get('expiry')?.touched && cardForm.get('expiry')?.invalid">Formato MM/AA</span>
+                <input
+                  type="text"
+                  formControlName="expiry"
+                  placeholder="MM/AA"
+                  appCardExpiryMask
+                  maxlength="5"
+                />
+                <span
+                  class="error"
+                  *ngIf="
+                    cardForm.get('expiry')?.touched &&
+                    cardForm.get('expiry')?.invalid
+                  "
+                  >Formato MM/AA</span
+                >
               </div>
               <div class="form-group">
                 <label>CVV</label>
-                <input type="text" formControlName="cvv" placeholder="123" maxlength="4">
-                 <span class="error" *ngIf="cardForm.get('cvv')?.touched && cardForm.get('cvv')?.invalid">3 ou 4 dígitos</span>
+                <input
+                  type="text"
+                  formControlName="cvv"
+                  placeholder="123"
+                  maxlength="4"
+                />
+                <span
+                  class="error"
+                  *ngIf="
+                    cardForm.get('cvv')?.touched && cardForm.get('cvv')?.invalid
+                  "
+                  >3 ou 4 dígitos</span
+                >
               </div>
             </div>
             <div class="form-actions">
-              <button type="button" class="btn-text" (click)="showCardForm = false">Cancelar</button>
+              <button
+                type="button"
+                class="btn-text"
+                (click)="showCardForm = false"
+              >
+                Cancelar
+              </button>
               <button type="submit" class="btn-primary">Salvar Cartão</button>
             </div>
           </form>
+        </div>
+
+        <div class="refund-simulation-block">
+          <h3>Simulação de Reembolso</h3>
+          <p>
+            Veja como funcionam nossos prazos de reembolso para diferentes
+            métodos de pagamento.
+          </p>
+          <div class="refund-info">
+            <div class="refund-method">
+              <h4>Cartão de Crédito</h4>
+              <p>
+                O estorno pode levar de <strong>3 a 7 dias úteis</strong> para
+                ser processado pela operadora do cartão.
+              </p>
+            </div>
+            <div class="refund-method">
+              <h4>Boleto Bancário</h4>
+              <p>
+                O reembolso é feito em conta corrente em até
+                <strong>5 dias úteis</strong> após a solicitação.
+              </p>
+            </div>
+            <div class="refund-method">
+              <h4>Pix</h4>
+              <p>
+                O valor é devolvido para a conta de origem em
+                <strong>poucos minutos</strong>.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -229,7 +480,7 @@
 <!-- Logout Modal -->
 <div class="modal-overlay" *ngIf="showLogoutModal" (click)="closeLogoutModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
-    <img src="/assets/icons/alert_icon.webp" alt="Alert" class="modal-icon">
+    <img src="/assets/icons/alert_icon.webp" alt="Alert" class="modal-icon" />
     <h2 class="modal-title">Confirmar Logout</h2>
     <p class="modal-message">Tem certeza que deseja sair da sua conta?</p>
     <div class="modal-actions">

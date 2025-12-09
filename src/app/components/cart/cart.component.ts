@@ -32,7 +32,7 @@ export class CartComponent implements OnInit, OnDestroy {
   cartTotalFormatted = '';
   cartItemCount = 0;
   isLoading = false;
-  selectedPayment: 'pix' | 'visa' | 'mastercard' | null = 'pix';
+  selectedPayment: 'pix' | 'card' | null = 'pix';
 
   // User Data for Address Form
   userName = '';
@@ -138,16 +138,13 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.isCartEmpty()) {
       return true;
     }
-    if (
-      this.selectedPayment === 'visa' ||
-      this.selectedPayment === 'mastercard'
-    ) {
+    if (this.selectedPayment === 'card') {
       return !this.selectedCard;
     }
     return false;
   }
 
-  selectPaymentMethod(method: 'pix' | 'visa' | 'mastercard') {
+  selectPaymentMethod(method: 'pix' | 'card') {
     this.selectedPayment = method;
   }
 
@@ -208,7 +205,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   navigateToAddCard() {
-    this.router.navigate(['/profile'], { queryParams: { tab: 'security' } });
+    this.router.navigate(['/profile'], { queryParams: { tab: 'payments' } });
   }
 
   private updateTotals() {
@@ -246,10 +243,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private validateOrderData(): boolean {
-    if (
-      this.selectedPayment === 'visa' ||
-      this.selectedPayment === 'mastercard'
-    ) {
+    if (this.selectedPayment === 'card') {
       if (!this.selectedCard) {
         this.toastService.error('Por favor, selecione um cartão de crédito.');
         return false;
