@@ -627,7 +627,7 @@
   }
 
   .cart-section {
-    min-height: auto;
+    min-height: 667px;
 
     h2 {
       font-size: 0.9rem;
@@ -730,12 +730,13 @@
   .payment-section {
     .payment-methods {
       grid-template-columns: repeat(
-        3,
+        2,
         1fr
       ) !important; // Keep 3 columns on mobile
       gap: 10px;
 
       .payment-option {
+        gap: 6px;
         padding: 8px; // Reduced padding
       }
     }
