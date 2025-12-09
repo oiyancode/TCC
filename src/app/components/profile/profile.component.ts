@@ -101,10 +101,10 @@ export class ProfileComponent implements OnInit {
 
   private createCardForm(): FormGroup {
     return this.fb.group({
-      number: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
+      number: ['', Validators.required],
       name: ['', Validators.required],
-      expiry: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
-      cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
+      expiry: ['', Validators.required],
+      cvv: ['', Validators.required],
     });
   }
 

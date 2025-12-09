@@ -1,4 +1,4 @@
-@use '../../../styles.scss' as *;
+@use "../../../styles.scss" as *;
 
 .login-container {
   min-height: 100vh;
@@ -8,29 +8,37 @@
   background-color: var(--color-bg);
   position: relative;
   overflow: hidden;
-  padding: 0 2rem;
+  padding: 0 1.4rem;
 
   // Background gradient mesh effect
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20%;
     left: -10%;
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgba(231, 0, 0, 0.2) 0%, transparent 90%);
+    background: radial-gradient(
+      circle,
+      rgba(231, 0, 0, 0.2) 0%,
+      transparent 90%
+    );
     filter: blur(80px);
     z-index: 0;
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -20%;
     right: -10%;
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgba(0, 91, 150, 0.2) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(0, 91, 150, 0.2) 0%,
+      transparent 70%
+    );
     filter: blur(80px);
     z-index: 0;
   }
@@ -152,7 +160,7 @@
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     flex: 1;
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
@@ -202,7 +210,7 @@
     margin-top: 0.5rem;
     transition: var(--transition-fast);
     display: inline-block; // Needed for transform
-    
+
     &:hover {
       color: var(--brand-yellow);
       text-decoration: none;
@@ -277,7 +285,7 @@
 
   .floating-item {
     position: absolute;
-    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
     cursor: grab;
     transition: transform 0.1s ease-out; // Suavidade para o drag
 
@@ -356,8 +364,13 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 // LGPD Modal Styles
@@ -427,7 +440,7 @@
     &:checked ~ .checkmark {
       background-color: var(--brand-red);
       border-color: var(--brand-red);
-      
+
       &:after {
         display: block;
       }
@@ -464,7 +477,7 @@
     color: var(--color-text);
     line-height: 1.4;
   }
-  
+
   &:hover .checkmark {
     border-color: var(--brand-yellow);
   }

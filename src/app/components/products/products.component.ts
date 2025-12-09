@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import {
@@ -28,6 +28,8 @@ import { WishlistService } from '../../services/wishlist.service';
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent implements OnInit {
+  @ViewChild(FiltersComponent) filtersComponent!: FiltersComponent;
+
   products$: Observable<Product[]> = of([]);
   loading$: Observable<boolean>;
   wishlist: Set<number> = new Set();
@@ -85,7 +87,9 @@ export class ProductsComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.productsService.setFilters({});
+    if (this.filtersComponent) {
+      this.filtersComponent.clearFilters();
+    }
   }
 
   onSortChange(sort: SortOptions): void {
