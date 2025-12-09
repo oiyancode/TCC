@@ -16,7 +16,13 @@ import { CepMaskDirective } from '../../directives/cep-mask.directive';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule, TextOnlyDirective, CepMaskDirective],
+  imports: [
+    NavbarComponent,
+    CommonModule,
+    FormsModule,
+    TextOnlyDirective,
+    CepMaskDirective,
+  ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -128,6 +134,19 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
+  isCheckoutDisabled(): boolean {
+    if (this.isCartEmpty()) {
+      return true;
+    }
+    if (
+      this.selectedPayment === 'visa' ||
+      this.selectedPayment === 'mastercard'
+    ) {
+      return !this.selectedCard;
+    }
+    return false;
+  }
+
   selectPaymentMethod(method: 'pix' | 'visa' | 'mastercard') {
     this.selectedPayment = method;
   }
@@ -182,7 +201,9 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/profile']);
     } else {
-      this.router.navigate(['/login'], { queryParams: { redirectTo: '/cart' } });
+      this.router.navigate(['/login'], {
+        queryParams: { redirectTo: '/cart' },
+      });
     }
   }
 
@@ -225,14 +246,16 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private validateOrderData(): boolean {
-    return (
-      this.userName.trim() !== '' &&
-      this.userZip.trim() !== '' &&
-      this.userAddress.trim() !== '' &&
-      this.userCountry.trim() !== '' &&
-      this.userCity.trim() !== '' &&
-      this.selectedPayment !== null
-    );
+    if (
+      this.selectedPayment === 'visa' ||
+      this.selectedPayment === 'mastercard'
+    ) {
+      if (!this.selectedCard) {
+        this.toastService.error('Por favor, selecione um cartão de crédito.');
+        return false;
+      }
+    }
+    return true;
   }
 
   private buildOrderData(): OrderData {
