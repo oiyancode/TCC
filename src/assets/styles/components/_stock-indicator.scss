@@ -1,0 +1,42 @@
+
+.stock-indicator {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 8px 0;
+  display: inline-block;
+  text-align: center;
+  min-width: 100px;
+
+  &.stock-out {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #c62828;
+  }
+
+  &.stock-low {
+    background-color: #fff3e0;
+    color: #ef6c00;
+    border: 1px solid #ef6c00;
+  }
+
+  &.stock-available {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #2e7d32;
+  }
+}
+
+.btn-disabled {
+  background-color: #e0e0e0 !important;
+  color: #9e9e9e !important;
+  cursor: not-allowed !important;
+  border: 1px solid #bdbdbd !important;
+
+  &:hover {
+    background-color: #e0e0e0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}

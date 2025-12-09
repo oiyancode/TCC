@@ -134,11 +134,33 @@ export class ProductDetailsComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  handleAddToCart() {
-    if (this.product && this.product.stock === 0) {
-      this.toastService.error('Produto esgotado!');
-      return;
+  getStockMessage(): string {
+    if (this.product?.stock === undefined) {
+      return '';
     }
+    if (this.product.stock === 0) {
+      return 'Esgotado';
+    }
+    if (this.product.stock > 0 && this.product.stock <= 3) {
+      return `Apenas ${this.product.stock} restantes`;
+    }
+    return 'Disponível';
+  }
+
+  getStockStatusClass(): string {
+    if (this.product?.stock === undefined) {
+      return 'stock-hidden';
+    }
+    if (this.product.stock === 0) {
+      return 'stock-out-of-stock';
+    }
+    if (this.product.stock > 0 && this.product.stock <= 3) {
+      return 'stock-low';
+    }
+    return 'stock-available';
+  }
+
+  handleAddToCart() {
     this.isAddedToCart = true;
     this.addToCart();
     setTimeout(() => {

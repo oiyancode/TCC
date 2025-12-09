@@ -45,7 +45,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     // Clear cache to ensure fresh data
     this.productsService.clearCache();
-    
+
     this.setupProductsSubscription();
     this.setupWishlistSubscription();
     this.setupRouteParams();
@@ -123,5 +123,21 @@ export class ProductsComponent implements OnInit {
 
   isInWishlist(productId: number): boolean {
     return this.wishlist.has(productId);
+  }
+
+  getStockStatusClass(stock: number | undefined): string {
+    if (stock === undefined || stock === 0) {
+      return 'stock-out';
+    } else if (stock < 5) {
+      return 'stock-low';
+    }
+    return 'stock-available';
+  }
+
+  getStockMessage(stock: number | undefined): string {
+    if (stock === undefined) return '';
+    if (stock === 0) return 'Esgotado';
+    if (stock > 0 && stock <= 3) return `Apenas ${stock} restantes`;
+    return 'Disponível';
   }
 }

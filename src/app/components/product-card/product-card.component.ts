@@ -29,6 +29,32 @@ export class ProductCardComponent {
 
   isAddedToCart = false;
 
+  getStockStatusClass(): string {
+    if (this.product?.stock === undefined) {
+      return '';
+    }
+    if (this.product.stock === 0) {
+      return 'stock-out';
+    }
+    if (this.product.stock > 0 && this.product.stock <= 3) {
+      return 'stock-low';
+    }
+    return 'stock-available';
+  }
+
+  getStockMessage(): string {
+    if (this.product?.stock === undefined) {
+      return '';
+    }
+    if (this.product.stock === 0) {
+      return 'Esgotado';
+    }
+    if (this.product.stock > 0 && this.product.stock <= 3) {
+      return `Apenas ${this.product.stock} restantes`;
+    }
+    return 'Disponível';
+  }
+
   constructor(
     private router: Router,
     private cartService: CartService,

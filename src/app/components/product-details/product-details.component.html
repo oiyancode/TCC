@@ -98,25 +98,19 @@
           />
         </ng-template>
 
-        <!-- Preço -->
+        <!-- Indicador de Estoque -->
         <div
-          *ngIf="
-            product &&
-            product.stock !== undefined &&
-            product.stock <= 3 &&
-            product.stock > 0
-          "
-          class="low-stock-warning"
+          *ngIf="product.stock !== undefined"
+          class="stock-indicator {{ getStockStatusClass() }}"
         >
-          Poucas unidades
+          <span>{{ getStockMessage() }}</span>
         </div>
+
+        <!-- Preço -->
         <p class="price">{{ product.price }}</p>
 
         <!-- Botão Adicionar ao Carrinho -->
-        <div
-          class="btn-add-sacola"
-          [class.disabled]="product && product.stock === 0"
-        >
+        <div class="btn-add-sacola">
           <img
             [src]="'/assets/Section_Detalhes_Prod/btn_add_sacola.svg'"
             alt="Adicionar ao Carrinho"
