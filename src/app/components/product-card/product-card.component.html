@@ -17,16 +17,32 @@
       />
     </div>
     <div class="news__foot">
+      <div
+        *ngIf="
+          product &&
+          product.stock !== undefined &&
+          product.stock <= 3 &&
+          product.stock > 0
+        "
+        class="low-stock-warning"
+      >
+        Poucas unidades
+      </div>
       <span class="news__price">{{ price }}</span>
       <div
         class="news__bag"
+        [class.disabled]="product && product.stock === 0"
         aria-label="Adicionar ao carrinho"
         (click)="handleAddToCart($event)"
         style="cursor: pointer"
       >
         <img
           class="icon icon--bag"
-          [src]="isAddedToCart ? '/assets/icons/bag_buyed.svg' : '/assets/icons/bag_buy.svg'"
+          [src]="
+            isAddedToCart
+              ? '/assets/icons/bag_buyed.svg'
+              : '/assets/icons/bag_buy.svg'
+          "
           [class.clicked]="isAddedToCart"
           alt="Adicionar ao carrinho"
           loading="lazy"

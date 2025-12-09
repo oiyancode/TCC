@@ -11,6 +11,7 @@ import {
   BehaviorSubject,
   finalize,
   combineLatest,
+  forkJoin,
 } from 'rxjs';
 import { ToastService } from './toast.service';
 
@@ -33,6 +34,7 @@ export interface Product {
   shoeSizes?: number[];
   reviews?: Review[];
   rating?: number; // Adicionado para facilitar a filtragem
+  stock?: number;
 }
 
 export interface FilterOptions {
@@ -104,7 +106,9 @@ export class ProductsService {
         }
 
         if (filters.categories && filters.categories.length > 0) {
-          filtered = filtered.filter((p) => filters.categories!.includes(p.variant));
+          filtered = filtered.filter((p) =>
+            filters.categories!.includes(p.variant)
+          );
         }
 
         // A lógica de disponibilidade será adicionada se houver um campo correspondente nos dados
@@ -142,12 +146,25 @@ export class ProductsService {
     }
 
     this.isLoading$.next(true);
-    // Add timestamp to prevent caching
     const timestamp = new Date().getTime();
-    return this.http.get<Product[]>(`/assets/products.json?t=${timestamp}`).pipe(
-      tap((products) => {
-        const productsWithRating = products.map((p) => ({
+
+    const products$ = this.http.get<Product[]>(
+      `/assets/products.json?t=${timestamp}`
+    );
+    const stock$ = this.http.get<{ id: number; stock: number }[]>(
+      `/assets/stock.json?t=${timestamp}`
+    );
+
+    return forkJoin([products$, stock$]).pipe(
+      map(([products, stockData]) => {
+        const stockMap = new Map<number, number>();
+        stockData.forEach((item) => {
+          stockMap.set(item.id, item.stock);
+        });
+
+        const productsWithStock = products.map((p) => ({
           ...p,
+          stock: stockMap.get(p.id) || 0,
           rating:
             p.reviews && p.reviews.length > 0
               ? Math.round(
@@ -156,8 +173,10 @@ export class ProductsService {
                 )
               : 0,
         }));
-        this.productsCache$.next(productsWithRating);
+
+        this.productsCache$.next(productsWithStock);
         this.productsCacheTime = Date.now();
+        return productsWithStock;
       }),
       retry(2),
       catchError(() => this.handleError()),
@@ -203,10 +222,10 @@ export class ProductsService {
       map((products) => {
         // Filter out current product
         const filtered = products.filter((p) => p.id !== currentProductId);
-        
+
         // Shuffle array to get random products
         const shuffled = this.shuffleArray(filtered);
-        
+
         // Return limited number of random products
         return shuffled.slice(0, limit);
       }),

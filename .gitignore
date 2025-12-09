@@ -42,7 +42,7 @@ testem.log
 .clinerules
 
 # Development Documentation
-documentos/
+documentos
 memory-bank/
 
 # Build Troubleshooting

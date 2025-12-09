@@ -77,6 +77,9 @@
           />
         </div>
         <div class="product-info">
+          <div *ngIf="product.stock !== undefined && product.stock <= 3 && product.stock > 0" class="low-stock-warning">
+            Poucas unidades
+          </div>
           <h3 class="product-name">{{ product.name }}</h3>
           <p class="product-price">{{ product.price }}</p>
         </div>

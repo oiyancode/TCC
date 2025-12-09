@@ -14,6 +14,7 @@ import { ImageOptimizationService } from '../../core/services/image-optimization
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
+  @Input() product: Product | null = null;
   @Input() name = '';
   @Input() price = '';
   @Input() imageSrc = '';
@@ -54,6 +55,11 @@ export class ProductCardComponent {
   }
 
   handleAddToCart(event: Event): void {
+    if (this.product && this.product.stock === 0) {
+      this.toastService.error('Produto esgotado!');
+      event.stopPropagation();
+      return;
+    }
     this.isAddedToCart = true;
     this.goToCart(event);
     setTimeout(() => {

@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { ProductsService, Product } from './products.service';
+import { ToastService } from './toast.service';
+import { map, switchMap, take } from 'rxjs/operators';
 
 export interface CartItem {
   id: number;
   name: string;
-  price: number; // Changed from string to number
+  price: number;
   quantity: number;
   size?: string;
   shoeSize?: number;
   imageSrc: string;
+  stock?: number;
 }
 
 @Injectable({
@@ -23,7 +27,10 @@ export class CartService {
 
   private readonly STORAGE_KEY = 'bluehouse_cart';
 
-  constructor() {
+  constructor(
+    private productsService: ProductsService,
+    private toastService: ToastService
+  ) {
     this.initializeCart();
   }
 
@@ -75,30 +82,53 @@ export class CartService {
 
   addItem(product: Partial<CartItem>, quantity: number = 1) {
     if (!this.isValidProduct(product) || !this.validateQuantity(quantity)) {
-      console.warn('Invalid product or quantity:', { product, quantity });
+      this.toastService.error('Produto ou quantidade inválida.');
       return;
     }
 
-    const currentItems = this.cartItemsSource.value;
-    const existingItemIndex = this.findExistingItem(currentItems, product);
+    this.productsService
+      .getProductById(product.id!)
+      .pipe(take(1))
+      .subscribe((fullProduct) => {
+        if (!fullProduct || fullProduct.stock === undefined) {
+          this.toastService.error(
+            'Produto não encontrado ou sem informação de estoque.'
+          );
+          return;
+        }
 
-    if (existingItemIndex >= 0) {
-      currentItems[existingItemIndex].quantity += quantity;
-    } else {
-      currentItems.push(this.createCartItem(product, quantity));
-    }
+        const currentItems = this.cartItemsSource.value;
+        const existingItemIndex = this.findExistingItem(currentItems, product);
+        const existingQuantity =
+          existingItemIndex >= 0 ? currentItems[existingItemIndex].quantity : 0;
+        const requestedQuantity = existingQuantity + quantity;
 
-    this.cartItemsSource.next([...currentItems]);
-    this.updateCartState();
+        if (requestedQuantity > fullProduct.stock) {
+          this.toastService.error(
+            `Estoque insuficiente para ${product.name}. Disponível: ${fullProduct.stock}`
+          );
+          return;
+        }
+
+        if (existingItemIndex >= 0) {
+          currentItems[existingItemIndex].quantity = requestedQuantity;
+        } else {
+          currentItems.push(
+            this.createCartItem(product, quantity, fullProduct.stock)
+          );
+        }
+
+        this.cartItemsSource.next([...currentItems]);
+        this.updateCartState();
+        this.toastService.success(`🎉 ${product.name} adicionado ao carrinho!`);
+      });
   }
 
   removeItem(itemId: number, size?: string, shoeSize?: number) {
     const currentItems = this.cartItemsSource.value;
     const itemIndex = currentItems.findIndex(
-      item => 
-        item.id === itemId && 
-        item.size === size && 
-        item.shoeSize === shoeSize
+      (item) =>
+        item.id === itemId && item.size === size && item.shoeSize === shoeSize
     );
 
     if (itemIndex >= 0) {
@@ -108,30 +138,54 @@ export class CartService {
     }
   }
 
-  updateQuantity(itemId: number, quantity: number, size?: string, shoeSize?: number) {
+  updateQuantity(
+    itemId: number,
+    quantity: number,
+    size?: string,
+    shoeSize?: number
+  ) {
     if (quantity === 0) {
       this.removeItem(itemId, size, shoeSize);
       return;
     }
 
     if (!this.validateQuantity(quantity)) {
-      console.warn('Invalid quantity:', quantity);
+      this.toastService.error('Quantidade inválida.');
       return;
     }
 
-    const currentItems = this.cartItemsSource.value;
-    const itemIndex = currentItems.findIndex(
-      item => 
-        item.id === itemId && 
-        item.size === size && 
-        item.shoeSize === shoeSize
-    );
+    this.productsService
+      .getProductById(itemId)
+      .pipe(take(1))
+      .subscribe((fullProduct) => {
+        if (!fullProduct || fullProduct.stock === undefined) {
+          this.toastService.error(
+            'Produto não encontrado ou sem informação de estoque.'
+          );
+          return;
+        }
 
-    if (itemIndex >= 0) {
-      currentItems[itemIndex].quantity = quantity;
-      this.cartItemsSource.next([...currentItems]);
-      this.updateCartState();
-    }
+        if (quantity > fullProduct.stock) {
+          this.toastService.error(
+            `Estoque insuficiente para ${fullProduct.name}. Disponível: ${fullProduct.stock}.`
+          );
+          return;
+        }
+
+        const currentItems = this.cartItemsSource.value;
+        const itemIndex = currentItems.findIndex(
+          (item) =>
+            item.id === itemId &&
+            item.size === size &&
+            item.shoeSize === shoeSize
+        );
+
+        if (itemIndex >= 0) {
+          currentItems[itemIndex].quantity = quantity;
+          this.cartItemsSource.next([...currentItems]);
+          this.updateCartState();
+        }
+      });
   }
 
   clearCart() {
@@ -143,16 +197,23 @@ export class CartService {
     return !!(product.id && product.name);
   }
 
-  private findExistingItem(items: CartItem[], product: Partial<CartItem>): number {
+  private findExistingItem(
+    items: CartItem[],
+    product: Partial<CartItem>
+  ): number {
     return items.findIndex(
-      item => 
-        item.id === product.id && 
-        item.size === product.size && 
+      (item) =>
+        item.id === product.id &&
+        item.size === product.size &&
         item.shoeSize === product.shoeSize
     );
   }
 
-  private createCartItem(product: Partial<CartItem>, quantity: number): CartItem {
+  private createCartItem(
+    product: Partial<CartItem>,
+    quantity: number,
+    stock: number
+  ): CartItem {
     return {
       id: product.id!,
       name: product.name!,
@@ -161,6 +222,7 @@ export class CartService {
       size: product.size,
       shoeSize: product.shoeSize,
       imageSrc: product.imageSrc || '',
+      stock: stock,
     };
   }
 
@@ -183,7 +245,7 @@ export class CartService {
     return items.reduce((total, item) => {
       const price = typeof item.price === 'number' ? item.price : 0;
       const quantity = this.validateQuantity(item.quantity) ? item.quantity : 0;
-      return total + (price * quantity);
+      return total + price * quantity;
     }, 0);
   }
 

@@ -135,6 +135,10 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   handleAddToCart() {
+    if (this.product && this.product.stock === 0) {
+      this.toastService.error('Produto esgotado!');
+      return;
+    }
     this.isAddedToCart = true;
     this.addToCart();
     setTimeout(() => {
